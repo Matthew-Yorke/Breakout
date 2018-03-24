@@ -18,6 +18,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Breakout
@@ -44,6 +45,18 @@ namespace Breakout
 
       // Determines if the ball has been launched yet.
       bool mBallLaunched;
+
+      // The current level the player is on.
+      int mCurrentLevel;
+
+      public class Brick
+      {
+         public Rectangle BrickImage;
+         public int BrickLevel;
+      }
+
+      // List of active bricks in the level.
+      List<Brick> mBricks;      
 
       // The time object that is used to periodically tick to update the screen.
       Timer mTimer;
@@ -89,6 +102,15 @@ namespace Breakout
          mBallVelocityX = BreakoutConstants.BALL_INITIAL_SPEED;
          mBallVelocityY = BreakoutConstants.BALL_INITIAL_SPEED;
 
+         // Start the game at the level of a new game.
+         mCurrentLevel = BreakoutConstants.NEW_GAME_LEVEL;
+
+         // Create the new list of bricks for the game.
+         mBricks = new List<Brick>();
+
+         // Load the starting level of the game.
+         LoadLevel(mCurrentLevel);
+
          // Indicate the painting callback method to use when a repaint is called.
          this.Paint += Draw;
 
@@ -109,6 +131,129 @@ namespace Breakout
 
       private void BreakoutLoad(object theSender, EventArgs theEventArguments)
       {
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: LoadLevel
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theLevelNumber - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void LoadLevel(int theLevelNumber)
+      {
+         // Create the string needed to load the level passed in from the levels folder.
+         string levelString = BreakoutConstants.LEVELS_FOLDER + theLevelNumber.ToString() + BreakoutConstants.TEXT_FILE;
+
+         // Open the level file.
+         System.IO.StreamReader file = new System.IO.StreamReader(levelString);
+
+         // String that holds information on the next line the level file.
+         String line;
+         // The current line number (used to determine the y coordinate of a brick).
+         int lineNumber = 0;
+         // The set of parsed lines (by using a delimiter) from the line being read in the file.
+         string[] parsedLines;
+         // The current parsed line number (used to determine the x coordinate of a brick).
+         int parsedLineNumber = 0;
+
+         // While the next line is not the end of the file build the array of bricks for the level including location and brick life level.
+         while ((line = file.ReadLine()) != null)
+         {
+            // Read the line of by using a delimiter to parse where bricks are placed.
+            parsedLines = Regex.Split(line, BreakoutConstants.LEVEL_DELIMITER);
+
+            // Search the array of parsed lines to determine if a brick is to placed at the location in the file.
+            foreach (string currentParsedLine in parsedLines)
+            {
+               // Determine if a brick is to displayed at this coordinate of the file.
+               switch (currentParsedLine)
+               {
+                  // No brick to be placed at this location.
+                  case BreakoutConstants.NO_BRICK:
+                  {
+                     break;
+                  }
+                  // Level one brick to be placed at this location.
+                  case BreakoutConstants.LEVEL_ONE_BRICK:
+                  {
+                     // Create a new brick object.
+                     Brick newBrick = new Brick();
+                     // The brick is placed based on the current line number and the further parsed item in the line.
+                     newBrick.BrickImage = new Rectangle(parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
+                                                         lineNumber * BreakoutConstants.BRICK_HEIGHT,
+                                                         BreakoutConstants.BRICK_WIDTH,
+                                                         BreakoutConstants.BRICK_HEIGHT);
+                     // The brick level starts at level 1 (meaning only 1 hit to destroy the brick).
+                     newBrick.BrickLevel = 1;
+
+                     // Add the new brick to the list of bricks in the level.
+                     mBricks.Add(newBrick);
+
+                     break;
+                  }
+                  // Level two brick to be placed at this location.
+                  case BreakoutConstants.LEVEL_TWO_BRICK:
+                  {
+                     // Create a new brick object.
+                     Brick newBrick = new Brick();
+                     // The brick is placed based on the current line number and the further parsed item in the line.
+                     newBrick.BrickImage = new Rectangle(parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
+                                                         lineNumber * BreakoutConstants.BRICK_HEIGHT,
+                                                         BreakoutConstants.BRICK_WIDTH,
+                                                         BreakoutConstants.BRICK_HEIGHT);
+                     // The brick level starts at level 1 (meaning only 1 hit to destroy the brick).
+                     newBrick.BrickLevel = 2;
+
+                     // Add the new brick to the list of bricks in the level.
+                     mBricks.Add(newBrick);
+
+                     break;
+                  }
+                  // Level three brick to be placed at this location.
+                  case BreakoutConstants.LEVEL_THREE_BRICK:
+                  {
+                     // Create a new brick object.
+                     Brick newBrick = new Brick();
+                     // The brick is placed based on the current line number and the further parsed item in the line.
+                     newBrick.BrickImage = new Rectangle(parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
+                                                         lineNumber * BreakoutConstants.BRICK_HEIGHT,
+                                                         BreakoutConstants.BRICK_WIDTH,
+                                                         BreakoutConstants.BRICK_HEIGHT);
+                     // The brick level starts at level 1 (meaning only 1 hit to destroy the brick).
+                     newBrick.BrickLevel = 3;
+
+                     // Add the new brick to the list of bricks in the level.
+                     mBricks.Add(newBrick);
+
+                     break;
+                  }
+                  // Unknown brick information, no brick to be placed at this location.
+                  default:
+                  {
+                     break;
+                  }
+               }
+
+               // Increment the parsed line number for the next parsed line to be read.
+               parsedLineNumber++;
+            }
+
+            // Increment line number for the next line to be read.
+            lineNumber++;
+            // Reset the parsed line number.
+            parsedLineNumber = 0;
+         }
+
+         // Close the file now that reading is done.
+         file.Close();
       }
 
       //*********************************************************************************************************************************************
@@ -435,6 +580,24 @@ namespace Breakout
                }
             }
          }
+         
+         // Check if the ball hits a brick
+         for (var index = 0; index < mBricks.Count; index++)
+         {
+            if (mBall.IntersectsWith(mBricks[index].BrickImage))
+            {
+               // Since the ball hit the brick, lower that bricks level.
+               mBricks[index].BrickLevel--;
+
+               // Check if the brick level has hit the destroy level and remove the brick form the array list since it is destroyed.
+               if (mBricks[index].BrickLevel <= 0)
+               {
+                  mBricks.RemoveAt(index);
+               }
+
+               mBallVelocityY = -mBallVelocityY;
+            }
+         }
       }
 
       //*********************************************************************************************************************************************
@@ -456,7 +619,11 @@ namespace Breakout
       {
          // Create the colors used for the paddle and ball.
          SolidBrush paddleColor = new SolidBrush(Color.Black);
-         SolidBrush ballColor = new SolidBrush(Color.Green);
+         SolidBrush ballColor = new SolidBrush(Color.Blue);
+         SolidBrush levelOneBrickColor = new SolidBrush(Color.Green);
+         SolidBrush levelTwoBrickColor = new SolidBrush(Color.Yellow);
+         SolidBrush levelThreeBrickColor = new SolidBrush(Color.Red);
+         Pen brickBorderPen = new Pen(Color.Black, 2);
 
          // Draw the paddle and balls onto the window.
          theEventArguments.Graphics.FillRectangle(paddleColor,
@@ -464,9 +631,49 @@ namespace Breakout
          theEventArguments.Graphics.FillRectangle(ballColor,
                                                   mBall);
 
+         // Draw the array of bricks currently in the game.
+         foreach (Brick currentBrick in mBricks)
+         {
+            // Determine the level of the brick.
+            switch (currentBrick.BrickLevel)
+            {
+               case 1:
+               {
+                  theEventArguments.Graphics.FillRectangle(levelOneBrickColor,
+                                                           currentBrick.BrickImage);
+                  theEventArguments.Graphics.DrawRectangle(brickBorderPen,
+                                                           currentBrick.BrickImage);
+                  break;
+               }
+               case 2:
+               {
+                  theEventArguments.Graphics.FillRectangle(levelTwoBrickColor,
+                                                           currentBrick.BrickImage);
+                  theEventArguments.Graphics.DrawRectangle(brickBorderPen,
+                                                           currentBrick.BrickImage);
+                  break;
+               }
+               case 3:
+               {
+                  theEventArguments.Graphics.FillRectangle(levelThreeBrickColor,
+                                                           currentBrick.BrickImage);
+                  theEventArguments.Graphics.DrawRectangle(brickBorderPen,
+                                                           currentBrick.BrickImage);
+                  break;
+               }
+               default:
+               {
+                  break;
+               }
+            }
+         }
+
          // Clean up allocated memory.
          paddleColor.Dispose();
          ballColor.Dispose();
+         levelOneBrickColor.Dispose();
+         levelTwoBrickColor.Dispose();
+         levelThreeBrickColor.Dispose();
       }
    }
 }

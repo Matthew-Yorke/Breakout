@@ -25,10 +25,10 @@ namespace Breakout
       public const int SCREEN_X_COORDINATE_LEFT = 0;
 
       // The width in pixels of any paddle in the game.
-      public const int PADDLE_WIDTH = 200;
+      public const int PADDLE_WIDTH = 50;
 
       // The height in pixels of any paddle in the game
-      public const int PADDLE_HEIGHT = 10;
+      public const int PADDLE_HEIGHT = 15;
 
       // The padding in pixels between a end-zone and any paddle in the game.
       public const int PADDLE_BOUNDARY_PADDING = 20;
@@ -47,6 +47,36 @@ namespace Breakout
 
       // The speed increase when the ball hits a boundary, paddle, or brick.
       public const int BALL_SPEED_INCREASE = 0;
+
+      // The width of a single brick.
+      public const int BRICK_WIDTH = 50;
+
+      // The height of a single brick.
+      public const int BRICK_HEIGHT = 15;
+
+      // The level when a new game starts.
+      public const int NEW_GAME_LEVEL = 1;
+
+      // String for the level folders when loading a level.
+      public const string LEVELS_FOLDER = "../../Levels/Level";
+
+      // String for the text file format when loading a level.
+      public const string TEXT_FILE = ".txt";
+
+      // Delimiter used when reading a line in the level text file.
+      public const string LEVEL_DELIMITER = ",";
+
+      // String to indicate no brick to be placed when loading a level.
+      public const string NO_BRICK = "0";
+
+      // String to indicate a level one brick to be placed when loading a level.
+      public const string LEVEL_ONE_BRICK = "1";
+
+      // String to indicate a level two brick to be placed when loading a level.
+      public const string LEVEL_TWO_BRICK = "2";
+
+      // String to indicate a level three  brick to be placed when loading a level.
+      public const string LEVEL_THREE_BRICK = "3";
 
       // The number of milliseconds for a clock tick to occur.
       public const int TIMER_INTERVAL = 16;
