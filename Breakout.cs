@@ -424,10 +424,21 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void UpdateWindow()
       {
-         // Update the paddles on the window based on the keys pressed down or released.
-         UpdatePaddle();
-         UpdateBall();
-         CheckBallCollision();
+         // Check if the level is complete
+         if (mBricks.Count == 0)
+         {
+            mCurrentLevel++;
+            LoadLevel(mCurrentLevel);
+            NewMatch();
+         }
+         // The level has not finished.
+         else
+         {
+            // Update the paddles on the window based on the keys pressed down or released.
+            UpdatePaddle();
+            UpdateBall();
+            CheckBallCollision();
+         }
       }
 
       //*********************************************************************************************************************************************

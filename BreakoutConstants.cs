@@ -25,10 +25,10 @@ namespace Breakout
       public const int SCREEN_X_COORDINATE_LEFT = 0;
 
       // The width in pixels of any paddle in the game.
-      public const int PADDLE_WIDTH = 50;
+      public const int PADDLE_WIDTH = 200;
 
       // The height in pixels of any paddle in the game
-      public const int PADDLE_HEIGHT = 15;
+      public const int PADDLE_HEIGHT = 10;
 
       // The padding in pixels between a end-zone and any paddle in the game.
       public const int PADDLE_BOUNDARY_PADDING = 20;
