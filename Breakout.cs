@@ -38,10 +38,10 @@ namespace Breakout
       Rectangle mBall;
 
       // The X velocity of the ball.
-      int mBallVelocityX;
+      float mBallVelocityX;
 
       // The Y velocity of the ball.
-      int mBallVelocityY;
+      float mBallVelocityY;
 
       // Determines if the ball has been launched yet.
       bool mBallLaunched;
@@ -527,8 +527,8 @@ namespace Breakout
          // Only update the ball on its own after it has been launched by the player.
          if (mBallLaunched == true)
          {
-            mBall.X += mBallVelocityX;
-            mBall.Y += mBallVelocityY;
+            mBall.X += (int)mBallVelocityX;
+            mBall.Y += (int)mBallVelocityY;
          }
       }
 
@@ -550,6 +550,34 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void CheckBallCollision()
       {
+         // Check for any ball collisions on the game border.
+         CheckBallCollisionOnBorders();
+
+         // Check for any ball collisions on the paddle.
+         CheckBallCollisionOnPaddle();
+
+         // Check for any ball collisions on the bricks.
+         CheckBallCollisionOnBricks();
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: CheckBallCollisionOnBorders
+      //
+      // Description:
+      //  Determines if the ball has collided with the top, left, right or bottom edge. Ball collision with the top, left, or right edges will result
+      //  in the ball reversing its velocity. Collision with the bottom edge will result in a loss in tries for the player and start of a new match
+      //  or new game in the case all tries are depleted.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void CheckBallCollisionOnBorders()
+      {
          // Check if the ball hits the top border and reverse the y velocity if so.
          if (mBall.Y < 0)
          {
@@ -568,32 +596,57 @@ namespace Breakout
          {
             NewMatch();
          }
+      }
 
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: CheckBallCollisionOnPaddle
+      //
+      // Description:
+      //  Determines if the ball has collided with the paddle. The check includes to determine which side of the paddle the ball hit. If the ball
+      //  hits the left side of the paddle the ball will move towards the left. If the ball hits the right side of the paddle the ball will move
+      //  towards the right.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void CheckBallCollisionOnPaddle()
+      {
          // Check if the ball hits the paddle.
          if (mBall.IntersectsWith(mPaddle))
          {
             mBallVelocityY = -mBallVelocityY;
 
-            //// Check if the ball hit the left side of the paddle.
-            if (mBall.X < (mPaddle.X + (mPaddle.Width / BreakoutConstants.HALF)))
+            // Check if the paddle is moving towards the left or right.
+            if ((mMovePaddleLeft == true) ||
+                (mMovePaddleLeft == false && mMovePaddleRight == true))
             {
-               // Check if the ball is not heading towards the left and reverse the x velocity if so.
-               if (mBallVelocityX >= 0)
-               {
-                  mBallVelocityX = -mBallVelocityX;
-               }
-            }
-            // The ball hit the right side of the paddle
-            else
-            {
-               // Check if the ball is not heading towards the right and reverse the x velocity if so.
-               if (mBallVelocityX <= 0)
-               {
-                  mBallVelocityX = -mBallVelocityX;
-               }
+               mBallVelocityX *= 1.0F;
             }
          }
-         
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: CheckBallCollisionOnBricks
+      //
+      // Description:
+      //  Determines if the ball has collided with any bricks. If there is a case the ball will reverse velocity dependent on the edge of the brick
+      //  the ball hit. The brick will lose a level and be destroyed when the level drops below the destruction level.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void CheckBallCollisionOnBricks()
+      {
          // Check if the ball hits a brick
          for (var index = 0; index < mBricks.Count; index++)
          {
@@ -603,10 +656,10 @@ namespace Breakout
                mBricks[index].BrickLevel--;
 
                // Check which side of the brick the ball collided and update the balls velocity.
-               CheckBallCollisionOnRectangle(mBricks[index]);
+               CheckRectangleEdgeCollision(mBricks[index]);
 
                // Check if the brick level has hit the destroy level and remove the brick form the array list since it is destroyed.
-               if (mBricks[index].BrickLevel <= 0)
+               if (mBricks[index].BrickLevel <= BreakoutConstants.BRICK_DESTRUCTION_LEVEL)
                {
                   mBricks.RemoveAt(index);
                }
@@ -616,11 +669,11 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: CheckBallCollisionOnRectangle
+      // Method Name: CheckRectangleEdgeCollision
       //
       // Description:
       //  Determines which edge the ball collided with against the brick. Collision with the left or right edge will reverse the balls x velocity
-      // and collision with the top or bottom will reverse the y velocity.
+      //  and collision with the top or bottom will reverse the y velocity.
       //
       // Arguments:
       //  theBrick - The brick the ball collided with.
@@ -629,7 +682,7 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      private void CheckBallCollisionOnRectangle(Brick theBrick)
+      private void CheckRectangleEdgeCollision(Brick theBrick)
       {
          // Determines if the ball hit the upper right cross section of the brick (true) or the bottom left section (false).
          bool isAboveTopLeftAndBottomRight = IsOnUpperSideOfLine(theBrick.BrickImage.X + theBrick.BrickImage.Width,  // Bottom right brick corner
@@ -689,7 +742,7 @@ namespace Breakout
       //
       // Return:
       //  True - The ball is above the line.
-      //  False - The ball is below the line
+      //  False - The ball is below the line.
       //
       //*********************************************************************************************************************************************
       public bool IsOnUpperSideOfLine(int theLineStartX, int theLineStartY, int theLineEndX, int theLineEndY)

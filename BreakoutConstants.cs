@@ -54,6 +54,9 @@ namespace Breakout
       // The height of a single brick.
       public const int BRICK_HEIGHT = 15;
 
+      // The level a brick must be to be destroyed.
+      public const int BRICK_DESTRUCTION_LEVEL = 0;
+
       // The level when a new game starts.
       public const int NEW_GAME_LEVEL = 1;
 
