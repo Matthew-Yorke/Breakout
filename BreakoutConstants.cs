@@ -37,7 +37,7 @@ namespace Breakout
       public const int PADDLE_SPEED = 10;
 
       // The width and height in pixels the ball in the game is.
-      public const int BALL_WIDTH_AND_HEIGHT = 20;
+      public const int BALL_WIDTH_AND_HEIGHT = 15;
 
       // The initial speed of a ball when a match begins.
       public const int BALL_INITIAL_SPEED = 0;
@@ -67,16 +67,28 @@ namespace Breakout
       public const string LEVEL_DELIMITER = ",";
 
       // String to indicate no brick to be placed when loading a level.
-      public const string NO_BRICK = "0";
+      public const string NO_BRICK_STRING = "0";
 
       // String to indicate a level one brick to be placed when loading a level.
-      public const string LEVEL_ONE_BRICK = "1";
+      public const string LEVEL_ONE_BRICK_STRING = "1";
 
       // String to indicate a level two brick to be placed when loading a level.
-      public const string LEVEL_TWO_BRICK = "2";
+      public const string LEVEL_TWO_BRICK_STRING = "2";
 
       // String to indicate a level three  brick to be placed when loading a level.
-      public const string LEVEL_THREE_BRICK = "3";
+      public const string LEVEL_THREE_BRICK_STRING = "3";
+
+      // Integer to indicate a level one brick to be placed when drawing.
+      public const int LEVEL_ONE_BRICK_INTEGER = 1;
+
+      // Integer to indicate a level two brick to be placed when drawing.
+      public const int LEVEL_TWO_BRICK_INTEGER = 2;
+
+      // Integer to indicate a level three  brick to be placed when drawing.
+      public const int LEVEL_THREE_BRICK_INTEGER = 3;
+
+      // The number of bricks to indicate level is complete.
+      public const int BRICKS_LEFT_TO_COMPLETE_LEVEL = 0;
 
       // The number of milliseconds for a clock tick to occur.
       public const int TIMER_INTERVAL = 16;

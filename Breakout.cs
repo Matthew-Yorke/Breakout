@@ -177,12 +177,12 @@ namespace Breakout
                switch (currentParsedLine)
                {
                   // No brick to be placed at this location.
-                  case BreakoutConstants.NO_BRICK:
+                  case BreakoutConstants.NO_BRICK_STRING:
                   {
                      break;
                   }
                   // Level one brick to be placed at this location.
-                  case BreakoutConstants.LEVEL_ONE_BRICK:
+                  case BreakoutConstants.LEVEL_ONE_BRICK_STRING:
                   {
                      // Create a new brick object.
                      Brick newBrick = new Brick();
@@ -200,7 +200,7 @@ namespace Breakout
                      break;
                   }
                   // Level two brick to be placed at this location.
-                  case BreakoutConstants.LEVEL_TWO_BRICK:
+                  case BreakoutConstants.LEVEL_TWO_BRICK_STRING:
                   {
                      // Create a new brick object.
                      Brick newBrick = new Brick();
@@ -218,7 +218,7 @@ namespace Breakout
                      break;
                   }
                   // Level three brick to be placed at this location.
-                  case BreakoutConstants.LEVEL_THREE_BRICK:
+                  case BreakoutConstants.LEVEL_THREE_BRICK_STRING:
                   {
                      // Create a new brick object.
                      Brick newBrick = new Brick();
@@ -424,8 +424,8 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void UpdateWindow()
       {
-         // Check if the level is complete
-         if (mBricks.Count == 0)
+         // Check if the level is complete.
+         if (mBricks.Count <= BreakoutConstants.BRICKS_LEFT_TO_COMPLETE_LEVEL)
          {
             mCurrentLevel++;
             LoadLevel(mCurrentLevel);
@@ -553,12 +553,14 @@ namespace Breakout
          // Check if the ball hits the top border and reverse the y velocity if so.
          if (mBall.Y < 0)
          {
+            // Reverse the Y velocity.
             mBallVelocityY = -mBallVelocityY;
          }
          // Check if the ball hits the left or right border and reverse the y velocity if so.
          else if (mBall.X < 0 ||
                   mBall.X > (this.Size.Width - BreakoutConstants.BALL_WIDTH_AND_HEIGHT))
          {
+            // Reverse the X velocity.
             mBallVelocityX = -mBallVelocityX;
          }
          // Check if the ball hits the bottom border and start a new match is so.
@@ -600,15 +602,102 @@ namespace Breakout
                // Since the ball hit the brick, lower that bricks level.
                mBricks[index].BrickLevel--;
 
+               // Check which side of the brick the ball collided and update the balls velocity.
+               CheckBallCollisionOnRectangle(mBricks[index]);
+
                // Check if the brick level has hit the destroy level and remove the brick form the array list since it is destroyed.
                if (mBricks[index].BrickLevel <= 0)
                {
                   mBricks.RemoveAt(index);
                }
+            }
+         }
+      }
 
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: CheckBallCollisionOnRectangle
+      //
+      // Description:
+      //  Determines which edge the ball collided with against the brick. Collision with the left or right edge will reverse the balls x velocity
+      // and collision with the top or bottom will reverse the y velocity.
+      //
+      // Arguments:
+      //  theBrick - The brick the ball collided with.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void CheckBallCollisionOnRectangle(Brick theBrick)
+      {
+         // Determines if the ball hit the upper right cross section of the brick (true) or the bottom left section (false).
+         bool isAboveTopLeftAndBottomRight = IsOnUpperSideOfLine(theBrick.BrickImage.X + theBrick.BrickImage.Width,  // Bottom right brick corner
+                                                                 theBrick.BrickImage.Y + theBrick.BrickImage.Height, // Bottom right brick corner
+                                                                 theBrick.BrickImage.X,                              // Top left brick corner.
+                                                                 theBrick.BrickImage.Y);                             // Top left brick corner.
+
+         // Determines if the ball hit the upper left cross section of the brick (true) or the bottom right section (false).
+         bool isAboveTopRightAndBottomLeft = IsOnUpperSideOfLine(theBrick.BrickImage.X + theBrick.BrickImage.Width,   // Top right brick corner.
+                                                                 theBrick.BrickImage.Y,                               // Top right brick corner.
+                                                                 theBrick.BrickImage.X,                               // Bottom left brick corner
+                                                                 theBrick.BrickImage.Y + theBrick.BrickImage.Height); // Bottom left brick corner
+
+
+         // The ball hit the upper right cross section (so either the top or right edge).
+         if (isAboveTopLeftAndBottomRight == true)
+         {
+            // The ball hit the upper left cross section (so either the top or left). Therefore ball hit the top edge of the brick.
+            if (isAboveTopRightAndBottomLeft == true)
+            {
+               mBallVelocityY = -mBallVelocityY;
+            }
+            // The ball hit the lower right cross section (so either the bottom or right). Therefore ball hit the right edge of the brick.
+            else
+            {
+               mBallVelocityX = -mBallVelocityX;
+            }
+         }
+         // The ball hit the lower left cross section (so either the left or bottom edge)
+         else
+         {
+            // The ball hit the upper left cross section (so either the top or left). Therefore the ball hit the left edge of the brick.
+            if (isAboveTopRightAndBottomLeft == true)
+            {
+               mBallVelocityX = -mBallVelocityX;
+            }
+            // The ball hit the lower right cross section (so either the bottom or right). Therefore the ball hit the bottom edge of the brick.
+            else
+            {
                mBallVelocityY = -mBallVelocityY;
             }
          }
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: IsOnUpperSideOfLine
+      //
+      // Description:
+      //  Determines if the ball was above the line between by the passed in parameters (true) or below the line (false).
+      //
+      // Arguments:
+      //  theLineStartX - The starting x-coordinate of the line.
+      //  theLineStartY - The starting y-coordinate of the line
+      //  theLineEndX - The ending x-coordinate of the line.
+      //  theLineEndY - The ending y-coordinate of the line.
+      //
+      // Return:
+      //  True - The ball is above the line.
+      //  False - The ball is below the line
+      //
+      //*********************************************************************************************************************************************
+      public bool IsOnUpperSideOfLine(int theLineStartX, int theLineStartY, int theLineEndX, int theLineEndY)
+      {
+         return ((theLineEndX - theLineStartX) *
+                 ((mBall.Y + mBall.Width / BreakoutConstants.HALF) - theLineStartY) -
+                 (theLineEndY - theLineStartY) *
+                 ((mBall.X + mBall.Width / BreakoutConstants.HALF) - theLineStartX)) > 0;
       }
 
       //*********************************************************************************************************************************************
@@ -648,7 +737,7 @@ namespace Breakout
             // Determine the level of the brick.
             switch (currentBrick.BrickLevel)
             {
-               case 1:
+               case BreakoutConstants.LEVEL_ONE_BRICK_INTEGER:
                {
                   theEventArguments.Graphics.FillRectangle(levelOneBrickColor,
                                                            currentBrick.BrickImage);
@@ -656,7 +745,7 @@ namespace Breakout
                                                            currentBrick.BrickImage);
                   break;
                }
-               case 2:
+               case BreakoutConstants.LEVEL_TWO_BRICK_INTEGER:
                {
                   theEventArguments.Graphics.FillRectangle(levelTwoBrickColor,
                                                            currentBrick.BrickImage);
@@ -664,7 +753,7 @@ namespace Breakout
                                                            currentBrick.BrickImage);
                   break;
                }
-               case 3:
+               case BreakoutConstants.LEVEL_THREE_BRICK_INTEGER:
                {
                   theEventArguments.Graphics.FillRectangle(levelThreeBrickColor,
                                                            currentBrick.BrickImage);
