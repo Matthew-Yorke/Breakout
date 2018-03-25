@@ -8,6 +8,7 @@
 // Change History:
 //  Author               Date           Description
 //  Matthew D. Yorke     MM/DD/2018     TODO: Add description.
+//
 //************************************************************************************************************************************************
 
 using System.Drawing;
@@ -53,6 +54,9 @@ namespace Breakout
       // List of active bricks in the level.
       List<Brick> mBricks;
 
+      // Tracks the number of lives the player has left.
+      int mNumberOfLives;
+
       //*********************************************************************************************************************************************
       //
       // Method Name: PlayState
@@ -67,17 +71,14 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public PlayState(Form theForm, FiniteStateMachine theFiniteStateMachine)
+      public PlayState(FiniteStateMachine theFiniteStateMachine)
       {  
-         // Hold the form reference passed in.
-         mForm = theForm;
-
-         // Holds reference to the state machine.
+          // Holds reference to the state machine.
          mFiniteStateMachine = theFiniteStateMachine;
 
          // Start the paddle at the center of the screen and with a padding from the bottom of the screen.
-         mPaddle = new Rectangle((mForm.Size.Width / BreakoutConstants.HALF) - (BreakoutConstants.PADDLE_WIDTH / BreakoutConstants.HALF),
-                                 mForm.Size.Height - BreakoutConstants.PADDLE_BOUNDARY_PADDING,
+         mPaddle = new Rectangle((mFiniteStateMachine.GetForm().Size.Width / BreakoutConstants.HALF) - (BreakoutConstants.PADDLE_WIDTH / BreakoutConstants.HALF),
+                                 BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING,
                                  BreakoutConstants.PADDLE_WIDTH,
                                  BreakoutConstants.PADDLE_HEIGHT);
 
@@ -86,8 +87,8 @@ namespace Breakout
          mMovePaddleRight = false;
 
          // Start the ball center of where the paddle starts, but directly above the paddle.
-         mBall = new Rectangle((mForm.Size.Width / BreakoutConstants.HALF) - (BreakoutConstants.BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF),
-                               mForm.Size.Height - BreakoutConstants.PADDLE_BOUNDARY_PADDING - BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+         mBall = new Rectangle((mFiniteStateMachine.GetForm().Size.Width / BreakoutConstants.HALF) - (BreakoutConstants.BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF),
+                               BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING - BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
                                BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
                                BreakoutConstants.BALL_WIDTH_AND_HEIGHT);
 
@@ -106,6 +107,9 @@ namespace Breakout
 
          // Load the starting level of the game.
          LoadLevel(mCurrentLevel);
+
+         // Initialize the number of lives the players will have left.
+         mNumberOfLives = 3;
       }
 
       //*********************************************************************************************************************************************
@@ -159,55 +163,25 @@ namespace Breakout
                   // Level one brick to be placed at this location.
                   case BreakoutConstants.LEVEL_ONE_BRICK_STRING:
                   {
-                     // Create a new brick object.
-                     Brick newBrick = new Brick();
-                     // The brick is placed based on the current line number and the further parsed item in the line.
-                     newBrick.BrickImage = new Rectangle(parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
-                                                         lineNumber * BreakoutConstants.BRICK_HEIGHT,
-                                                         BreakoutConstants.BRICK_WIDTH,
-                                                         BreakoutConstants.BRICK_HEIGHT);
-                     // The brick level starts at level 1 (meaning only 1 hit to destroy the brick).
-                     newBrick.BrickLevel = 1;
-
-                     // Add the new brick to the list of bricks in the level.
-                     mBricks.Add(newBrick);
-
+                     AddBrick(parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
+                              lineNumber * BreakoutConstants.BRICK_HEIGHT,
+                              BreakoutConstants.LEVEL_ONE_BRICK_INTEGER);
                      break;
                   }
                   // Level two brick to be placed at this location.
                   case BreakoutConstants.LEVEL_TWO_BRICK_STRING:
                   {
-                     // Create a new brick object.
-                     Brick newBrick = new Brick();
-                     // The brick is placed based on the current line number and the further parsed item in the line.
-                     newBrick.BrickImage = new Rectangle(parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
-                                                         lineNumber * BreakoutConstants.BRICK_HEIGHT,
-                                                         BreakoutConstants.BRICK_WIDTH,
-                                                         BreakoutConstants.BRICK_HEIGHT);
-                     // The brick level starts at level 1 (meaning only 1 hit to destroy the brick).
-                     newBrick.BrickLevel = 2;
-
-                     // Add the new brick to the list of bricks in the level.
-                     mBricks.Add(newBrick);
-
+                     AddBrick(parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
+                              lineNumber * BreakoutConstants.BRICK_HEIGHT,
+                              BreakoutConstants.LEVEL_TWO_BRICK_INTEGER);
                      break;
                   }
                   // Level three brick to be placed at this location.
                   case BreakoutConstants.LEVEL_THREE_BRICK_STRING:
                   {
-                     // Create a new brick object.
-                     Brick newBrick = new Brick();
-                     // The brick is placed based on the current line number and the further parsed item in the line.
-                     newBrick.BrickImage = new Rectangle(parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
-                                                         lineNumber * BreakoutConstants.BRICK_HEIGHT,
-                                                         BreakoutConstants.BRICK_WIDTH,
-                                                         BreakoutConstants.BRICK_HEIGHT);
-                     // The brick level starts at level 1 (meaning only 1 hit to destroy the brick).
-                     newBrick.BrickLevel = 3;
-
-                     // Add the new brick to the list of bricks in the level.
-                     mBricks.Add(newBrick);
-
+                     AddBrick(parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
+                              lineNumber * BreakoutConstants.BRICK_HEIGHT,
+                              BreakoutConstants.LEVEL_THREE_BRICK_INTEGER);
                      break;
                   }
                   // Unknown brick information, no brick to be placed at this location.
@@ -233,6 +207,40 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
+      // Method Name: AddBrick
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theCoordinateX - TODO: Add description.
+      //  theCoordinateY - TODO: Add description.
+      //  theBrickLevel - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void AddBrick(int theCoordinateX, int theCoordinateY, int theBrickLevel)
+      {
+         // Create a new brick object.
+         Brick newBrick = new Brick()
+         {
+            // The brick is placed based on the current line number and the further parsed item in the line.
+            BrickImage = new Rectangle(theCoordinateX,
+                                       theCoordinateY,
+                                       BreakoutConstants.BRICK_WIDTH,
+                                       BreakoutConstants.BRICK_HEIGHT),
+            // The brick level starts at level 1 (meaning only 1 hit to destroy the brick).
+            BrickLevel = theBrickLevel
+         };
+
+         // Add the new brick to the list of bricks in the level.
+         mBricks.Add(newBrick);
+      }
+
+      //*********************************************************************************************************************************************
+      //
       // Method Name: NewMatch
       //
       // Description:
@@ -248,11 +256,11 @@ namespace Breakout
       private void NewMatch()
       {
          // Set the paddle to be centered.
-         mPaddle.X = (mForm.Size.Width / BreakoutConstants.HALF) - (BreakoutConstants.PADDLE_WIDTH / BreakoutConstants.HALF);
+         mPaddle.X = (mFiniteStateMachine.GetForm().Size.Width / BreakoutConstants.HALF) - (BreakoutConstants.PADDLE_WIDTH / BreakoutConstants.HALF);
 
          // Set the ball to be centered to the paddle, directly above it.
-         mBall.X = (mForm.Size.Width / BreakoutConstants.HALF) - (BreakoutConstants.BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF);
-         mBall.Y = mForm.Size.Height - BreakoutConstants.PADDLE_BOUNDARY_PADDING - BreakoutConstants.BALL_WIDTH_AND_HEIGHT;
+         mBall.X = (mFiniteStateMachine.GetForm().Size.Width / BreakoutConstants.HALF) - (BreakoutConstants.BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF);
+         mBall.Y = BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING - BreakoutConstants.BALL_WIDTH_AND_HEIGHT;
 
          // Indicate the ball needs to be launched by the player again.
          mBallLaunched = false;
@@ -309,7 +317,7 @@ namespace Breakout
             // Thee P key is pressed and changes state to pause.
             case Keys.P:
             {
-               mFiniteStateMachine.PushState(new PauseState(mForm, mFiniteStateMachine));
+               mFiniteStateMachine.PushState(new PauseState(mFiniteStateMachine));
                break;
             }
             // The Escape key is pressed and ends the application.
@@ -385,9 +393,20 @@ namespace Breakout
          // Check if the level is complete.
          if (mBricks.Count <= BreakoutConstants.BRICKS_LEFT_TO_COMPLETE_LEVEL)
          {
+            // Increment to the next level.
             mCurrentLevel++;
-            LoadLevel(mCurrentLevel);
-            NewMatch();
+
+            // Check if all levels are complete.
+            if (mCurrentLevel > BreakoutConstants.FINAL_LEVEL)
+            {
+               mFiniteStateMachine.PopState();
+            }
+            // There are still more levels to complete, load the next level and start a new match.
+            else
+            {
+               LoadLevel(mCurrentLevel);
+               NewMatch();
+            }
          }
          // The level has not finished.
          else
@@ -453,9 +472,9 @@ namespace Breakout
             }
 
             // Prevent the paddle from going out of bounds at the right edge of the window.
-            if (mPaddle.X > (mForm.Size.Width - BreakoutConstants.PADDLE_WIDTH))
+            if (mPaddle.X > (mFiniteStateMachine.GetForm().Size.Width - BreakoutConstants.PADDLE_WIDTH))
             {
-               mPaddle.X = mForm.Size.Width - BreakoutConstants.PADDLE_WIDTH;
+               mPaddle.X = mFiniteStateMachine.GetForm().Size.Width - BreakoutConstants.PADDLE_WIDTH;
 
                // If the ball has not been launched yet, keep the ball centered directly above the paddle.
                if (mBallLaunched == false)
@@ -524,8 +543,8 @@ namespace Breakout
       //
       // Description:
       //  Determines if the ball has collided with the top, left, right or bottom edge. Ball collision with the top, left, or right edges will result
-      //  in the ball reversing its velocity. Collision with the bottom edge will result in a loss in tries for the player and start of a new match
-      //  or new game in the case all tries are depleted.
+      //  in the ball reversing its velocity. Collision with the bottom edge will result in a loss in lives for the player and start of a new match
+      //  or new game in the case all lives are depleted.
       //
       // Arguments:
       //  N/A
@@ -544,15 +563,25 @@ namespace Breakout
          }
          // Check if the ball hits the left or right border and reverse the y velocity if so.
          else if (mBall.X < 0 ||
-                  mBall.X > (mForm.Size.Width - BreakoutConstants.BALL_WIDTH_AND_HEIGHT))
+                  mBall.X > (mFiniteStateMachine.GetForm().Size.Width - BreakoutConstants.BALL_WIDTH_AND_HEIGHT))
          {
             // Reverse the X velocity.
             mBallVelocityX = -mBallVelocityX;
          }
-         // Check if the ball hits the bottom border and start a new match is so.
-         else if (mBall.Y > mForm.Size.Height)
+         // Check if the ball hits the bottom border and decrement the number of lives the player has left.
+         // If lives goes below the threshold for game over, the game reverts back to the start screen.  
+         // Otherwise a new match begins.
+         else if (mBall.Y > BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT)
          {
-            NewMatch();
+            mNumberOfLives--;
+            if (mNumberOfLives < 0)
+            {
+               mFiniteStateMachine.PopState();
+            }
+            else
+            {
+               NewMatch();
+            }
          }
       }
 
@@ -642,19 +671,20 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void CheckRectangleEdgeCollision(Brick theBrick)
       {
+
          // Determines if the ball hit the upper right cross section of the brick (true) or the bottom left section (false).
          bool isAboveTopLeftAndBottomRight = IsOnUpperSideOfLine(theBrick.BrickImage.X + theBrick.BrickImage.Width,  // Bottom right brick corner
                                                                  theBrick.BrickImage.Y + theBrick.BrickImage.Height, // Bottom right brick corner
                                                                  theBrick.BrickImage.X,                              // Top left brick corner.
                                                                  theBrick.BrickImage.Y);                             // Top left brick corner.
-
+         
          // Determines if the ball hit the upper left cross section of the brick (true) or the bottom right section (false).
          bool isAboveTopRightAndBottomLeft = IsOnUpperSideOfLine(theBrick.BrickImage.X + theBrick.BrickImage.Width,   // Top right brick corner.
                                                                  theBrick.BrickImage.Y,                               // Top right brick corner.
                                                                  theBrick.BrickImage.X,                               // Bottom left brick corner
                                                                  theBrick.BrickImage.Y + theBrick.BrickImage.Height); // Bottom left brick corner
-
-
+         
+         
          // The ball hit the upper right cross section (so either the top or right edge).
          if (isAboveTopLeftAndBottomRight == true)
          {
@@ -733,7 +763,17 @@ namespace Breakout
          SolidBrush levelOneBrickColor = new SolidBrush(Color.Green);
          SolidBrush levelTwoBrickColor = new SolidBrush(Color.Yellow);
          SolidBrush levelThreeBrickColor = new SolidBrush(Color.Red);
+         SolidBrush HudBackground = new SolidBrush(Color.YellowGreen);
          Pen brickBorderPen = new Pen(Color.Black, 2);
+
+         // Setup the text for the scores and timers.
+         Font textFont = new System.Drawing.Font(BreakoutConstants.TEXT_FAMILY_NAME,
+                                                 BreakoutConstants.HUD_TEXT_SIZE);
+         SolidBrush textColor = new SolidBrush(Color.Black);
+         StringFormat textFormat = new StringFormat
+         {
+            LineAlignment = StringAlignment.Center
+         };
 
          // Draw the paddle and balls onto the window.
          theEventArguments.Graphics.FillRectangle(paddleColor,
@@ -776,6 +816,29 @@ namespace Breakout
                   break;
                }
             }
+         }
+
+         // Draw the HUD Area
+         theEventArguments.Graphics.FillRectangle(HudBackground,
+                                                  new Rectangle(0,
+                                                                BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT,
+                                                                BreakoutConstants.SCREEN_HUD_AREA_WIDTH,
+                                                                BreakoutConstants.SCREEN_HUD_AREA_HEIGHT));
+
+         // Draw the number of tires the player has remaining
+         theEventArguments.Graphics.DrawString("Lives Remaining",
+                                               textFont,
+                                               textColor,
+                                               20,
+                                               475,
+                                               textFormat);
+         for (int count = 0; count < mNumberOfLives; count++)
+         {
+            theEventArguments.Graphics.FillEllipse(ballColor,
+                                                   new Rectangle(20 + ((10 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT) * count),
+                                                                 500,
+                                                                 BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+                                                                 BreakoutConstants.BALL_WIDTH_AND_HEIGHT));
          }
 
          // Clean up allocated memory.

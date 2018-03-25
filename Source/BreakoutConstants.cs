@@ -11,21 +11,21 @@
 //
 //************************************************************************************************************************************************
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Breakout
 {
    public static class BreakoutConstants
    {
-      // The width the screen is for the game.
-      public const int SCREEN_WIDTH = 750;
+      // The width the screen play area is for the game.
+      public const int SCREEN_PLAY_AREA_WIDTH = 750;
 
-      // The height the screen is for the game.
-      public const int SCREEN_HEIGHT = 450;
+      // The height the screen play area is for the game.
+      public const int SCREEN_PLAY_AREA_HEIGHT = 450;
+
+      // The width the HUD (Heads Up Display) area is for the game.
+      public const int SCREEN_HUD_AREA_WIDTH = 750;
+
+      // The height the HUD (Heads Up Display) area is for the game.
+      public const int SCREEN_HUD_AREA_HEIGHT = 100;
 
       // The x-coordinate of the left edge of the screen.
       public const int SCREEN_X_COORDINATE_LEFT = 0;
@@ -52,7 +52,7 @@ namespace Breakout
       public const int PADDLE_SPEED = 10;
 
       // The width and height in pixels the ball in the game is.
-      public const int BALL_WIDTH_AND_HEIGHT = 15;
+      public const int BALL_WIDTH_AND_HEIGHT = 14;
 
       // The initial speed of a ball when a match begins.
       public const int BALL_INITIAL_SPEED = 0;
@@ -108,14 +108,23 @@ namespace Breakout
       // The number of bricks to indicate level is complete.
       public const int BRICKS_LEFT_TO_COMPLETE_LEVEL = 0;
 
+      // The final level of the game.
+      public const int FINAL_LEVEL = 3;
+
       // The number of milliseconds for a clock tick to occur.
       public const int TIMER_INTERVAL = 16;
 
       // The family name for the score and timer text.
       public const string TEXT_FAMILY_NAME = "Arial";
 
+      // The font size for the start screen option text.
+      public const int START_SCREEN_TEXT_SIZE = 32;
+
+      // The font size for the pause screen text.
+      public const int PAUSE_SCREEN_TEXT_SIZE = 32;
+
       // The font size for the score and timer text.
-      public const int TEXT_SIZE = 32;
+      public const int HUD_TEXT_SIZE = 12;
 
       // The text to be displayed when the game is paused.
       public const string PAUSE_STRING = "PAUSE";

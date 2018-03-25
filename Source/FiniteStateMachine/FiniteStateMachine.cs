@@ -21,7 +21,10 @@ namespace Breakout
    public class FiniteStateMachine
    {
       // Tracks the current state the game is in.
-      Stack<State> mCurrentState;
+      private Stack<State> mCurrentState;
+
+      // Tracks reference to the form this game is being drawn to.
+      private Form mForm;
 
       //*********************************************************************************************************************************************
       //
@@ -39,10 +42,31 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public FiniteStateMachine(Form theForm)
       {
+         // Hold the form reference for the game.
+         mForm = theForm;
          // Initialize the state stack.
          mCurrentState = new Stack<State>();
          // The push on the initial play state.
-         mCurrentState.Push(new StartScreenState(theForm, this));
+         mCurrentState.Push(new StartScreenState(this));
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: GetForm
+      //
+      // Description:
+      //  Returns the reference of the form being used for the finite state machine.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  Returns the form reference.
+      //
+      //*********************************************************************************************************************************************
+      public Form GetForm()
+      {
+         return mForm;
       }
 
       //*********************************************************************************************************************************************

@@ -18,8 +18,6 @@ namespace Breakout
    public abstract class State
    {
       protected FiniteStateMachine mFiniteStateMachine;
-      
-      protected Form mForm;
 
       //*********************************************************************************************************************************************
       //

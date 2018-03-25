@@ -8,13 +8,11 @@
 // Change History:
 //  Author               Date           Description
 //  Matthew D. Yorke     MM/DD/2018     TODO: Add description.
+//
 //************************************************************************************************************************************************
 
 using System.Drawing;
 using System.Windows.Forms;
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace Breakout
 {
@@ -37,14 +35,12 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public StartScreenState(Form theForm, FiniteStateMachine theFiniteStateMachine)
+      public StartScreenState(FiniteStateMachine theFiniteStateMachine)
       {
-         // Hold the form reference passed in.
-         mForm = theForm;
-
          // Holds reference to the state machine.
          mFiniteStateMachine = theFiniteStateMachine;
 
+         // Start the selection as the top enumeration (same as the top of list of selections on the screen).
          mSelection = Selection.NEW_GAME;
       }
 
@@ -88,7 +84,7 @@ namespace Breakout
                // Check if the new game option was selected and push a new play state onto the stack if so.
                if(mSelection == Selection.NEW_GAME)
                {
-                  mFiniteStateMachine.PushState(new PlayState(mForm, mFiniteStateMachine));
+                  mFiniteStateMachine.PushState(new PlayState(mFiniteStateMachine));
                }
                // Check if the exit option was selected and exit the application if so.
                else if (mSelection == Selection.EXIT)
@@ -161,7 +157,7 @@ namespace Breakout
 
          // Setup the text for the scores and timers.
          Font textFont = new System.Drawing.Font(BreakoutConstants.TEXT_FAMILY_NAME,
-                                                 BreakoutConstants.TEXT_SIZE);
+                                                 BreakoutConstants.START_SCREEN_TEXT_SIZE);
          SolidBrush textColor = new SolidBrush(Color.Black);
          StringFormat textFormat = new StringFormat();
          textFormat.Alignment = StringAlignment.Center;
@@ -169,8 +165,8 @@ namespace Breakout
 
          // Draw the ball, which indicates the selector.
          theEventArguments.Graphics.FillEllipse(ballColor,
-                                                new Rectangle((mForm.Size.Width / BreakoutConstants.HALF) - 150,
-                                                              190 + ((int)mSelection * (int)((float)BreakoutConstants.TEXT_SIZE * 1.5F)),
+                                                new Rectangle((mFiniteStateMachine.GetForm().Size.Width / BreakoutConstants.HALF) - 150,
+                                                              240 + ((int)mSelection * (int)((float)BreakoutConstants.START_SCREEN_TEXT_SIZE * 1.5F)),
                                                               BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
                                                               BreakoutConstants.BALL_WIDTH_AND_HEIGHT));
 
@@ -179,8 +175,8 @@ namespace Breakout
          theEventArguments.Graphics.DrawString("New Game\nExit",
                                                textFont,
                                                textColor,
-                                               mForm.Size.Width / BreakoutConstants.HALF,
-                                               mForm.Size.Height / BreakoutConstants.HALF,
+                                               mFiniteStateMachine.GetForm().Size.Width / BreakoutConstants.HALF,
+                                               mFiniteStateMachine.GetForm().Size.Height / BreakoutConstants.HALF,
                                                textFormat);
 
          // Clean up allocated memory.

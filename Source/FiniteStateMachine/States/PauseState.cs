@@ -8,13 +8,11 @@
 // Change History:
 //  Author               Date           Description
 //  Matthew D. Yorke     MM/DD/2018     TODO: Add description.
+//
 //************************************************************************************************************************************************
 
 using System.Drawing;
 using System.Windows.Forms;
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace Breakout
 {
@@ -35,11 +33,8 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public PauseState(Form theForm, FiniteStateMachine theFiniteStateMachine)
+      public PauseState(FiniteStateMachine theFiniteStateMachine)
       {
-         // Hold the form reference passed in.
-         mForm = theForm;
-
          // Holds reference to the state machine.
          mFiniteStateMachine = theFiniteStateMachine;
       }
@@ -129,18 +124,20 @@ namespace Breakout
       {
          // Setup the text for the scores and timers.
          Font textFont = new System.Drawing.Font(BreakoutConstants.TEXT_FAMILY_NAME,
-                                                 BreakoutConstants.TEXT_SIZE);
+                                                 BreakoutConstants.PAUSE_SCREEN_TEXT_SIZE);
          SolidBrush textColor = new SolidBrush(Color.Black);
-         StringFormat textFormat = new StringFormat();
-         textFormat.Alignment = StringAlignment.Center;
-         textFormat.LineAlignment = StringAlignment.Center;
+         StringFormat textFormat = new StringFormat
+         {
+            Alignment = StringAlignment.Center,
+            LineAlignment = StringAlignment.Center
+         };
          
          // Draw the right player score to be centered on the right half (third quarter horizontal, half vertical) of the screen.
          theEventArguments.Graphics.DrawString(BreakoutConstants.PAUSE_STRING,
                                                textFont,
                                                textColor,
-                                               mForm.Size.Width / BreakoutConstants.HALF,
-                                               mForm.Size.Height / BreakoutConstants.HALF,
+                                               mFiniteStateMachine.GetForm().Size.Width / BreakoutConstants.HALF,
+                                               mFiniteStateMachine.GetForm().Size.Height / BreakoutConstants.HALF,
                                                textFormat);
 
          // Clean up allocated memory.
