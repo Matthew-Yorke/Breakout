@@ -122,6 +122,29 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public override void Draw(PaintEventArgs theEventArguments)
       {
+         DrawPaddle(theEventArguments);
+         DrawBall(theEventArguments);
+         DrawBricks(theEventArguments);
+         DrawHud(theEventArguments);
+         DrawPauseScreen(theEventArguments);
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: Draw
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theEventArguments - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void DrawPauseScreen(PaintEventArgs theEventArguments)
+      {
          // Setup the text for the scores and timers.
          Font textFont = new System.Drawing.Font(BreakoutConstants.TEXT_FAMILY_NAME,
                                                  BreakoutConstants.PAUSE_SCREEN_TEXT_SIZE);
@@ -131,7 +154,7 @@ namespace Breakout
             Alignment = StringAlignment.Center,
             LineAlignment = StringAlignment.Center
          };
-         
+
          // Draw the right player score to be centered on the right half (third quarter horizontal, half vertical) of the screen.
          theEventArguments.Graphics.DrawString(BreakoutConstants.PAUSE_STRING,
                                                textFont,

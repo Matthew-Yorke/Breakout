@@ -52,6 +52,7 @@
       <DependentUpon>Breakout.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\BreakoutConstants.cs" />
+    <Compile Include="Source\Brick.cs" />
     <Compile Include="Source\FiniteStateMachine\FiniteStateMachine.cs" />
     <Compile Include="Source\FiniteStateMachine\States\PauseState.cs" />
     <Compile Include="Source\FiniteStateMachine\States\PlayState.cs" />

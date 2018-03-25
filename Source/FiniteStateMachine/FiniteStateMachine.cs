@@ -15,6 +15,7 @@
 
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Breakout
 {
@@ -25,6 +26,18 @@ namespace Breakout
 
       // Tracks reference to the form this game is being drawn to.
       private Form mForm;
+
+      // The paddle image depicting the location and size of the image.
+      private Rectangle mPaddle;
+
+      // The ball image depicting the location and size of the image.
+      private Rectangle mBall;
+
+      // List of active bricks in the level.
+      private List<Brick> mBricks;
+
+      // Tracks the number of lives the player has left.
+      int mNumberOfLives;
 
       //*********************************************************************************************************************************************
       //
@@ -48,6 +61,24 @@ namespace Breakout
          mCurrentState = new Stack<State>();
          // The push on the initial play state.
          mCurrentState.Push(new StartScreenState(this));
+
+         // Start the paddle at the center of the screen and with a padding from the bottom of the screen.
+         mPaddle = new Rectangle((mForm.Size.Width / BreakoutConstants.HALF) - (BreakoutConstants.PADDLE_WIDTH / BreakoutConstants.HALF),
+                                 BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING,
+                                 BreakoutConstants.PADDLE_WIDTH,
+                                 BreakoutConstants.PADDLE_HEIGHT);
+
+         // Start the ball center of where the paddle starts, but directly above the paddle.
+         mBall = new Rectangle((mForm.Size.Width / BreakoutConstants.HALF) - (BreakoutConstants.BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF),
+                               BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING - BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+                               BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+                               BreakoutConstants.BALL_WIDTH_AND_HEIGHT);
+
+         // Create the new list of bricks for the game.
+         mBricks = new List<Brick>();
+
+         // Initialize the number of lives the players will have left.
+         mNumberOfLives = BreakoutConstants.INITIAL_LIVES_REMAINING;
       }
 
       //*********************************************************************************************************************************************
@@ -67,6 +98,215 @@ namespace Breakout
       public Form GetForm()
       {
          return mForm;
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: GetPaddle
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  TODO: Add description.
+      //
+      //*********************************************************************************************************************************************
+      public Rectangle GetPaddle()
+      {
+         return mPaddle;
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: SetPaddleCoordinateX
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theCoordinateX - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public void SetPaddleCoordinateX(int theCoordinateX)
+      {
+         mPaddle.X = theCoordinateX;
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: SetPaddleCoordinateY
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theCoordinateY - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public void SetPaddleCoordinateY(int theCoordinateY)
+      {
+         mPaddle.Y = theCoordinateY;
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: GetBall
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  TODO: Add description.
+      //
+      //*********************************************************************************************************************************************
+      public Rectangle GetBall()
+      {
+         return mBall;
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: SetBallCoordinateX
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theCoordinateX - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public void SetBallCoordinateX(int theCoordinateX)
+      {
+         mBall.X = theCoordinateX;
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: SetBallCoordinateY
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theCoordinateY - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public void SetBallCoordinateY(int theCoordinateY)
+      {
+         mBall.Y = theCoordinateY;
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: GetBrickList
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  TODO: Add description.
+      //
+      //*********************************************************************************************************************************************
+      public List<Brick> GetBrickList()
+      {
+         return mBricks;
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: AddBrick
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theBrick - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public void AddBrick(Brick theBrick)
+      {
+         mBricks.Add(theBrick);
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: RemoveBrick
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theBrick - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public void RemoveBrick(int theIndex)
+      {
+         mBricks.RemoveAt(theIndex);
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: GetNumberOfLives
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  TODO: Add description.
+      //
+      //*********************************************************************************************************************************************
+      public int GetNumberOfLives()
+      {
+         return mNumberOfLives;
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: GetNumberOfLives
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theNumberOfLives = TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public void SetNumberOfLives(int theNumberOfLives)
+      {
+         mNumberOfLives = theNumberOfLives;
       }
 
       //*********************************************************************************************************************************************

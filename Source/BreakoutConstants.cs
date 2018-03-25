@@ -111,6 +111,9 @@ namespace Breakout
       // The final level of the game.
       public const int FINAL_LEVEL = 3;
 
+      // The initial amount of lives the player has at the beginning of a new game.
+      public const int INITIAL_LIVES_REMAINING = 3;
+
       // The number of milliseconds for a clock tick to occur.
       public const int TIMER_INTERVAL = 16;
 
