@@ -7,7 +7,7 @@
 //
 // Change History:
 //  Author               Date           Description
-//  Matthew D. Yorke     12/22/2017     Initial set of constants before adding to GitHub to keep as a backup.
+//  Matthew D. Yorke     MM/DD/2018     TODO: Add description.
 //
 //************************************************************************************************************************************************
 
@@ -21,8 +21,23 @@ namespace Breakout
 {
    public static class BreakoutConstants
    {
+      // The width the screen is for the game.
+      public const int SCREEN_WIDTH = 750;
+
+      // The height the screen is for the game.
+      public const int SCREEN_HEIGHT = 450;
+
       // The x-coordinate of the left edge of the screen.
       public const int SCREEN_X_COORDINATE_LEFT = 0;
+
+      // The number of start screen option the user can cycle through.
+      public const int NUMBER_OPTIONS_ON_START_SCREEN = 2;
+
+      // The integer value of the first enumeration value in the list.
+      public const int ENUM_FIRST_INTEGER = 0;
+
+      // The offset needed for enums that start at 0 for enumeration calculations.
+      public const int ENUM_OFFSET = 1;
 
       // The width in pixels of any paddle in the game.
       public const int PADDLE_WIDTH = 200;
@@ -95,6 +110,15 @@ namespace Breakout
 
       // The number of milliseconds for a clock tick to occur.
       public const int TIMER_INTERVAL = 16;
+
+      // The family name for the score and timer text.
+      public const string TEXT_FAMILY_NAME = "Arial";
+
+      // The font size for the score and timer text.
+      public const int TEXT_SIZE = 32;
+
+      // The text to be displayed when the game is paused.
+      public const string PAUSE_STRING = "PAUSE";
 
       // Used for dividing a value in half.
       public const int HALF = 2;

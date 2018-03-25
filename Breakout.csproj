@@ -52,8 +52,13 @@
       <DependentUpon>Breakout.cs</DependentUpon>
     </Compile>
     <Compile Include="BreakoutConstants.cs" />
+    <Compile Include="FiniteStateMachine\FiniteStateMachine.cs" />
+    <Compile Include="FiniteStateMachine\States\PauseState.cs" />
+    <Compile Include="FiniteStateMachine\States\PlayState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FiniteStateMachine\States\StartScreenState.cs" />
+    <Compile Include="FiniteStateMachine\State.cs" />
     <EmbeddedResource Include="Breakout.resx">
       <DependentUpon>Breakout.cs</DependentUpon>
     </EmbeddedResource>

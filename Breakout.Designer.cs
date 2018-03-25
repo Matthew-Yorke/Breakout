@@ -33,7 +33,8 @@
          // Breakout
          // 
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-         this.ClientSize = new System.Drawing.Size(750, 450);
+         this.ClientSize = new System.Drawing.Size(BreakoutConstants.SCREEN_WIDTH,
+                                                   BreakoutConstants.SCREEN_HEIGHT);
          this.DoubleBuffered = true;
          this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
          this.Name = "Breakout";
