@@ -1,4 +1,4 @@
-﻿//************************************************************************************************************************************************
+﻿//***************************************************************************************************************************************************
 //
 // File Name: BreakoutConstants.cs
 //
@@ -9,7 +9,7 @@
 //  Author               Date           Description
 //  Matthew D. Yorke     MM/DD/2018     TODO: Add description.
 //
-//************************************************************************************************************************************************
+//***************************************************************************************************************************************************
 
 namespace Breakout
 {
@@ -55,13 +55,16 @@ namespace Breakout
       public const int BALL_WIDTH_AND_HEIGHT = 14;
 
       // The initial speed of a ball when a match begins.
-      public const int BALL_INITIAL_SPEED = 0;
+      public const float BALL_INITIAL_SPEED = 0.0F;
 
       // The speed of a ball when launched.
       public const int BALL_LAUNCH_SPEED = 2;
 
       // The speed increase when the ball hits a boundary, paddle, or brick.
       public const int BALL_SPEED_INCREASE = 0;
+
+      // The initial damage ball does to a brick.
+      public const int BALL_INITIAL_DAMAGE = 1;
 
       // The width of a single brick.
       public const int BRICK_WIDTH = 50;

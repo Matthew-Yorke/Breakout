@@ -1,11 +1,9 @@
 ﻿//***************************************************************************************************************************************************
 //
-// File Name: FiniteStateMachine.cs
+// File Name: Ball.cs
 //
 // Description:
-//  Handles the finite state machine of the breakout game. The states are organized onto a stack and the objects are processed by using the state on
-//  the top of the stack. New states can be pushed onto the stack and old states can be removed. The state changes are handled within concrete state
-//  classes.
+//  TODO: Add description.
 //
 // Change History:
 //  Author               Date           Description
@@ -13,90 +11,30 @@
 //
 //***************************************************************************************************************************************************
 
-using System.Windows.Forms;
-using System.Collections.Generic;
 using System.Drawing;
 
 namespace Breakout
 {
-   public class FiniteStateMachine
+   public class Ball
    {
-      // Tracks the current state the game is in.
-      private Stack<State> mCurrentState;
+      // The ball image depicting the location and size of the image.
+      private Rectangle mBallRectangle;
 
-      // Tracks reference to the form this game is being drawn to.
-      private Form mForm;
+      // The X velocity of the ball.
+      float mBallVelocityX;
 
-      // The paddle object used in the game. Includes information about location, size, and movement direction.
-      private Paddle mPaddle;
+      // The Y velocity of the ball.
+      float mBallVelocityY;
 
-      // The ball object used in the game. Includes information about location, size, velocity, if it has been launched, and damage.
-      private Ball mBall;
+      // Determines if the ball has been launched yet.
+      bool mBallLaunched;
 
-      // List of active bricks in the level.
-      private List<Brick> mBricks;
-
-      // Tracks the number of lives the player has left.
-      private int mNumberOfLives;
+      // Determine how much damage the ball does to a brick.
+      int mDamage;
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: FiniteStateMachine
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  theForm - TODO: Add description.
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public FiniteStateMachine(Form theForm)
-      {
-         // Hold the form reference for the game.
-         mForm = theForm;
-         // Initialize the state stack.
-         mCurrentState = new Stack<State>();
-         // The push on the initial play state.
-         mCurrentState.Push(new StartScreenState(this));
-
-         // Create the paddle for the game
-         mPaddle = new Paddle();
-
-         // Create the ball for the game.
-         mBall = new Ball();
-
-         // Create the new list of bricks for the game.
-         mBricks = new List<Brick>();
-
-         // Initialize the number of lives the players will have left.
-         mNumberOfLives = BreakoutConstants.INITIAL_LIVES_REMAINING;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: GetForm
-      //
-      // Description:
-      //  Returns the reference of the form being used for the finite state machine.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  Returns the form reference.
-      //
-      //*********************************************************************************************************************************************
-      public Form GetForm()
-      {
-         return mForm;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: GetPaddle
+      // Method Name: Ball
       //
       // Description:
       //  TODO: Add description.
@@ -105,17 +43,31 @@ namespace Breakout
       //  N/A
       //
       // Return:
-      //  TODO: Add description.
+      //  N/A
       //
       //*********************************************************************************************************************************************
-      public Paddle GetPaddle()
+      public Ball()
       {
-         return mPaddle;
+         // Start the ball center of where the paddle starts, but directly above the paddle.
+         mBallRectangle = new Rectangle((BreakoutConstants.SCREEN_PLAY_AREA_WIDTH / BreakoutConstants.HALF) - (BreakoutConstants.BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF),
+                                        BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING - BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+                                        BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+                                        BreakoutConstants.BALL_WIDTH_AND_HEIGHT);
+
+         // A new ball has no velocity as it is not launched yet.
+         mBallVelocityX = BreakoutConstants.BALL_INITIAL_SPEED;
+         mBallVelocityY = BreakoutConstants.BALL_INITIAL_SPEED;
+
+         // A new ball has not been launched yet.
+         mBallLaunched = false;
+
+         // Set damage to the initial ball damage;
+         mDamage = BreakoutConstants.BALL_INITIAL_DAMAGE;
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: GetBall
+      // Method Name: NewMatch
       //
       // Description:
       //  TODO: Add description.
@@ -124,74 +76,104 @@ namespace Breakout
       //  N/A
       //
       // Return:
-      //  TODO: Add description.
+      //  N/A
       //
       //*********************************************************************************************************************************************
-      public Ball GetBall()
+      public void NewMatch()
       {
-         return mBall;
+         // Reset the paddle to be in the centered horizontally.
+         mBallRectangle.X = (BreakoutConstants.SCREEN_PLAY_AREA_WIDTH / BreakoutConstants.HALF) -
+                            (BreakoutConstants.BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF);
+         mBallRectangle.Y = BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING -
+                            BreakoutConstants.BALL_WIDTH_AND_HEIGHT;
+
+         // On the start of a new match the ball has no velocity since it has not been launched.
+         mBallVelocityX = BreakoutConstants.BALL_INITIAL_SPEED;
+         mBallVelocityY = BreakoutConstants.BALL_INITIAL_SPEED;
+
+         // On the start of a new match the ball has not been launched yet.
+         mBallLaunched = false;
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: GetBrickList
+      // Method Name: SetBallCoordinateX
       //
       // Description:
       //  TODO: Add description.
       //
       // Arguments:
-      //  N/A
+      //  theBallCoordinateX - TODO: Add description.
       //
       // Return:
-      //  TODO: Add description.
+      //  N/A
       //
       //*********************************************************************************************************************************************
-      public List<Brick> GetBrickList()
+      public void SetBallCoordinateX(int theBallCoordinateX)
       {
-         return mBricks;
+         mBallRectangle.X = theBallCoordinateX;
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: AddBrick
+      // Method Name: SetBallCoordinateY
       //
       // Description:
       //  TODO: Add description.
       //
       // Arguments:
-      //  theBrick - TODO: Add description.
+      //  theBallCoordinateY - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void AddBrick(Brick theBrick)
+      public void SetBallCoordinateY(int theBallCoordinateY)
       {
-         mBricks.Add(theBrick);
+         mBallRectangle.Y = theBallCoordinateY;
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: RemoveBrick
+      // Method Name: SetBallVelocityX
       //
       // Description:
       //  TODO: Add description.
       //
       // Arguments:
-      //  theBrick - TODO: Add description.
+      //  theBallVelocityX- TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void RemoveBrick(int theIndex)
+      public void SetBallVelocityX(float theBallVelocityX)
       {
-         mBricks.RemoveAt(theIndex);
+         mBallVelocityX = theBallVelocityX;
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: GetNumberOfLives
+      // Method Name: SetBallVelocityY
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theBallVelocityY - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public void SetBallVelocityY(float theBallVelocityY)
+      {
+         mBallVelocityY = theBallVelocityY;
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: GetBallRectangle
       //
       // Description:
       //  TODO: Add description.
@@ -203,74 +185,55 @@ namespace Breakout
       //  TODO: Add description.
       //
       //*********************************************************************************************************************************************
-      public int GetNumberOfLives()
+      public Rectangle GetBallRectangle()
       {
-         return mNumberOfLives;
+         return mBallRectangle;
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: GetNumberOfLives
+      // Method Name: SetBallLaunched
       //
       // Description:
       //  TODO: Add description.
       //
       // Arguments:
-      //  theNumberOfLives = TODO: Add description.
+      //  theBallLaunched - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void SetNumberOfLives(int theNumberOfLives)
+      public void SetBallLaunched(bool theBallLaunched)
       {
-         mNumberOfLives = theNumberOfLives;
+         mBallLaunched = theBallLaunched;
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: PushState
+      // Method Name: GetBallLaunched
       //
       // Description:
-      //  Pushes a new state onto the stack of states.
-      //
-      // Arguments:
-      //  theState - The state to be pushed onto the stack of states.
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public void PushState(State theState)
-      {
-         mCurrentState.Push(theState);
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: PopState
-      //
-      // Description:
-      //  Pops the top state on the stack of state.
+      //  TODO: Add description.
       //
       // Arguments:
       //  N/A
       //
       // Return:
-      //  N/A
+      //  TODO: Add description.
       //
       //*********************************************************************************************************************************************
-      public void PopState()
+      public bool GetBallLaunched()
       {
-         mCurrentState.Pop();
+         return mBallLaunched;
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: BreakoutKeyDown
+      // Method Name: UpdateBall
       //
       // Description:
-      //  Process the key pressed down from the state on top of the state stack.
+      //  TODO: Add description.
       //
       // Arguments:
       //  N/A
@@ -279,17 +242,18 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void BreakoutKeyDown(KeyEventArgs theEventArguments)
+      public void UpdateBall()
       {
-         mCurrentState.Peek().BreakoutKeyDown(theEventArguments);
+         mBallRectangle.X += (int)mBallVelocityX;
+         mBallRectangle.Y += (int)mBallVelocityY;
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: BreakoutKeyUp
+      // Method Name: ReverseBallVelocityX
       //
       // Description:
-      //  Process the key released from the state on top of the state stack.
+      //  TODO: Add description.
       //
       // Arguments:
       //  N/A
@@ -298,17 +262,17 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void BreakoutKeyUp(KeyEventArgs theEventArguments)
+      public void ReverseBallVelocityX()
       {
-         mCurrentState.Peek().BreakoutKeyUp(theEventArguments);
+         mBallVelocityX = -mBallVelocityX;
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: Update
+      // Method Name: ReverseBallVelocityY
       //
       // Description:
-      //  Call to update the objects on the screen from the top state on the stack of states.
+      //  TODO: Add description.
       //
       // Arguments:
       //  N/A
@@ -317,28 +281,47 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void Update()
+      public void ReverseBallVelocityY()
       {
-         mCurrentState.Peek().Update();
+         mBallVelocityY = -mBallVelocityY;
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: Draw
+      // Method Name: SetDamage
       //
       // Description:
-      //  Call to draw the objects on the screen from the top state on the stack of states.
+      //  TODO: Add description.
       //
       // Arguments:
-      //  theEventArguments - The events that occurred by the sender.
+      //  theDamage - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void Draw(PaintEventArgs theEventArguments)
+      public void SetDamage(int theDamage)
       {
-         mCurrentState.Peek().Draw(theEventArguments);
+         mDamage = theDamage;
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: GetDamage
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  TODO: Add description.
+      //
+      //*********************************************************************************************************************************************
+      public int GetDamage()
+      {
+         return mDamage;
       }
    }
 }

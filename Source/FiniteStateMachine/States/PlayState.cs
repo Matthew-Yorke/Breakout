@@ -21,22 +21,6 @@ namespace Breakout
 {
    public class PlayState : State
    {
-      
-
-      // Determines during an update if the player is pressing the key to move the paddle left.
-      bool mMovePaddleLeft;
-
-      // Determines during an update if the player is pressing the key to move the paddle right.
-      bool mMovePaddleRight;
-      // The X velocity of the ball.
-      float mBallVelocityX;
-
-      // The Y velocity of the ball.
-      float mBallVelocityY;
-
-      // Determines if the ball has been launched yet.
-      bool mBallLaunched;
-
       // The current level the player is on.
       int mCurrentLevel;
 
@@ -59,19 +43,15 @@ namespace Breakout
           // Holds reference to the state machine.
          mFiniteStateMachine = theFiniteStateMachine;
 
-         // Indicate that on update at the start of the game, the paddles are not moving either left or right.
-         mMovePaddleLeft = false;
-         mMovePaddleRight = false;
-
-         // Indicate that the ball is not launched at the beginning of the game.
-         mBallLaunched = false;
-
-         // Indicate the ball initial velocity before being launched.
-         mBallVelocityX = BreakoutConstants.BALL_INITIAL_SPEED;
-         mBallVelocityY = BreakoutConstants.BALL_INITIAL_SPEED;
+         // Start the paddle and ball in position for a new match to start.
+         mFiniteStateMachine.GetPaddle().NewMatch();
+         mFiniteStateMachine.GetBall().NewMatch();
 
          // Start the game at the level of a new game.
          mCurrentLevel = BreakoutConstants.NEW_GAME_LEVEL;
+
+         // Remove any possible leftover bricks.
+         mFiniteStateMachine.GetBrickList().Clear();
 
          // Load the starting level of the game.
          LoadLevel(mCurrentLevel);
@@ -215,18 +195,9 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void NewMatch()
       {
-         // Set the paddle to be centered.
-         mFiniteStateMachine.SetPaddleCoordinateX((mFiniteStateMachine.GetForm().Size.Width / BreakoutConstants.HALF) -
-                                                  (BreakoutConstants.PADDLE_WIDTH / BreakoutConstants.HALF));
-
-         // Set the ball to be centered to the paddle, directly above it.
-         mFiniteStateMachine.SetBallCoordinateX((mFiniteStateMachine.GetForm().Size.Width / BreakoutConstants.HALF) -
-                                                (BreakoutConstants.BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF));
-         mFiniteStateMachine.SetBallCoordinateY(BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING -
-                                                BreakoutConstants.BALL_WIDTH_AND_HEIGHT);
-
-         // Indicate the ball needs to be launched by the player again.
-         mBallLaunched = false;
+         // Start the paddle and ball in position for a new match to start.
+         mFiniteStateMachine.GetPaddle().NewMatch();
+         mFiniteStateMachine.GetBall().NewMatch();
       }
 
       //*********************************************************************************************************************************************
@@ -253,27 +224,27 @@ namespace Breakout
             // The Left Arrow (<-) key is used for the paddle left movement. Indicate the paddle is now being moved towards the left.
             case Keys.Left:
             {
-               mMovePaddleLeft = true;
+               mFiniteStateMachine.GetPaddle().SetLeftMovement(true);
                break;
             }
             // The Right Arrow (->) key is used for the paddle right movement. Indicate the paddle is now being moved towards the right.
             case Keys.Right:
             {
-               mMovePaddleRight = true;
+               mFiniteStateMachine.GetPaddle().SetRightMovement(true);
                break;
             }
             // The Space key is used to launch the ball at the beginning of a match. Indicate the ball is now being launched if it has not already been
             // launched.
             case Keys.Space:
             {
-               if (mBallLaunched == false)
+               if (mFiniteStateMachine.GetBall().GetBallLaunched() == false)
                {
                   // Note: Launch speed is negative to launch the ball towards the top of the screen.
-                  mBallVelocityY = -BreakoutConstants.BALL_LAUNCH_SPEED;
+                  mFiniteStateMachine.GetBall().SetBallVelocityY(-BreakoutConstants.BALL_LAUNCH_SPEED);
                   // Temp code start.
-                  mBallVelocityX = BreakoutConstants.BALL_LAUNCH_SPEED;
+                  mFiniteStateMachine.GetBall().SetBallVelocityX(BreakoutConstants.BALL_LAUNCH_SPEED);
                   // Temp code end.
-                  mBallLaunched = true;
+                  mFiniteStateMachine.GetBall().SetBallLaunched(true);
                }
                break;
             }
@@ -321,13 +292,13 @@ namespace Breakout
             // The Left Arrow (<-) is used for the paddle left movement. Indicate the paddle is no longer being moved towards the left.
             case Keys.Left:
             {
-               mMovePaddleLeft = false;
+               mFiniteStateMachine.GetPaddle().SetLeftMovement(false);
                break;
             }
             // The Right Arrow (->) is used for the paddle right movement. Indicate the paddle is no longer being moved towards the right.
             case Keys.Right:
             {
-               mMovePaddleRight = false;
+               mFiniteStateMachine.GetPaddle().SetRightMovement(false);
                break;
             }
             default:
@@ -399,54 +370,56 @@ namespace Breakout
       {
          // Check if the left button for the paddle is currently being pressed down.
          // Note: If both left AND right buttons are pressed the left button takes precedence.
-         if (mMovePaddleLeft == true)
+         if (mFiniteStateMachine.GetPaddle().GetLeftMovement() == true)
          {
             // Set the paddle x-coordinate to draw further left by the paddle speed.
-            mFiniteStateMachine.SetPaddleCoordinateX(mFiniteStateMachine.GetPaddle().X - BreakoutConstants.PADDLE_SPEED);
+            mFiniteStateMachine.GetPaddle().SetPaddleCoordinateX(mFiniteStateMachine.GetPaddle().GetPaddleRectangle().X -
+                                                                 BreakoutConstants.PADDLE_SPEED);
 
             // If the ball has not been launched yet, keep the ball centered directly above the paddle.
-            if (mBallLaunched == false)
+            if (mFiniteStateMachine.GetBall().GetBallLaunched() == false)
             {
-               mFiniteStateMachine.SetBallCoordinateX(mFiniteStateMachine.GetBall().X - BreakoutConstants.PADDLE_SPEED);
+               mFiniteStateMachine.GetBall().SetBallCoordinateX(mFiniteStateMachine.GetBall().GetBallRectangle().X - BreakoutConstants.PADDLE_SPEED);
             }
 
             // Prevent the paddle from going out of bounds at the left edge of the window.
-            if (mFiniteStateMachine.GetPaddle().X < BreakoutConstants.SCREEN_X_COORDINATE_LEFT)
+            if (mFiniteStateMachine.GetPaddle().GetPaddleRectangle().X < BreakoutConstants.SCREEN_X_COORDINATE_LEFT)
             {
-               mFiniteStateMachine.SetPaddleCoordinateX(BreakoutConstants.SCREEN_X_COORDINATE_LEFT);
+               mFiniteStateMachine.GetPaddle().SetPaddleCoordinateX(BreakoutConstants.SCREEN_X_COORDINATE_LEFT);
 
                // If the ball has not been launched yet, keep the ball centered directly above the paddle.
-               if (mBallLaunched == false)
+               if (mFiniteStateMachine.GetBall().GetBallLaunched() == false)
                {
-                  mFiniteStateMachine.SetBallCoordinateX(mFiniteStateMachine.GetPaddle().X +
-                                                         (mFiniteStateMachine.GetPaddle().Width / BreakoutConstants.HALF) -
-                                                         (mFiniteStateMachine.GetBall().Width / BreakoutConstants.HALF));
+                  mFiniteStateMachine.GetBall().SetBallCoordinateX(mFiniteStateMachine.GetPaddle().GetPaddleRectangle().X +
+                                                                  (mFiniteStateMachine.GetPaddle().GetPaddleRectangle().Width / BreakoutConstants.HALF) -
+                                                                  (mFiniteStateMachine.GetBall().GetBallRectangle().Width / BreakoutConstants.HALF));
                }
             }
          }
          // Check if the right button for the paddle is currently being pressed down.
-         else if (mMovePaddleRight == true)
+         else if (mFiniteStateMachine.GetPaddle().GetRightMovement() == true)
          {
             // Set the paddle x-coordinate to draw further right by the paddle speed.
-            mFiniteStateMachine.SetPaddleCoordinateX(mFiniteStateMachine.GetPaddle().X + BreakoutConstants.PADDLE_SPEED);
+            mFiniteStateMachine.GetPaddle().SetPaddleCoordinateX(mFiniteStateMachine.GetPaddle().GetPaddleRectangle().X +
+                                                                 BreakoutConstants.PADDLE_SPEED);
 
             // If the ball has not been launched yet, keep the ball centered directly above the paddle.
-            if (mBallLaunched == false)
+            if (mFiniteStateMachine.GetBall().GetBallLaunched() == false)
             {
-               mFiniteStateMachine.SetBallCoordinateX(mFiniteStateMachine.GetBall().X + BreakoutConstants.PADDLE_SPEED);
+               mFiniteStateMachine.GetBall().SetBallCoordinateX(mFiniteStateMachine.GetBall().GetBallRectangle().X + BreakoutConstants.PADDLE_SPEED);
             }
 
             // Prevent the paddle from going out of bounds at the right edge of the window.
-            if (mFiniteStateMachine.GetPaddle().X > (mFiniteStateMachine.GetForm().Size.Width - BreakoutConstants.PADDLE_WIDTH))
+            if (mFiniteStateMachine.GetPaddle().GetPaddleRectangle().X > (mFiniteStateMachine.GetForm().Size.Width - BreakoutConstants.PADDLE_WIDTH))
             {
-               mFiniteStateMachine.SetPaddleCoordinateX(mFiniteStateMachine.GetForm().Size.Width - BreakoutConstants.PADDLE_WIDTH);
+               mFiniteStateMachine.GetPaddle().SetPaddleCoordinateX(mFiniteStateMachine.GetForm().Size.Width - BreakoutConstants.PADDLE_WIDTH);
 
                // If the ball has not been launched yet, keep the ball centered directly above the paddle.
-               if (mBallLaunched == false)
+               if (mFiniteStateMachine.GetBall().GetBallLaunched() == false)
                {
-                  mFiniteStateMachine.SetBallCoordinateX(mFiniteStateMachine.GetPaddle().X +
-                                                         (mFiniteStateMachine.GetPaddle().Width / BreakoutConstants.HALF) -
-                                                         (mFiniteStateMachine.GetBall().Width / BreakoutConstants.HALF));
+                  mFiniteStateMachine.GetBall().SetBallCoordinateX(mFiniteStateMachine.GetPaddle().GetPaddleRectangle().X +
+                                                                   (mFiniteStateMachine.GetPaddle().GetPaddleRectangle().Width / BreakoutConstants.HALF) -
+                                                                   (mFiniteStateMachine.GetBall().GetBallRectangle().Width / BreakoutConstants.HALF));
                }
             }
          }
@@ -468,12 +441,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void UpdateBall()
       {
-         // Only update the ball on its own after it has been launched by the player.
-         if (mBallLaunched == true)
-         {
-            mFiniteStateMachine.SetBallCoordinateX(mFiniteStateMachine.GetBall().X + (int)mBallVelocityX);
-            mFiniteStateMachine.SetBallCoordinateY(mFiniteStateMachine.GetBall().Y + (int)mBallVelocityY);
-         }
+         mFiniteStateMachine.GetBall().UpdateBall();
       }
 
       //*********************************************************************************************************************************************
@@ -523,22 +491,22 @@ namespace Breakout
       private void CheckBallCollisionOnBorders()
       {
          // Check if the ball hits the top border and reverse the y velocity if so.
-         if (mFiniteStateMachine.GetBall().Y < 0)
+         if (mFiniteStateMachine.GetBall().GetBallRectangle().Y < 0)
          {
             // Reverse the Y velocity.
-            mBallVelocityY = -mBallVelocityY;
+            mFiniteStateMachine.GetBall().ReverseBallVelocityY();
          }
          // Check if the ball hits the left or right border and reverse the y velocity if so.
-         else if (mFiniteStateMachine.GetBall().X < 0 ||
-                  mFiniteStateMachine.GetBall().X > (mFiniteStateMachine.GetForm().Size.Width - BreakoutConstants.BALL_WIDTH_AND_HEIGHT))
+         else if (mFiniteStateMachine.GetBall().GetBallRectangle().X < 0 ||
+                  mFiniteStateMachine.GetBall().GetBallRectangle().X > (mFiniteStateMachine.GetForm().Size.Width - BreakoutConstants.BALL_WIDTH_AND_HEIGHT))
          {
             // Reverse the X velocity.
-            mBallVelocityX = -mBallVelocityX;
+            mFiniteStateMachine.GetBall().ReverseBallVelocityX();
          }
          // Check if the ball hits the bottom border and decrement the number of lives the player has left.
          // If lives goes below the threshold for game over, the game reverts back to the start screen.  
          // Otherwise a new match begins.
-         else if (mFiniteStateMachine.GetBall().Y > BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT)
+         else if (mFiniteStateMachine.GetBall().GetBallRectangle().Y > BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT)
          {
             mFiniteStateMachine.SetNumberOfLives(mFiniteStateMachine.GetNumberOfLives() - 1);
             if (mFiniteStateMachine.GetNumberOfLives() < 0)
@@ -572,16 +540,9 @@ namespace Breakout
       private void CheckBallCollisionOnPaddle()
       {
          // Check if the ball hits the paddle.
-         if (mFiniteStateMachine.GetBall().IntersectsWith(mFiniteStateMachine.GetPaddle()))
+         if (mFiniteStateMachine.GetBall().GetBallRectangle().IntersectsWith(mFiniteStateMachine.GetPaddle().GetPaddleRectangle()))
          {
-            mBallVelocityY = -mBallVelocityY;
-
-            // Check if the paddle is moving towards the left or right.
-            if ((mMovePaddleLeft == true) ||
-                (mMovePaddleLeft == false && mMovePaddleRight == true))
-            {
-               mBallVelocityX *= 1.0F;
-            }
+            mFiniteStateMachine.GetBall().ReverseBallVelocityY();
          }
       }
 
@@ -605,19 +566,22 @@ namespace Breakout
          // Check if the ball hits a brick
          for (var index = 0; index < mFiniteStateMachine.GetBrickList().Count; index++)
          {
-            if (mFiniteStateMachine.GetBall().IntersectsWith(mFiniteStateMachine.GetBrickList()[index].mBrickImage))
+            if (mFiniteStateMachine.GetBall().GetBallRectangle().IntersectsWith(mFiniteStateMachine.GetBrickList()[index].GetBrickRectangle()))
             {
                // Since the ball hit the brick, lower that bricks level.
-               mFiniteStateMachine.GetBrickList()[index].mBrickLevel--;
+               mFiniteStateMachine.GetBrickList()[index].SetBrickLevel(mFiniteStateMachine.GetBrickList()[index].GetBrickLevel() -
+                                                                       mFiniteStateMachine.GetBall().GetDamage());
 
                // Check which side of the brick the ball collided and update the balls velocity.
                CheckRectangleEdgeCollision(mFiniteStateMachine.GetBrickList()[index]);
 
                // Check if the brick level has hit the destroy level and remove the brick form the array list since it is destroyed.
-               if (mFiniteStateMachine.GetBrickList()[index].mBrickLevel <= BreakoutConstants.BRICK_DESTRUCTION_LEVEL)
+               if (mFiniteStateMachine.GetBrickList()[index].GetBrickLevel() <= BreakoutConstants.BRICK_DESTRUCTION_LEVEL)
                {
                   mFiniteStateMachine.RemoveBrick(index);
                }
+
+               break;
             }
          }
       }
@@ -641,16 +605,16 @@ namespace Breakout
       {
 
          // Determines if the ball hit the upper right cross section of the brick (true) or the bottom left section (false).
-         bool isAboveTopLeftAndBottomRight = IsOnUpperSideOfLine(theBrick.mBrickImage.X + theBrick.mBrickImage.Width,  // Bottom right brick corner
-                                                                 theBrick.mBrickImage.Y + theBrick.mBrickImage.Height, // Bottom right brick corner
-                                                                 theBrick.mBrickImage.X,                               // Top left brick corner.
-                                                                 theBrick.mBrickImage.Y);                              // Top left brick corner.
+         bool isAboveTopLeftAndBottomRight = IsOnUpperSideOfLine(theBrick.GetBrickRectangle().X + theBrick.GetBrickRectangle().Width,  // Bottom right brick corner
+                                                                 theBrick.GetBrickRectangle().Y + theBrick.GetBrickRectangle().Height, // Bottom right brick corner
+                                                                 theBrick.GetBrickRectangle().X,                                       // Top left brick corner.
+                                                                 theBrick.GetBrickRectangle().Y);                                      // Top left brick corner.
          
          // Determines if the ball hit the upper left cross section of the brick (true) or the bottom right section (false).
-         bool isAboveTopRightAndBottomLeft = IsOnUpperSideOfLine(theBrick.mBrickImage.X + theBrick.mBrickImage.Width,   // Top right brick corner.
-                                                                 theBrick.mBrickImage.Y,                                // Top right brick corner.
-                                                                 theBrick.mBrickImage.X,                                // Bottom left brick corner
-                                                                 theBrick.mBrickImage.Y + theBrick.mBrickImage.Height); // Bottom left brick corner
+         bool isAboveTopRightAndBottomLeft = IsOnUpperSideOfLine(theBrick.GetBrickRectangle().X + theBrick.GetBrickRectangle().Width,   // Top right brick corner.
+                                                                 theBrick.GetBrickRectangle().Y,                                        // Top right brick corner.
+                                                                 theBrick.GetBrickRectangle().X,                                        // Bottom left brick corner
+                                                                 theBrick.GetBrickRectangle().Y + theBrick.GetBrickRectangle().Height); // Bottom left brick corner
          
          
          // The ball hit the upper right cross section (so either the top or right edge).
@@ -659,12 +623,12 @@ namespace Breakout
             // The ball hit the upper left cross section (so either the top or left). Therefore ball hit the top edge of the brick.
             if (isAboveTopRightAndBottomLeft == true)
             {
-               mBallVelocityY = -mBallVelocityY;
+               mFiniteStateMachine.GetBall().ReverseBallVelocityY();
             }
             // The ball hit the lower right cross section (so either the bottom or right). Therefore ball hit the right edge of the brick.
             else
             {
-               mBallVelocityX = -mBallVelocityX;
+               mFiniteStateMachine.GetBall().ReverseBallVelocityX();
             }
          }
          // The ball hit the lower left cross section (so either the left or bottom edge)
@@ -673,12 +637,12 @@ namespace Breakout
             // The ball hit the upper left cross section (so either the top or left). Therefore the ball hit the left edge of the brick.
             if (isAboveTopRightAndBottomLeft == true)
             {
-               mBallVelocityX = -mBallVelocityX;
+               mFiniteStateMachine.GetBall().ReverseBallVelocityX();
             }
             // The ball hit the lower right cross section (so either the bottom or right). Therefore the ball hit the bottom edge of the brick.
             else
             {
-               mBallVelocityY = -mBallVelocityY;
+               mFiniteStateMachine.GetBall().ReverseBallVelocityY();
             }
          }
       }
@@ -704,9 +668,9 @@ namespace Breakout
       public bool IsOnUpperSideOfLine(int theLineStartX, int theLineStartY, int theLineEndX, int theLineEndY)
       {
          return ((theLineEndX - theLineStartX) *
-                 ((mFiniteStateMachine.GetBall().Y + mFiniteStateMachine.GetBall().Width / BreakoutConstants.HALF) - theLineStartY) -
+                 ((mFiniteStateMachine.GetBall().GetBallRectangle().Y + mFiniteStateMachine.GetBall().GetBallRectangle().Width / BreakoutConstants.HALF) - theLineStartY) -
                  (theLineEndY - theLineStartY) *
-                 ((mFiniteStateMachine.GetBall().X + mFiniteStateMachine.GetBall().Width / BreakoutConstants.HALF) - theLineStartX)) > 0;
+                 ((mFiniteStateMachine.GetBall().GetBallRectangle().X + mFiniteStateMachine.GetBall().GetBallRectangle().Width / BreakoutConstants.HALF) - theLineStartX)) > 0;
       }
 
       //*********************************************************************************************************************************************

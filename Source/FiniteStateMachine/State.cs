@@ -105,7 +105,7 @@ namespace Breakout
 
          // Draw the paddle onto the window.
          theEventArguments.Graphics.FillRectangle(paddleColor,
-                                                  mFiniteStateMachine.GetPaddle());
+                                                  mFiniteStateMachine.GetPaddle().GetPaddleRectangle());
 
          // Clean up allocated memory.
          paddleColor.Dispose();
@@ -132,7 +132,7 @@ namespace Breakout
 
          // Draw the paddle and balls onto the window.
          theEventArguments.Graphics.FillEllipse(ballColor,
-                                                mFiniteStateMachine.GetBall());
+                                                mFiniteStateMachine.GetBall().GetBallRectangle());
 
          // Clean up allocated memory.
          ballColor.Dispose();
@@ -164,30 +164,30 @@ namespace Breakout
          foreach (Brick currentBrick in mFiniteStateMachine.GetBrickList())
          {
             // Determine the level of the brick.
-            switch (currentBrick.mBrickLevel)
+            switch (currentBrick.GetBrickLevel())
             {
                case BreakoutConstants.LEVEL_ONE_BRICK_INTEGER:
                {
                   theEventArguments.Graphics.FillRectangle(levelOneBrickColor,
-                                                           currentBrick.mBrickImage);
+                                                           currentBrick.GetBrickRectangle());
                   theEventArguments.Graphics.DrawRectangle(brickBorderPen,
-                                                           currentBrick.mBrickImage);
+                                                           currentBrick.GetBrickRectangle());
                   break;
                }
                case BreakoutConstants.LEVEL_TWO_BRICK_INTEGER:
                {
                   theEventArguments.Graphics.FillRectangle(levelTwoBrickColor,
-                                                           currentBrick.mBrickImage);
+                                                           currentBrick.GetBrickRectangle());
                   theEventArguments.Graphics.DrawRectangle(brickBorderPen,
-                                                           currentBrick.mBrickImage);
+                                                           currentBrick.GetBrickRectangle());
                   break;
                }
                case BreakoutConstants.LEVEL_THREE_BRICK_INTEGER:
                {
                   theEventArguments.Graphics.FillRectangle(levelThreeBrickColor,
-                                                           currentBrick.mBrickImage);
+                                                           currentBrick.GetBrickRectangle());
                   theEventArguments.Graphics.DrawRectangle(brickBorderPen,
-                                                           currentBrick.mBrickImage);
+                                                           currentBrick.GetBrickRectangle());
                   break;
                }
                default:
