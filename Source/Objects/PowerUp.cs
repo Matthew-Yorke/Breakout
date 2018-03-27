@@ -1,6 +1,6 @@
-﻿//************************************************************************************************************************************************
+﻿//***************************************************************************************************************************************************
 //
-// File Name: PlayState.cs
+// File Name: PowerUp.cs
 //
 // Description:
 //  TODO: Add description.
@@ -9,88 +9,100 @@
 //  Author               Date           Description
 //  Matthew D. Yorke     MM/DD/2018     TODO: Add description.
 //
-//************************************************************************************************************************************************
+//***************************************************************************************************************************************************
 
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace Breakout
 {
-   public class PauseState : State
+   public abstract class PowerUp
    {
+      Image mPowerUpImage;
+      Point mPowerUpLocation;
+      Rectangle mHitBox;
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: PlayState
+      // Method Name: PowerUp
       //
       // Description:
       //  TODO: Add description.
       //
       // Arguments:
-      //  N/A
+      //  theImage - TODO: Add description.
+      //  theCoordinateX - TODO: Add description.
+      //  theCoordinateY - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public PauseState(FiniteStateMachine theFiniteStateMachine)
+      public PowerUp(Image theImage, int theCoordinateX, int theCoordinateY)
       {
-         // Holds reference to the state machine.
-         mFiniteStateMachine = theFiniteStateMachine;
+         mPowerUpImage = theImage;
+         mPowerUpLocation = new Point(theCoordinateX, theCoordinateY);
+         mHitBox = new Rectangle(mPowerUpLocation, mPowerUpImage.Size);
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: BreakoutKeyDown
+      // Method Name: ExecutePowerUp
       //
       // Description:
       //  TODO: Add description.
       //
       // Arguments:
-      //  theEventArguments - The events that occurred by the sender.
+      //  N/A
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public override void BreakoutKeyDown(KeyEventArgs theEventArguments)
+      public abstract void ExecutePowerUp(FiniteStateMachine theFiniteStateMachine);
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: Fall
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public void Fall()
       {
-         switch (theEventArguments.KeyCode)
-         {
-            // The P key is pressed and resumes the game.
-            case Keys.P:
-            {
-               mFiniteStateMachine.PopState();
-               break;
-            }
-            default:
-            {
-               break;
-            }
-         }
+         mPowerUpLocation.Y += 1;
+         mHitBox.Y = mPowerUpLocation.Y;
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: BreakoutKeyUp
+      // Method Name: GetLocation
       //
       // Description:
       //  TODO: Add description.
       //
       // Arguments:
-      //  theEventArguments - The events that occurred by the sender.
+      //  N/A
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public override void BreakoutKeyUp(KeyEventArgs theEventArguments)
+      public Point GetLocation()
       {
+         return mPowerUpLocation;
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: Update
+      // Method Name: GetHitBox
       //
       // Description:
       //  TODO: Add description.
@@ -102,32 +114,9 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public override void Update()
+      public Rectangle GetHitBox()
       {
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: Draw
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  theEventArguments - TODO: Add description.
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public override void Draw(PaintEventArgs theEventArguments)
-      {
-         DrawPaddle(theEventArguments);
-         DrawBall(theEventArguments);
-         DrawBricks(theEventArguments);
-         DrawHud(theEventArguments);
-         DrawPowerUps(theEventArguments);
-         DrawPauseScreen(theEventArguments);
+         return mHitBox;
       }
 
       //*********************************************************************************************************************************************
@@ -144,28 +133,9 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      private void DrawPauseScreen(PaintEventArgs theEventArguments)
+      public void Draw(PaintEventArgs theEventArguments)
       {
-         // Setup the text for the scores and timers.
-         Font textFont = new System.Drawing.Font(BreakoutConstants.TEXT_FAMILY_NAME,
-                                                 BreakoutConstants.PAUSE_SCREEN_TEXT_SIZE);
-         SolidBrush textColor = new SolidBrush(Color.Black);
-         StringFormat textFormat = new StringFormat
-         {
-            Alignment = StringAlignment.Center,
-            LineAlignment = StringAlignment.Center
-         };
-
-         // Draw the right player score to be centered on the right half (third quarter horizontal, half vertical) of the screen.
-         theEventArguments.Graphics.DrawString(BreakoutConstants.PAUSE_STRING,
-                                               textFont,
-                                               textColor,
-                                               mFiniteStateMachine.GetForm().Size.Width / BreakoutConstants.HALF,
-                                               mFiniteStateMachine.GetForm().Size.Height / BreakoutConstants.HALF,
-                                               textFormat);
-
-         // Clean up allocated memory.
-         textFont.Dispose();
+         theEventArguments.Graphics.DrawImage(mPowerUpImage, mPowerUpLocation);
       }
    }
 }

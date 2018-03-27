@@ -206,6 +206,28 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
+      // Method Name: DrawPowerUps
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theEventArguments - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public void DrawPowerUps(PaintEventArgs theEventArguments)
+      {
+         foreach (PowerUp currentPowerUp in mFiniteStateMachine.GetPowerUpList())
+         {
+            currentPowerUp.Draw(theEventArguments);
+         }
+      }
+
+      //*********************************************************************************************************************************************
+      //
       // Method Name: DrawHud
       //
       // Description:

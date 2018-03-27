@@ -36,6 +36,9 @@ namespace Breakout
       // List of active bricks in the level.
       private List<Brick> mBricks;
 
+      // List of power ups currently on the screen.
+      private List<PowerUp> mPowerUps;
+
       // Tracks the number of lives the player has left.
       private int mNumberOfLives;
 
@@ -70,6 +73,9 @@ namespace Breakout
 
          // Create the new list of bricks for the game.
          mBricks = new List<Brick>();
+
+         // Create a new list of power ups for the game.
+         mPowerUps = new List<PowerUp>();
 
          // Initialize the number of lives the players will have left.
          mNumberOfLives = BreakoutConstants.INITIAL_LIVES_REMAINING;
@@ -149,6 +155,25 @@ namespace Breakout
       public List<Brick> GetBrickList()
       {
          return mBricks;
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: GetPowerUpList
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  TODO: Add description.
+      //
+      //*********************************************************************************************************************************************
+      public List<PowerUp> GetPowerUpList()
+      {
+         return mPowerUps;
       }
 
       //*********************************************************************************************************************************************

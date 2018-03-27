@@ -24,6 +24,8 @@ namespace Breakout
       // The current level the player is on.
       int mCurrentLevel;
 
+      
+
       //*********************************************************************************************************************************************
       //
       // Method Name: PlayState
@@ -55,6 +57,9 @@ namespace Breakout
 
          // Load the starting level of the game.
          LoadLevel(mCurrentLevel);
+
+         // TODO: Remove Test.
+         mFiniteStateMachine.GetPowerUpList().Add(new ExtraLifePowerUp(0, 0));
       }
 
       //*********************************************************************************************************************************************
@@ -198,6 +203,7 @@ namespace Breakout
          // Start the paddle and ball in position for a new match to start.
          mFiniteStateMachine.GetPaddle().NewMatch();
          mFiniteStateMachine.GetBall().NewMatch();
+         mFiniteStateMachine.GetPowerUpList().Clear();
       }
 
       //*********************************************************************************************************************************************
@@ -348,7 +354,9 @@ namespace Breakout
             // Update the paddles on the window based on the keys pressed down or released.
             UpdatePaddle();
             UpdateBall();
+            UpdatePowerUps();
             CheckBallCollision();
+            CheckPowerUpCollision();
          }
       }
 
@@ -446,6 +454,28 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
+      // Method Name: UpdatePowerUps
+      //
+      // Description:
+      //  Cycle through the power up list and make each power up fall further down the screen.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void UpdatePowerUps()
+      {
+         foreach (PowerUp currentPowerUp in mFiniteStateMachine.GetPowerUpList())
+         {
+            currentPowerUp.Fall();
+         }
+      }
+
+      //*********************************************************************************************************************************************
+      //
       // Method Name: CheckBallCollision
       //
       // Description:
@@ -474,6 +504,42 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
+      // Method Name: CheckPowerUpCollision
+      //
+      // Description:
+      //  Check collision of the ball against the top, bottom, left, and right boundaries as well as the ball against the paddles. The ball will
+      //  change in reverse horizontal direction when collision against a paddle and change reverse vertical direction when collision against the
+      //  top and bottom boundaries. A ball collision against the
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void CheckPowerUpCollision()
+      {
+
+         // Check if the ball hits a brick
+         for (var index = 0; index < mFiniteStateMachine.GetPowerUpList().Count; index++)
+         {
+            // Check if the power up hits the paddle. Execute the power up ability and remove the power up from the list.
+            if (mFiniteStateMachine.GetPowerUpList()[index].GetHitBox().IntersectsWith(mFiniteStateMachine.GetPaddle().GetPaddleRectangle()))
+            {
+               mFiniteStateMachine.GetPowerUpList()[index].ExecutePowerUp(mFiniteStateMachine);
+               mFiniteStateMachine.GetPowerUpList().RemoveAt(index--);
+            }
+            // Check if the power up hits the bottom border and remove it from the list of power ups if so.
+            else if (mFiniteStateMachine.GetPowerUpList()[index].GetLocation().Y > BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT)
+            {
+               mFiniteStateMachine.GetPowerUpList().RemoveAt(index--);
+            }
+         }
+      }
+
+      //*********************************************************************************************************************************************
+      //
       // Method Name: Draw
       //
       // Description:
@@ -491,6 +557,7 @@ namespace Breakout
          DrawPaddle(theEventArguments);
          DrawBall(theEventArguments);
          DrawBricks(theEventArguments);
+         DrawPowerUps(theEventArguments);
          DrawHud(theEventArguments);
       }
    }
