@@ -59,9 +59,11 @@
     <Compile Include="Source\FiniteStateMachine\States\PlayState.cs" />
     <Compile Include="Source\Objects\Miniball.cs" />
     <Compile Include="Source\Objects\Paddle.cs" />
-    <Compile Include="Source\Objects\PowerUp.cs" />
-    <Compile Include="Source\Objects\PowerUps\ExtraLifePowerUp.cs" />
-    <Compile Include="Source\Objects\PowerUps\MiniballPowerUp.cs" />
+    <Compile Include="Source\Objects\PowerUpFactory\PowerUpFactory.cs" />
+    <Compile Include="Source\Objects\PowerUpFactory\PowerUpFactoryConcrete.cs" />
+    <Compile Include="Source\Objects\PowerUpFactory\PowerUps\PowerUp.cs" />
+    <Compile Include="Source\Objects\PowerUpFactory\PowerUps\ExtraLifePowerUp.cs" />
+    <Compile Include="Source\Objects\PowerUpFactory\PowerUps\MiniballPowerUp.cs" />
     <Compile Include="Source\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\FiniteStateMachine\States\StartScreenState.cs" />

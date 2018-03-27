@@ -36,6 +36,8 @@ namespace Breakout
       // List of active bricks in the level.
       private List<Brick> mBricks;
 
+      PowerUpFactory mPowerUpFactory;
+
       // List of power ups currently on the screen.
       private List<PowerUp> mPowerUps;
 
@@ -73,6 +75,9 @@ namespace Breakout
 
          // Create the new list of bricks for the game.
          mBricks = new List<Brick>();
+
+         // Create a new power up factory class.
+         mPowerUpFactory = new PowerUpFactoryConcrete();
 
          // Create a new list of power ups for the game.
          mPowerUps = new List<PowerUp>();
@@ -155,6 +160,25 @@ namespace Breakout
       public List<Brick> GetBrickList()
       {
          return mBricks;
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: GetPowerUpFactory
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  TODO: Add description.
+      //
+      //*********************************************************************************************************************************************
+      public PowerUpFactory GetPowerUpFactory()
+      {
+         return mPowerUpFactory;
       }
 
       //*********************************************************************************************************************************************

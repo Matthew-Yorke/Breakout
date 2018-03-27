@@ -11,6 +11,7 @@
 //
 //***************************************************************************************************************************************************
 
+using System;
 using System.Drawing;
 
 namespace Breakout
@@ -41,6 +42,43 @@ namespace Breakout
       {
          mBrickRecatangle = theBrickRectangle;
          mBrickLevel = theBrickLevel;
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: Destroyed
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public void Destroyed(FiniteStateMachine theFiniteStateMachine)
+      {
+         // Use random number generator to potentially create a new power up.
+         Random randomNumberGenerator = new Random();
+
+         // Give a specified chance a power up will drop.
+         int nextRandomNumber = randomNumberGenerator.Next(BreakoutConstants.ZERO_PERCENT,
+                                                           BreakoutConstants.ONE_HUNDRED_PERCENT + BreakoutConstants.RANDOM_NUMBER_INCLUSION);
+         if (nextRandomNumber <= BreakoutConstants.POWER_UP_DROP_PERCENT)
+         {
+            // Create a random power up.
+            PowerUp newPowerUp = theFiniteStateMachine.GetPowerUpFactory().GetPowerUp(randomNumberGenerator.Next(BreakoutConstants.ZERO_PERCENT,
+                                                                                                                 BreakoutConstants.ONE_HUNDRED_PERCENT + BreakoutConstants.RANDOM_NUMBER_INCLUSION),
+                                                                                      mBrickRecatangle);
+
+            // Check to see if a new power up was made in the factory, and add it to the power up list if so.
+            if (newPowerUp != null)
+            {
+               theFiniteStateMachine.GetPowerUpList().Add(newPowerUp);
+            }
+         }
       }
 
       //*********************************************************************************************************************************************

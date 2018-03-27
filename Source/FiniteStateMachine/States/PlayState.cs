@@ -57,9 +57,6 @@ namespace Breakout
 
          // Load the starting level of the game.
          LoadLevel(mCurrentLevel);
-
-         // TODO: Remove Test.
-         mFiniteStateMachine.GetPowerUpList().Add(new ExtraLifePowerUp(0, 0));
       }
 
       //*********************************************************************************************************************************************

@@ -40,9 +40,14 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public PowerUp(Image theImage, int theCoordinateX, int theCoordinateY)
       {
+         // Hold the image that was passed in.
          mPowerUpImage = theImage;
-         mPowerUpLocation = new Point(theCoordinateX, theCoordinateY);
-         mHitBox = new Rectangle(mPowerUpLocation, mPowerUpImage.Size);
+         // Create the power up location to be center to the coordinates passed in.
+         mPowerUpLocation = new Point(theCoordinateX - (theImage.Width / BreakoutConstants.HALF),
+                                      theCoordinateY - (theImage.Height / BreakoutConstants.HALF));
+         // Create a hit box for collision to be the same size and location of the power up.
+         mHitBox = new Rectangle(mPowerUpLocation,
+                                 mPowerUpImage.Size);
       }
 
       //*********************************************************************************************************************************************

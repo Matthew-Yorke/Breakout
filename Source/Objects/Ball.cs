@@ -11,6 +11,7 @@
 //
 //***************************************************************************************************************************************************
 
+using System;
 using System.Drawing;
 
 namespace Breakout
@@ -411,6 +412,8 @@ namespace Breakout
                // Check if the brick level has hit the destroy level and remove the brick form the array list since it is destroyed.
                if (theFiniteStateMachine.GetBrickList()[index].GetBrickLevel() <= BreakoutConstants.BRICK_DESTRUCTION_LEVEL)
                {
+                  theFiniteStateMachine.GetBrickList()[index].Destroyed(theFiniteStateMachine);
+                  // Remove the brick from the brick list since it is now destroyed.
                   theFiniteStateMachine.RemoveBrick(index--);
                }
 

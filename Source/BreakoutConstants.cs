@@ -111,6 +111,24 @@ namespace Breakout
       // The number of bricks to indicate level is complete.
       public const int BRICKS_LEFT_TO_COMPLETE_LEVEL = 0;
 
+      // The lowest number in a percentage.
+      public const int ZERO_PERCENT = 0;
+
+      // The highest number in a percentage.
+      public const int ONE_HUNDRED_PERCENT = 100;
+
+      // Added to the random number generator range to be inclusive.
+      public const int RANDOM_NUMBER_INCLUSION = 1;
+
+      // The percent chance a power up will drop upon a brick being destroyed.
+      public const int POWER_UP_DROP_PERCENT = 5;
+
+      // Chance the Extra Life power up will drop when a power up drops.
+      public const int EXTRA_LIFE_POWER_UP_PERCENT_CHANCE = 25;
+
+      // Chance the Extra Life power up will drop when a power up drops.
+      public const int MINI_BALL_POWER_UP_PERCENT_CHANCE = 75;
+
       // The final level of the game.
       public const int FINAL_LEVEL = 3;
 
