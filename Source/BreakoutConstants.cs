@@ -39,11 +39,8 @@ namespace Breakout
       // The offset needed for enums that start at 0 for enumeration calculations.
       public const int ENUM_OFFSET = 1;
 
-      // The width in pixels of any paddle in the game.
-      public const int PADDLE_WIDTH = 200;
-
-      // The height in pixels of any paddle in the game
-      public const int PADDLE_HEIGHT = 10;
+      // The file location of the paddle image.
+      public const string PADDLE_IMAGE_FILE = "../../Images/Paddle.png";
 
       // The padding in pixels between a end-zone and any paddle in the game.
       public const int PADDLE_BOUNDARY_PADDING = 20;
@@ -124,7 +121,7 @@ namespace Breakout
       public const int RANDOM_NUMBER_INCLUSION = 1;
 
       // The percent chance a power up will drop upon a brick being destroyed.
-      public const int POWER_UP_DROP_PERCENT = 100;
+      public const int POWER_UP_DROP_PERCENT = 5;
 
       // Chance the Extra Life power up will drop when a power up drops.
       public const int EXTRA_LIFE_POWER_UP_PERCENT_CHANCE = 25;
@@ -136,7 +133,7 @@ namespace Breakout
       public const int FINAL_LEVEL = 3;
 
       // The initial amount of lives the player has at the beginning of a new game.
-      public const int INITIAL_LIVES_REMAINING = 3;
+      public const int INITIAL_LIVES_REMAINING = 5;
 
       // The number of lives lost when the ball goes out of play.
       public const int LIFE_LOST = 1;

@@ -45,15 +45,15 @@ namespace Breakout
       //  TODO: Add description.
       //
       // Arguments:
-      //  theFiniteStateMachine - TODO: Add description.
+      //  theBreakoutGame - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public override void ExecutePowerUp(FiniteStateMachine theFiniteStateMachine)
+      public override void ExecutePowerUp(BreakoutGame theBreakoutGame)
       {
-         theFiniteStateMachine.MiniBalls.Add(new MiniBall(theFiniteStateMachine));
+         theBreakoutGame.MiniBalls.Add(new MiniBall(theBreakoutGame));
       }
    }
 }

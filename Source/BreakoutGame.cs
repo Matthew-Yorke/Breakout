@@ -1,6 +1,6 @@
 ﻿//***************************************************************************************************************************************************
 //
-// File Name: FiniteStateMachine.cs
+// File Name: BreakoutGame.cs
 //
 // Description:
 //  Handles the finite state machine of the breakout game. The states are organized onto a stack and the objects are processed by using the state on
@@ -19,7 +19,7 @@ using System.Drawing;
 
 namespace Breakout
 {
-   public class FiniteStateMachine
+   public class BreakoutGame
    {
       // Tracks the current state the game is in.
       private Stack<State> mCurrentState;
@@ -93,7 +93,7 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: FiniteStateMachine
+      // Method Name: BreakoutGame
       //
       // Description:
       //  TODO: Add description.
@@ -105,7 +105,7 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public FiniteStateMachine(Form theForm)
+      public BreakoutGame(Form theForm)
       {
          // Hold the form reference for the game.
          mForm = theForm;
@@ -223,7 +223,7 @@ namespace Breakout
       //  TODO: Add description.
       //
       // Arguments:
-      //  theFiniteStateMachine - TODO: Add description.
+      //  N/A
       //
       // Return:
       //  N/A

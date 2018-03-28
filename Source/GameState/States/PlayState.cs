@@ -40,20 +40,20 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public PlayState(FiniteStateMachine theFiniteStateMachine)
+      public PlayState(BreakoutGame theBreakoutGame)
       {  
           // Holds reference to the state machine.
-         mFiniteStateMachine = theFiniteStateMachine;
+         mBreakoutGame = theBreakoutGame;
 
          // Start the paddle and ball in position for a new match to start.
-         mFiniteStateMachine.Paddle.NewMatch();
-         mFiniteStateMachine.Ball.NewMatch();
+         mBreakoutGame.Paddle.NewMatch();
+         mBreakoutGame.Ball.NewMatch();
 
          // Start the game at the level of a new game.
          mCurrentLevel = BreakoutConstants.NEW_GAME_LEVEL;
 
          // Remove any possible leftover bricks.
-         mFiniteStateMachine.Bricks.Clear();
+         mBreakoutGame.Bricks.Clear();
 
          // Load the starting level of the game.
          LoadLevel(mCurrentLevel);
@@ -110,7 +110,8 @@ namespace Breakout
                   // Level one brick to be placed at this location.
                   case BreakoutConstants.LEVEL_ONE_BRICK_STRING:
                   {
-                     AddBrick(parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
+                     AddBrick(Image.FromFile("../../Images/BrickLevel1.png"),
+                              parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
                               lineNumber * BreakoutConstants.BRICK_HEIGHT,
                               BreakoutConstants.LEVEL_ONE_BRICK_INTEGER);
                      break;
@@ -118,7 +119,8 @@ namespace Breakout
                   // Level two brick to be placed at this location.
                   case BreakoutConstants.LEVEL_TWO_BRICK_STRING:
                   {
-                     AddBrick(parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
+                     AddBrick(Image.FromFile("../../Images/BrickLevel2.png"),
+                              parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
                               lineNumber * BreakoutConstants.BRICK_HEIGHT,
                               BreakoutConstants.LEVEL_TWO_BRICK_INTEGER);
                      break;
@@ -126,7 +128,8 @@ namespace Breakout
                   // Level three brick to be placed at this location.
                   case BreakoutConstants.LEVEL_THREE_BRICK_STRING:
                   {
-                     AddBrick(parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
+                     AddBrick(Image.FromFile("../../Images/BrickLevel3.png"),
+                              parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
                               lineNumber * BreakoutConstants.BRICK_HEIGHT,
                               BreakoutConstants.LEVEL_THREE_BRICK_INTEGER);
                      break;
@@ -168,17 +171,16 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      private void AddBrick(int theCoordinateX, int theCoordinateY, int theBrickLevel)
+      private void AddBrick(Image theImage, int theCoordinateX, int theCoordinateY, int theBrickLevel)
       {
          // Create a new brick object.
-         Brick newBrick = new Brick(new Rectangle(theCoordinateX,
-                                                  theCoordinateY,
-                                                  BreakoutConstants.BRICK_WIDTH,
-                                                  BreakoutConstants.BRICK_HEIGHT),
-                                     theBrickLevel);
+         Brick newBrick = new Brick(theImage,
+                                    theCoordinateX,
+                                    theCoordinateY,
+                                    theBrickLevel);
 
          // Add the new brick to the list of bricks in the level.
-         mFiniteStateMachine.AddBrick(newBrick);
+         mBreakoutGame.AddBrick(newBrick);
       }
 
       //*********************************************************************************************************************************************
@@ -198,10 +200,10 @@ namespace Breakout
       private void NewMatch()
       {
          // Start the paddle and ball in position for a new match to start.
-         mFiniteStateMachine.Paddle.NewMatch();
-         mFiniteStateMachine.Ball.NewMatch();
-         mFiniteStateMachine.MiniBalls.Clear();
-         mFiniteStateMachine.GetPowerUpList().Clear();
+         mBreakoutGame.Paddle.NewMatch();
+         mBreakoutGame.Ball.NewMatch();
+         mBreakoutGame.MiniBalls.Clear();
+         mBreakoutGame.GetPowerUpList().Clear();
       }
 
       //*********************************************************************************************************************************************
@@ -228,40 +230,40 @@ namespace Breakout
             // The Left Arrow (<-) key is used for the paddle left movement. Indicate the paddle is now being moved towards the left.
             case Keys.Left:
             {
-               mFiniteStateMachine.Paddle.MovePaddleLeft = true;
+               mBreakoutGame.Paddle.MovePaddleLeft = true;
                break;
             }
             // The Right Arrow (->) key is used for the paddle right movement. Indicate the paddle is now being moved towards the right.
             case Keys.Right:
             {
-               mFiniteStateMachine.Paddle.MovePaddleRight = true;
+               mBreakoutGame.Paddle.MovePaddleRight = true;
                break;
             }
             // The Space key is used to launch the ball at the beginning of a match. Indicate the ball is now being launched if it has not already been
             // launched.
             case Keys.Space:
             {
-               if (mFiniteStateMachine.Ball.BallLaunched == false)
+               if (mBreakoutGame.Ball.BallLaunched == false)
                {
                   // Note: Launch speed is negative to launch the ball towards the top of the screen.
-                  mFiniteStateMachine.Ball.BallVelocityY = -BreakoutConstants.BALL_LAUNCH_SPEED;
+                  mBreakoutGame.Ball.BallVelocityY = -BreakoutConstants.BALL_LAUNCH_SPEED;
                   // Temp code start.
-                  mFiniteStateMachine.Ball.BallVelocityX = BreakoutConstants.BALL_LAUNCH_SPEED;
+                  mBreakoutGame.Ball.BallVelocityX = BreakoutConstants.BALL_LAUNCH_SPEED;
                   // Temp code end.
-                  mFiniteStateMachine.Ball.BallLaunched = true;
+                  mBreakoutGame.Ball.BallLaunched = true;
                }
                break;
             }
             // Thee P key is pressed and changes state to pause.
             case Keys.P:
             {
-               mFiniteStateMachine.PushState(new PauseState(mFiniteStateMachine));
+               mBreakoutGame.PushState(new PauseState(mBreakoutGame));
                break;
             }
             // The Escape key is pressed and ends the application.
             case Keys.Escape:
             {
-               mFiniteStateMachine.PopState();
+               mBreakoutGame.PopState();
                break;
             }
             default:
@@ -296,13 +298,13 @@ namespace Breakout
             // The Left Arrow (<-) is used for the paddle left movement. Indicate the paddle is no longer being moved towards the left.
             case Keys.Left:
             {
-               mFiniteStateMachine.Paddle.MovePaddleLeft = false;
+               mBreakoutGame.Paddle.MovePaddleLeft = false;
                break;
             }
             // The Right Arrow (->) is used for the paddle right movement. Indicate the paddle is no longer being moved towards the right.
             case Keys.Right:
             {
-               mFiniteStateMachine.Paddle.MovePaddleRight = false;
+               mBreakoutGame.Paddle.MovePaddleRight = false;
                break;
             }
             default:
@@ -329,7 +331,7 @@ namespace Breakout
       public override void Update()
       {
          // Check if the level is complete.
-         if (mFiniteStateMachine.Bricks.Count <= BreakoutConstants.BRICKS_LEFT_TO_COMPLETE_LEVEL)
+         if (mBreakoutGame.Bricks.Count <= BreakoutConstants.BRICKS_LEFT_TO_COMPLETE_LEVEL)
          {
             // Increment to the next level.
             mCurrentLevel++;
@@ -337,7 +339,7 @@ namespace Breakout
             // Check if all levels are complete.
             if (mCurrentLevel > BreakoutConstants.FINAL_LEVEL)
             {
-               mFiniteStateMachine.PopState();
+               mBreakoutGame.PopState();
             }
             // There are still more levels to complete, load the next level and start a new match.
             else
@@ -376,61 +378,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void UpdatePaddle()
       {
-         // Check if the left button for the paddle is currently being pressed down.
-         // Note: If both left AND right buttons are pressed the left button takes precedence.
-         if (mFiniteStateMachine.Paddle.MovePaddleLeft == true)
-         {
-            // Set the paddle x-coordinate to draw further left by the paddle speed.
-            mFiniteStateMachine.Paddle.SetPaddleCoordinateX(mFiniteStateMachine.Paddle.PaddleRectangle.X -
-                                                            BreakoutConstants.PADDLE_SPEED);
-
-            // If the ball has not been launched yet, keep the ball centered directly above the paddle.
-            if (mFiniteStateMachine.Ball.BallLaunched == false)
-            {
-               mFiniteStateMachine.Ball.SetBallCoordinateX(mFiniteStateMachine.Ball.BallRectangle.X - BreakoutConstants.PADDLE_SPEED);
-            }
-
-            // Prevent the paddle from going out of bounds at the left edge of the window.
-            if (mFiniteStateMachine.Paddle.PaddleRectangle.X < BreakoutConstants.SCREEN_X_COORDINATE_LEFT)
-            {
-               mFiniteStateMachine.Paddle.SetPaddleCoordinateX(BreakoutConstants.SCREEN_X_COORDINATE_LEFT);
-
-               // If the ball has not been launched yet, keep the ball centered directly above the paddle.
-               if (mFiniteStateMachine.Ball.BallLaunched == false)
-               {
-                  mFiniteStateMachine.Ball.SetBallCoordinateX(mFiniteStateMachine.Paddle.PaddleRectangle.X +
-                                                              (mFiniteStateMachine.Paddle.PaddleRectangle.Width / BreakoutConstants.HALF) -
-                                                              (mFiniteStateMachine.Ball.BallRectangle.Width / BreakoutConstants.HALF));
-               }
-            }
-         }
-         // Check if the right button for the paddle is currently being pressed down.
-         else if (mFiniteStateMachine.Paddle.MovePaddleRight == true)
-         {
-            // Set the paddle x-coordinate to draw further right by the paddle speed.
-            mFiniteStateMachine.Paddle.SetPaddleCoordinateX(mFiniteStateMachine.Paddle.PaddleRectangle.X +
-                                                            BreakoutConstants.PADDLE_SPEED);
-
-            // If the ball has not been launched yet, keep the ball centered directly above the paddle.
-            if (mFiniteStateMachine.Ball.BallLaunched == false)
-            {
-               mFiniteStateMachine.Ball.SetBallCoordinateX(mFiniteStateMachine.Ball.BallRectangle.X + BreakoutConstants.PADDLE_SPEED);
-            }
-
-            // Prevent the paddle from going out of bounds at the right edge of the window.
-            if (mFiniteStateMachine.Paddle.PaddleRectangle.X > (mFiniteStateMachine.Form.Size.Width - BreakoutConstants.PADDLE_WIDTH))
-            {
-               mFiniteStateMachine.Paddle.SetPaddleCoordinateX(mFiniteStateMachine.Form.Size.Width - BreakoutConstants.PADDLE_WIDTH);
-
-               // If the ball has not been launched yet, keep the ball centered directly above the paddle.
-               if (mFiniteStateMachine.Ball.BallLaunched == false)
-               {
-                  mFiniteStateMachine.Ball.SetBallCoordinateX(mFiniteStateMachine.Paddle.PaddleRectangle.X +
-                                                              (mFiniteStateMachine.Paddle.PaddleRectangle.Width / BreakoutConstants.HALF) -
-                                                              (mFiniteStateMachine.Ball.BallRectangle.Width / BreakoutConstants.HALF));
-               }
-            }
-         }
+         mBreakoutGame.Paddle.Update(mBreakoutGame.Ball);
       }
 
       //*********************************************************************************************************************************************
@@ -449,7 +397,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void UpdateMiniBalls()
       {
-         foreach (MiniBall currentMiniBall in mFiniteStateMachine.MiniBalls)
+         foreach (MiniBall currentMiniBall in mBreakoutGame.MiniBalls)
          {
             currentMiniBall.UpdateBall();
          }
@@ -471,7 +419,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void UpdateBall()
       {
-         mFiniteStateMachine.Ball.UpdateBall();
+         mBreakoutGame.Ball.UpdateBall();
       }
 
       //*********************************************************************************************************************************************
@@ -490,7 +438,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void UpdatePowerUps()
       {
-         foreach (PowerUp currentPowerUp in mFiniteStateMachine.GetPowerUpList())
+         foreach (PowerUp currentPowerUp in mBreakoutGame.GetPowerUpList())
          {
             currentPowerUp.Fall();
          }
@@ -515,13 +463,13 @@ namespace Breakout
       private void CheckBallCollision()
       {
          // Check for any ball collisions on the game border.
-         mFiniteStateMachine.Ball.CheckBallCollisionOnBorders(mFiniteStateMachine);
+         mBreakoutGame.Ball.CheckBallCollisionOnBorders(mBreakoutGame);
 
          // Check for any ball collisions on the paddle.
-         mFiniteStateMachine.Ball.CheckBallCollisionOnPaddle(mFiniteStateMachine);
+         mBreakoutGame.Ball.CheckBallCollisionOnPaddle(mBreakoutGame);
 
          // Check for any ball collisions on the bricks.
-         mFiniteStateMachine.Ball.CheckBallCollisionOnBricks(mFiniteStateMachine);
+         mBreakoutGame.Ball.CheckBallCollisionOnBricks(mBreakoutGame);
       }
 
       //*********************************************************************************************************************************************
@@ -540,20 +488,20 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void CheckMiniBallCollision()
       {
-         foreach (MiniBall currentMiniBall in mFiniteStateMachine.MiniBalls)
+         foreach (MiniBall currentMiniBall in mBreakoutGame.MiniBalls)
          {
             // Check for any mini ball collisions on the game border.
-            currentMiniBall.CheckBallCollisionOnBorders(mFiniteStateMachine);
+            currentMiniBall.CheckBallCollisionOnBorders(mBreakoutGame);
 
             // Check for any mini ball collisions on the paddle.
-            currentMiniBall.CheckBallCollisionOnPaddle(mFiniteStateMachine);
+            currentMiniBall.CheckBallCollisionOnPaddle(mBreakoutGame);
 
             // Check for any mini ball collisions on the bricks.
-            currentMiniBall.CheckBallCollisionOnBricks(mFiniteStateMachine);
+            currentMiniBall.CheckBallCollisionOnBricks(mBreakoutGame);
          }
 
          // Remove any mini balls that went out of bounds.
-         mFiniteStateMachine.ProcessMiniBallRemoveList();
+         mBreakoutGame.ProcessMiniBallRemoveList();
       }
 
       //*********************************************************************************************************************************************
@@ -576,18 +524,18 @@ namespace Breakout
       {
 
          // Check if the ball hits a brick
-         for (var index = 0; index < mFiniteStateMachine.GetPowerUpList().Count; index++)
+         for (var index = 0; index < mBreakoutGame.GetPowerUpList().Count; index++)
          {
             // Check if the power up hits the paddle. Execute the power up ability and remove the power up from the list.
-            if (mFiniteStateMachine.GetPowerUpList()[index].GetHitBox().IntersectsWith(mFiniteStateMachine.Paddle.PaddleRectangle))
+            if (mBreakoutGame.GetPowerUpList()[index].GetHitBox().IntersectsWith(mBreakoutGame.Paddle.HitBox))
             {
-               mFiniteStateMachine.GetPowerUpList()[index].ExecutePowerUp(mFiniteStateMachine);
-               mFiniteStateMachine.GetPowerUpList().RemoveAt(index--);
+               mBreakoutGame.GetPowerUpList()[index].ExecutePowerUp(mBreakoutGame);
+               mBreakoutGame.GetPowerUpList().RemoveAt(index--);
             }
             // Check if the power up hits the bottom border and remove it from the list of power ups if so.
-            else if (mFiniteStateMachine.GetPowerUpList()[index].GetLocation().Y > BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT)
+            else if (mBreakoutGame.GetPowerUpList()[index].GetLocation().Y > BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT)
             {
-               mFiniteStateMachine.GetPowerUpList().RemoveAt(index--);
+               mBreakoutGame.GetPowerUpList().RemoveAt(index--);
             }
          }
       }

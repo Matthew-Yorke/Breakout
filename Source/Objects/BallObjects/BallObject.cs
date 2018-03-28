@@ -206,17 +206,17 @@ namespace Breakout
       //  or new game in the case all lives are depleted.
       //
       // Arguments:
-      //  theFiniteStateMachine - TODO: Add description.
+      //  theBreakoutGame - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void CheckBallCollisionOnBorders(FiniteStateMachine theFiniteStateMachine)
+      public void CheckBallCollisionOnBorders(BreakoutGame theBreakoutGame)
       {
-         CheckBallCollisionOnTopBorder(theFiniteStateMachine);
-         CheckBallCollisionOnSideBorders(theFiniteStateMachine);
-         CheckBallCollisionOnBottomBorder(theFiniteStateMachine);
+         CheckBallCollisionOnTopBorder(theBreakoutGame);
+         CheckBallCollisionOnSideBorders(theBreakoutGame);
+         CheckBallCollisionOnBottomBorder(theBreakoutGame);
       }
 
       //*********************************************************************************************************************************************
@@ -227,13 +227,13 @@ namespace Breakout
       //  TODO: Add description.
       //
       // Arguments:
-      //  theFiniteStateMachine - TODO: Add description.
+      //  theBreakoutGame - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      private void CheckBallCollisionOnTopBorder(FiniteStateMachine theFiniteStateMachine)
+      private void CheckBallCollisionOnTopBorder(BreakoutGame theBreakoutGame)
       {
          // Reverse the ball Y velocity if the top border is hit by the ball.
          if (mBallRectangle.Y < 0)
@@ -250,13 +250,13 @@ namespace Breakout
       //  TODO: Add description.
       //
       // Arguments:
-      //  theFiniteStateMachine - TODO: Add description.
+      //  theBreakoutGame - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      private void CheckBallCollisionOnSideBorders(FiniteStateMachine theFiniteStateMachine)
+      private void CheckBallCollisionOnSideBorders(BreakoutGame theBreakoutGame)
       {
          // Reverse the ball x velocity if the left or right border is hit.
          if (mBallRectangle.X < 0 ||
@@ -274,13 +274,13 @@ namespace Breakout
       //  TODO: Add description.
       //
       // Arguments:
-      //  theFiniteStateMachine - TODO: Add description.
+      //  theBreakoutGame - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      protected abstract void CheckBallCollisionOnBottomBorder(FiniteStateMachine theFiniteStateMachine);
+      protected abstract void CheckBallCollisionOnBottomBorder(BreakoutGame theBreakoutGame);
 
       //*********************************************************************************************************************************************
       //
@@ -292,16 +292,16 @@ namespace Breakout
       //  towards the right.
       //
       // Arguments:
-      //  theFiniteStateMachine - TODO: Add description.
+      //  theBreakoutGame - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void CheckBallCollisionOnPaddle(FiniteStateMachine theFiniteStateMachine)
+      public void CheckBallCollisionOnPaddle(BreakoutGame theBreakoutGame)
       {
          // Check if the ball hits the paddle.
-         if (mBallRectangle.IntersectsWith(theFiniteStateMachine.Paddle.PaddleRectangle))
+         if (mBallRectangle.IntersectsWith(theBreakoutGame.Paddle.HitBox))
          {
             ReverseBallVelocityY();
          }
@@ -316,31 +316,31 @@ namespace Breakout
       //  the ball hit. The brick will lose a level and be destroyed when the level drops below the destruction level.
       //
       // Arguments:
-      //  theFiniteStateMachine - TODO: Add description.
+      //  theBreakoutGame - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void CheckBallCollisionOnBricks(FiniteStateMachine theFiniteStateMachine)
+      public void CheckBallCollisionOnBricks(BreakoutGame theBreakoutGame)
       {
          // Check if the ball hits a brick
-         for (var index = 0; index < theFiniteStateMachine.Bricks.Count; index++)
+         for (var index = 0; index < theBreakoutGame.Bricks.Count; index++)
          {
-            if (mBallRectangle.IntersectsWith(theFiniteStateMachine.Bricks[index].BrickRectangle))
+            if (mBallRectangle.IntersectsWith(theBreakoutGame.Bricks[index].HitBox))
             {
                // Since the ball hit the brick, lower that bricks level.
-               theFiniteStateMachine.Bricks[index].BrickLevel = theFiniteStateMachine.Bricks[index].BrickLevel - mDamage;
+               theBreakoutGame.Bricks[index].BrickLevel = theBreakoutGame.Bricks[index].BrickLevel - mDamage;
 
                // Check which side of the brick the ball collided and update the balls velocity.
-               CheckRectangleEdgeCollision(theFiniteStateMachine.Bricks[index]);
+               CheckRectangleEdgeCollision(theBreakoutGame.Bricks[index]);
 
                // Check if the brick level has hit the destroy level and remove the brick form the array list since it is destroyed.
-               if (theFiniteStateMachine.Bricks[index].BrickLevel <= BreakoutConstants.BRICK_DESTRUCTION_LEVEL)
+               if (theBreakoutGame.Bricks[index].BrickLevel <= BreakoutConstants.BRICK_DESTRUCTION_LEVEL)
                {
-                  theFiniteStateMachine.Bricks[index].Destroyed(theFiniteStateMachine);
+                  theBreakoutGame.Bricks[index].Destroyed(theBreakoutGame);
                   // Remove the brick from the brick list since it is now destroyed.
-                  theFiniteStateMachine.RemoveBrick(index--);
+                  theBreakoutGame.RemoveBrick(index--);
                }
 
                break;
@@ -367,16 +367,16 @@ namespace Breakout
       {
 
          // Determines if the ball hit the upper right cross section of the brick (true) or the bottom left section (false).
-         bool isAboveTopLeftAndBottomRight = IsOnUpperSideOfLine(theBrick.BrickRectangle.X + theBrick.BrickRectangle.Width,  // Bottom right brick corner
-                                                                 theBrick.BrickRectangle.Y + theBrick.BrickRectangle.Height, // Bottom right brick corner
-                                                                 theBrick.BrickRectangle.X,                                  // Top left brick corner.
-                                                                 theBrick.BrickRectangle.Y);                                 // Top left brick corner.
+         bool isAboveTopLeftAndBottomRight = IsOnUpperSideOfLine(theBrick.HitBox.X + theBrick.HitBox.Width,  // Bottom right brick corner
+                                                                 theBrick.HitBox.Y + theBrick.HitBox.Height, // Bottom right brick corner
+                                                                 theBrick.HitBox.X,                          // Top left brick corner.
+                                                                 theBrick.HitBox.Y);                         // Top left brick corner.
 
          // Determines if the ball hit the upper left cross section of the brick (true) or the bottom right section (false).
-         bool isAboveTopRightAndBottomLeft = IsOnUpperSideOfLine(theBrick.BrickRectangle.X + theBrick.BrickRectangle.Width,   // Top right brick corner.
-                                                                 theBrick.BrickRectangle.Y,                                   // Top right brick corner.
-                                                                 theBrick.BrickRectangle.X,                                   // Bottom left brick corner
-                                                                 theBrick.BrickRectangle.Y + theBrick.BrickRectangle.Height); // Bottom left brick corner
+         bool isAboveTopRightAndBottomLeft = IsOnUpperSideOfLine(theBrick.HitBox.X + theBrick.HitBox.Width,   // Top right brick corner.
+                                                                 theBrick.HitBox.Y,                           // Top right brick corner.
+                                                                 theBrick.HitBox.X,                           // Bottom left brick corner
+                                                                 theBrick.HitBox.Y + theBrick.HitBox.Height); // Bottom left brick corner
 
 
          // The ball hit the upper right cross section (so either the top or right edge).

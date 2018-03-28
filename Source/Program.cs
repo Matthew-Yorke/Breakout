@@ -16,7 +16,7 @@ namespace Breakout
       {
          Application.EnableVisualStyles();
          Application.SetCompatibleTextRenderingDefault(false);
-         Application.Run(new Breakout());
+         Application.Run(new BreakoutForm());
       }
    }
 }

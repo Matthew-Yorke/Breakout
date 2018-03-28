@@ -64,7 +64,7 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public abstract void ExecutePowerUp(FiniteStateMachine theFiniteStateMachine);
+      public abstract void ExecutePowerUp(BreakoutGame theBreakoutGame);
 
       //*********************************************************************************************************************************************
       //
@@ -129,10 +129,10 @@ namespace Breakout
       // Method Name: Draw
       //
       // Description:
-      //  TODO: Add description.
+      //  Draw the image of the power up to the screen.
       //
       // Arguments:
-      //  theGraphics - TODO: Add description.
+      //  theGraphics - The drawing surface.
       //
       // Return:
       //  N/A
@@ -140,7 +140,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public void Draw(Graphics theGraphics)
       {
-         theGraphics.DrawImage(mPowerUpImage, mPowerUpLocation);
+         theGraphics.DrawImage(mPowerUpImage, mHitBox);
       }
    }
 }

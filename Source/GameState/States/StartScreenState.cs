@@ -35,10 +35,10 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public StartScreenState(FiniteStateMachine theFiniteStateMachine)
+      public StartScreenState(BreakoutGame theBreakoutGame)
       {
          // Holds reference to the state machine.
-         mFiniteStateMachine = theFiniteStateMachine;
+         mBreakoutGame = theBreakoutGame;
 
          // Start the selection as the top enumeration (same as the top of list of selections on the screen).
          mSelection = Selection.NEW_GAME;
@@ -84,7 +84,7 @@ namespace Breakout
                // Check if the new game option was selected and push a new play state onto the stack if so.
                if(mSelection == Selection.NEW_GAME)
                {
-                  mFiniteStateMachine.PushState(new PlayState(mFiniteStateMachine));
+                  mBreakoutGame.PushState(new PlayState(mBreakoutGame));
                }
                // Check if the exit option was selected and exit the application if so.
                else if (mSelection == Selection.EXIT)
@@ -165,7 +165,7 @@ namespace Breakout
 
          // Draw the ball, which indicates the selector.
          theGraphics.FillEllipse(ballColor,
-                                 new Rectangle((mFiniteStateMachine.Form.Size.Width / BreakoutConstants.HALF) - 150,
+                                 new Rectangle((mBreakoutGame.Form.Size.Width / BreakoutConstants.HALF) - 150,
                                                240 + ((int)mSelection * (int)((float)BreakoutConstants.START_SCREEN_TEXT_SIZE * 1.5F)),
                                                BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
                                                BreakoutConstants.BALL_WIDTH_AND_HEIGHT));
@@ -175,8 +175,8 @@ namespace Breakout
          theGraphics.DrawString("New Game\nExit",
                                 textFont,
                                 textColor,
-                                mFiniteStateMachine.Form.Size.Width / BreakoutConstants.HALF,
-                                mFiniteStateMachine.Form.Size.Height / BreakoutConstants.HALF,
+                                mBreakoutGame.Form.Size.Width / BreakoutConstants.HALF,
+                                mBreakoutGame.Form.Size.Height / BreakoutConstants.HALF,
                                 textFormat);
 
          // Clean up allocated memory.

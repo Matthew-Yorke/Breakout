@@ -1,6 +1,6 @@
 ﻿namespace Breakout
 {
-   partial class Breakout
+   partial class BreakoutForm
    {
       /// <summary>
       /// Required designer variable.
@@ -30,16 +30,16 @@
       {
          this.SuspendLayout();
          // 
-         // Breakout
+         // BreakoutForm
          // 
-         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
          this.ClientSize = new System.Drawing.Size(BreakoutConstants.SCREEN_PLAY_AREA_WIDTH,
                                                    BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT + BreakoutConstants.SCREEN_HUD_AREA_HEIGHT);
          this.DoubleBuffered = true;
+         this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
          this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-         this.Name = "Breakout";
+         this.Name = "BreakoutForm";
          this.Text = "Breakout";
-         this.Load += new System.EventHandler(this.BreakoutLoad);
+         this.Load += new System.EventHandler(this.BreakoutFormLoad);
          this.ResumeLayout(false);
 
       }

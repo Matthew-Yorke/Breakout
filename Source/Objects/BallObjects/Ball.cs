@@ -83,26 +83,27 @@ namespace Breakout
       //  over, the game reverts back to the start screen. Otherwise a new match begins.
       //
       // Arguments:
-      //  theFiniteStateMachine - TODO: Add description.
+      //  theBreakoutGame - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      protected override void CheckBallCollisionOnBottomBorder(FiniteStateMachine theFiniteStateMachine)
+      protected override void CheckBallCollisionOnBottomBorder(BreakoutGame theBreakoutGame)
       {
          if (mBallRectangle.Y > BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT)
          {
-            theFiniteStateMachine.NumberOfLives = theFiniteStateMachine.NumberOfLives - BreakoutConstants.LIFE_LOST;
+            theBreakoutGame.NumberOfLives = theBreakoutGame.NumberOfLives - BreakoutConstants.LIFE_LOST;
 
-            if (theFiniteStateMachine.NumberOfLives < 0)
+            if (theBreakoutGame.NumberOfLives < 0)
             {
-               theFiniteStateMachine.NumberOfLives = BreakoutConstants.INITIAL_LIVES_REMAINING;
-               theFiniteStateMachine.PopState();
+               theBreakoutGame.NumberOfLives = BreakoutConstants.INITIAL_LIVES_REMAINING;
+               theBreakoutGame.PopState();
             }
             else
             {
                NewMatch();
+               theBreakoutGame.Paddle.NewMatch();
             }
          }
       }

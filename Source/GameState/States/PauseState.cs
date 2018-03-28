@@ -33,10 +33,10 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public PauseState(FiniteStateMachine theFiniteStateMachine)
+      public PauseState(BreakoutGame theBreakoutGame)
       {
          // Holds reference to the state machine.
-         mFiniteStateMachine = theFiniteStateMachine;
+         mBreakoutGame = theBreakoutGame;
       }
 
       //*********************************************************************************************************************************************
@@ -60,7 +60,7 @@ namespace Breakout
             // The P key is pressed and resumes the game.
             case Keys.P:
             {
-               mFiniteStateMachine.PopState();
+               mBreakoutGame.PopState();
                break;
             }
             default:
@@ -161,8 +161,8 @@ namespace Breakout
          theGraphics.DrawString(BreakoutConstants.PAUSE_STRING,
                                 textFont,
                                 textColor,
-                                mFiniteStateMachine.Form.Size.Width / BreakoutConstants.HALF,
-                                mFiniteStateMachine.Form.Size.Height / BreakoutConstants.HALF,
+                                mBreakoutGame.Form.Size.Width / BreakoutConstants.HALF,
+                                mBreakoutGame.Form.Size.Height / BreakoutConstants.HALF,
                                 textFormat);
 
          // Clean up allocated memory.

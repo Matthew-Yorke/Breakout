@@ -3,7 +3,9 @@
 // File Name: Brick.cs
 //
 // Description:
-//  TODO: Add description.
+//  This class handles the functionality of the bricks for the game. The class handles the creation of the bricks and track the level the brick is
+//  currently at. When a brick is hit it will lose a level and eventually be destroyed. Upon destruction this class determines if a power up will be
+//  created and if so a random power up will be added to the game.
 //
 // Change History:
 //  Author               Date           Description
@@ -16,16 +18,8 @@ using System.Drawing;
 
 namespace Breakout
 {
-   public class Brick
+   public class Brick : MasterObject
    {
-      // The rectangle elements of the brick including the coordinates, width, and height.
-      private Rectangle mBrickRecatangle;
-      public Rectangle BrickRectangle
-      {
-         get {return mBrickRecatangle;}
-         set {mBrickRecatangle = value;}
-      }
-
       // The level of the brick.
       private int mBrickLevel;
       public int BrickLevel
@@ -39,7 +33,8 @@ namespace Breakout
       // Method Name: Brick
       //
       // Description:
-      //  TODO: Add description.
+      //  Constructor that creates the brick object. The brick is placed at the specified location with the image being saved. The brick level is
+      //  set here as well.
       //
       // Arguments:
       //  theBrickRectangle - TODO: Add description.
@@ -49,9 +44,9 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public Brick(Rectangle theBrickRectangle, int theBrickLevel)
+      public Brick(Image theImage, int theCoordinateX, int theCoordinateY, int theBrickLevel) :
+      base(theImage, theCoordinateX, theCoordinateY)
       {
-         mBrickRecatangle = theBrickRectangle;
          mBrickLevel = theBrickLevel;
       }
 
@@ -60,16 +55,17 @@ namespace Breakout
       // Method Name: Destroyed
       //
       // Description:
-      //  TODO: Add description.
+      //  When called on destruction of the brick, this method determines if a power up is to be created where the brick was located. If a power up
+      //  is to be created the brick generates a random power up.
       //
       // Arguments:
-      //  theFiniteStateMachine - TODO: Add description.
+      //  theBreakoutGame - The game object that tracks various game elements.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void Destroyed(FiniteStateMachine theFiniteStateMachine)
+      public void Destroyed(BreakoutGame theBreakoutGame)
       {
          // Use random number generator to potentially create a new power up.
          Random randomNumberGenerator = new Random();
@@ -80,16 +76,34 @@ namespace Breakout
          if (nextRandomNumber <= BreakoutConstants.POWER_UP_DROP_PERCENT)
          {
             // Create a random power up.
-            PowerUp newPowerUp = theFiniteStateMachine.GetPowerUpFactory().GetPowerUp(randomNumberGenerator.Next(BreakoutConstants.ZERO_PERCENT,
-                                                                                                                 BreakoutConstants.ONE_HUNDRED_PERCENT + BreakoutConstants.RANDOM_NUMBER_INCLUSION),
-                                                                                      mBrickRecatangle);
+            PowerUp newPowerUp = theBreakoutGame.GetPowerUpFactory().GetPowerUp(randomNumberGenerator.Next(BreakoutConstants.ZERO_PERCENT,
+                                                                                                           BreakoutConstants.ONE_HUNDRED_PERCENT + BreakoutConstants.RANDOM_NUMBER_INCLUSION),
+                                                                                                           HitBox);
 
             // Check to see if a new power up was made in the factory, and add it to the power up list if so.
             if (newPowerUp != null)
             {
-               theFiniteStateMachine.GetPowerUpList().Add(newPowerUp);
+               theBreakoutGame.GetPowerUpList().Add(newPowerUp);
             }
          }
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: Update
+      //
+      // Description:
+      //  A brick does nothing on an update as they are a static object.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public override void Update()
+      {
       }
    }
 }

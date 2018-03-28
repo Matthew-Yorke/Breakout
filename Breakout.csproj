@@ -46,19 +46,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\Objects\BallObjects\Ball.cs" />
-    <Compile Include="Source\Breakout.cs">
+    <Compile Include="Source\BreakoutForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Source\Breakout.Designer.cs">
-      <DependentUpon>Breakout.cs</DependentUpon>
+    <Compile Include="Source\BreakoutForm.Designer.cs">
+      <DependentUpon>BreakoutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\BreakoutConstants.cs" />
     <Compile Include="Source\Objects\BallObjects\BallObject.cs" />
     <Compile Include="Source\Objects\Brick.cs" />
-    <Compile Include="Source\FiniteStateMachine\FiniteStateMachine.cs" />
-    <Compile Include="Source\FiniteStateMachine\States\PauseState.cs" />
-    <Compile Include="Source\FiniteStateMachine\States\PlayState.cs" />
+    <Compile Include="Source\BreakoutGame.cs" />
+    <Compile Include="Source\GameState\States\PauseState.cs" />
+    <Compile Include="Source\GameState\States\PlayState.cs" />
     <Compile Include="Source\Objects\BallObjects\MiniBall.cs" />
+    <Compile Include="Source\Objects\MasterObject.cs" />
     <Compile Include="Source\Objects\Paddle.cs" />
     <Compile Include="Source\Objects\PowerUpFactory\PowerUpFactory.cs" />
     <Compile Include="Source\Objects\PowerUpFactory\PowerUpFactoryConcrete.cs" />
@@ -67,10 +68,10 @@
     <Compile Include="Source\Objects\PowerUpFactory\PowerUps\MiniballPowerUp.cs" />
     <Compile Include="Source\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\FiniteStateMachine\States\StartScreenState.cs" />
-    <Compile Include="Source\FiniteStateMachine\State.cs" />
-    <EmbeddedResource Include="Source\Breakout.resx">
-      <DependentUpon>Breakout.cs</DependentUpon>
+    <Compile Include="Source\GameState\States\StartScreenState.cs" />
+    <Compile Include="Source\GameState\State.cs" />
+    <EmbeddedResource Include="Source\BreakoutForm.resx">
+      <DependentUpon>BreakoutForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

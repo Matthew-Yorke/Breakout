@@ -32,10 +32,10 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public MiniBall(FiniteStateMachine theFiniteStateMachine)
+      public MiniBall(BreakoutGame theBreakoutGame)
       {
          // Start the ball center of where the paddle is, but directly above the paddle.
-         mBallRectangle = new Rectangle(theFiniteStateMachine.Paddle.PaddleRectangle.X + (BreakoutConstants.PADDLE_WIDTH / BreakoutConstants.HALF) - (BreakoutConstants.MINI_BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF),
+         mBallRectangle = new Rectangle(theBreakoutGame.Paddle.HitBox.X + (theBreakoutGame.Paddle.HitBox.Width / BreakoutConstants.HALF) - (BreakoutConstants.MINI_BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF),
                                         BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING - BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
                                         BreakoutConstants.MINI_BALL_WIDTH_AND_HEIGHT,
                                         BreakoutConstants.MINI_BALL_WIDTH_AND_HEIGHT);
@@ -53,18 +53,18 @@ namespace Breakout
       //  TODO: Add description.
       //
       // Arguments:
-      //  theFiniteStateMachine - TODO: Add description.
+      //  theBreakoutGame - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      protected override void CheckBallCollisionOnBottomBorder(FiniteStateMachine theFiniteStateMachine)
+      protected override void CheckBallCollisionOnBottomBorder(BreakoutGame theBreakoutGame)
       {
          // Check if the ball hits the bottom border and remove the mini ball from the list of active mini balls.
          if (mBallRectangle.Y > BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT)
          {
-            theFiniteStateMachine.MiniBallRemoveList.Add(this);
+            theBreakoutGame.MiniBallRemoveList.Add(this);
          }
       }
    }

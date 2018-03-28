@@ -1,9 +1,9 @@
 ﻿//***************************************************************************************************************************************************
 //
-// File Name: Pong.cs
+// File Name: BreakoutForm.cs
 //
 // Description:
-//  TODO: Add description.
+//  This class creates the form for the breakout game and kicks off the game itself.
 //
 // Change History:
 //  Author               Date           Description
@@ -16,20 +16,21 @@ using System.Windows.Forms;
 
 namespace Breakout
 {
-   public partial class Breakout : Form
+   public partial class BreakoutForm : Form
    {
       // The time object that is used to periodically tick to update the screen.
       Timer mTimer;
 
       // Used to track the current state the game is in.
-      FiniteStateMachine mStateMachine;
+      BreakoutGame mBreakoutGame;
 
       //*********************************************************************************************************************************************
       //
       // Method Name: Breakout
       //
       // Description:
-      //  TODO: Add description.
+      //  Constructor to create the form components, kick off the game, indicate key input callbacks, and start timer call back for updating the
+      //  game.
       //
       // Arguments:
       //  N/A
@@ -38,11 +39,12 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public Breakout()
+      public BreakoutForm()
       {
          InitializeComponent();
 
-         mStateMachine = new FiniteStateMachine(this);
+         // Start the breakout game.
+         mBreakoutGame = new BreakoutGame(this);
 
          // Indicate the painting callback method to use when a repaint is called.
          this.Paint += Draw;
@@ -62,7 +64,22 @@ namespace Breakout
          mTimer.Start();
       }
 
-      private void BreakoutLoad(object theSender, EventArgs theEventArguments)
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: BreakoutFormLoad
+      //
+      // Description:
+      //  As it stands now this is method is needed to run the program, but has no implementation.
+      //
+      // Arguments:
+      //  theSender - The object that sent the event arguments.
+      //  theEventArguments - The events that occurred by the sender.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void BreakoutFormLoad(object theSender, EventArgs theEventArguments)
       {
       }
 
@@ -71,9 +88,7 @@ namespace Breakout
       // Method Name: BreakoutKeyDown
       //
       // Description:
-      //  Determine which key was pressed down:
-      //      Left (Arrow) - Lets the program to know to move the paddle towards the left on the next update.
-      //      Right (Arrow) - Lets the program to know to move the paddle towards the right on the next update.
+      //  Call to handle operator key down presses. Dependant on the state of the game, key presses will change functionality.
       //
       // Arguments:
       //  theSender - The object that sent the event arguments.
@@ -85,7 +100,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void BreakoutKeyDown(Object theSender, KeyEventArgs theEventArguments)
       {
-         mStateMachine.BreakoutKeyDown(theEventArguments);
+         mBreakoutGame.BreakoutKeyDown(theEventArguments);
       }
 
       //*********************************************************************************************************************************************
@@ -93,9 +108,7 @@ namespace Breakout
       // Method Name: BreakoutKeyUp
       //
       // Description:
-      //  Determine which key was release:
-      //      Left (Arrow) - Lets the program to know to no longer move the paddle towards the left on the next update.
-      //      Right (Arrow) - Lets the program to know to no longer move the paddle towards the right on the next update.
+      //  Call to handle operator key releases. Dependant on the state of the game, key presses will change functionality.
       //
       // Arguments:
       //  theSender - The object that sent the event arguments.
@@ -107,7 +120,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void BreakoutKeyUp(Object theSender, KeyEventArgs theEventArguments)
       {
-         mStateMachine.BreakoutKeyUp(theEventArguments);
+         mBreakoutGame.BreakoutKeyUp(theEventArguments);
       }
 
       //*********************************************************************************************************************************************
@@ -149,7 +162,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void UpdateWindow()
       {
-         mStateMachine.Update();
+         mBreakoutGame.Update();
       }
 
       //*********************************************************************************************************************************************
@@ -169,7 +182,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void Draw(Object theSender, PaintEventArgs theEventArguments)
       {
-         mStateMachine.Draw(theEventArguments.Graphics);
+         mBreakoutGame.Draw(theEventArguments.Graphics);
       }
    }
 }

@@ -18,7 +18,7 @@ namespace Breakout
 {
    public abstract class State
    {
-      protected FiniteStateMachine mFiniteStateMachine;
+      protected BreakoutGame mBreakoutGame;
 
       //*********************************************************************************************************************************************
       //
@@ -100,15 +100,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       protected void DrawPaddle(Graphics theGraphics)
       {
-         // Create the colors used for the paddle.
-         SolidBrush paddleColor = new SolidBrush(Color.Black);
-
-         // Draw the paddle onto the window.
-         theGraphics.FillRectangle(paddleColor,
-                                   mFiniteStateMachine.Paddle.PaddleRectangle);
-
-         // Clean up allocated memory.
-         paddleColor.Dispose();
+         mBreakoutGame.Paddle.Draw(theGraphics);
       }
 
       //*********************************************************************************************************************************************
@@ -132,7 +124,7 @@ namespace Breakout
 
          // Draw the paddle and balls onto the window.
          theGraphics.FillEllipse(ballColor,
-                                 mFiniteStateMachine.Ball.BallRectangle);
+                                 mBreakoutGame.Ball.BallRectangle);
 
          // Clean up allocated memory.
          ballColor.Dispose();
@@ -157,7 +149,7 @@ namespace Breakout
          // Create the colors used for the paddle.
          SolidBrush ballColor = new SolidBrush(Color.DarkGray);
 
-         foreach (MiniBall currentMiniBall in mFiniteStateMachine.MiniBalls)
+         foreach (MiniBall currentMiniBall in mBreakoutGame.MiniBalls)
          {
             // Draw the paddle and balls onto the window.
             theGraphics.FillEllipse(ballColor,
@@ -184,54 +176,11 @@ namespace Breakout
       //*********************************************************************************************************************************************
       protected void DrawBricks(Graphics theGraphics)
       {
-         // Create the colors used for the bricks.
-         SolidBrush levelOneBrickColor = new SolidBrush(Color.Green);
-         SolidBrush levelTwoBrickColor = new SolidBrush(Color.Yellow);
-         SolidBrush levelThreeBrickColor = new SolidBrush(Color.Red);
-         Pen brickBorderPen = new Pen(Color.Black, 2);
-
          // Draw the array of bricks currently in the game.
-         foreach (Brick currentBrick in mFiniteStateMachine.Bricks)
+         foreach (Brick currentBrick in mBreakoutGame.Bricks)
          {
-            // Determine the level of the brick.
-            switch (currentBrick.BrickLevel)
-            {
-               case BreakoutConstants.LEVEL_ONE_BRICK_INTEGER:
-               {
-                  theGraphics.FillRectangle(levelOneBrickColor,
-                                            currentBrick.BrickRectangle);
-                  theGraphics.DrawRectangle(brickBorderPen,
-                                            currentBrick.BrickRectangle);
-                  break;
-               }
-               case BreakoutConstants.LEVEL_TWO_BRICK_INTEGER:
-               {
-                  theGraphics.FillRectangle(levelTwoBrickColor,
-                                            currentBrick.BrickRectangle);
-                  theGraphics.DrawRectangle(brickBorderPen,
-                                            currentBrick.BrickRectangle);
-                  break;
-               }
-               case BreakoutConstants.LEVEL_THREE_BRICK_INTEGER:
-               {
-                  theGraphics.FillRectangle(levelThreeBrickColor,
-                                            currentBrick.BrickRectangle);
-                  theGraphics.DrawRectangle(brickBorderPen,
-                                            currentBrick.BrickRectangle);
-                  break;
-               }
-               default:
-               {
-                  break;
-               }
-            }
+            currentBrick.Draw(theGraphics);
          }
-
-         // Clean up allocated memory.
-         levelOneBrickColor.Dispose();
-         levelTwoBrickColor.Dispose();
-         levelThreeBrickColor.Dispose();
-         brickBorderPen.Dispose();
       }
 
       //*********************************************************************************************************************************************
@@ -250,7 +199,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public void DrawPowerUps(Graphics theGraphics)
       {
-         foreach (PowerUp currentPowerUp in mFiniteStateMachine.GetPowerUpList())
+         foreach (PowerUp currentPowerUp in mBreakoutGame.GetPowerUpList())
          {
             currentPowerUp.Draw(theGraphics);
          }
@@ -299,13 +248,34 @@ namespace Breakout
                                 20,
                                 475,
                                 textFormat);
-         for (int count = 0; count < mFiniteStateMachine.NumberOfLives; count++)
+
+         if (mBreakoutGame.NumberOfLives < 5)
+         { 
+            
+            for (int count = 0; count < mBreakoutGame.NumberOfLives; count++)
+            {
+               theGraphics.FillEllipse(ballColor,
+                                       new Rectangle(20 + ((10 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT) * count),
+                                                     500,
+                                                     BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+                                                     BreakoutConstants.BALL_WIDTH_AND_HEIGHT));
+            }
+         }
+         else
          {
-            theGraphics.FillEllipse(ballColor,
-                                    new Rectangle(20 + ((10 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT) * count),
-                                                  500,
-                                                  BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
-                                                  BreakoutConstants.BALL_WIDTH_AND_HEIGHT));
+               theGraphics.FillEllipse(ballColor,
+                                       new Rectangle(20 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+                                                     500,
+                                                     BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+                                                     BreakoutConstants.BALL_WIDTH_AND_HEIGHT));
+
+            // Draw the number of lives the player has remaining
+            theGraphics.DrawString("x" + mBreakoutGame.NumberOfLives.ToString(),
+                                   textFont,
+                                   textColor,
+                                   40 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+                                   501 + (BreakoutConstants.BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF),
+                                   textFormat);
          }
 
          // Clean up allocated memory.
