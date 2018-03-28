@@ -169,7 +169,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void Draw(Object theSender, PaintEventArgs theEventArguments)
       {
-         mStateMachine.Draw(theEventArguments);
+         mStateMachine.Draw(theEventArguments.Graphics);
       }
    }
 }

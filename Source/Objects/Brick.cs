@@ -1,6 +1,6 @@
 ﻿//***************************************************************************************************************************************************
 //
-// File Name: Ball.cs
+// File Name: Brick.cs
 //
 // Description:
 //  TODO: Add description.
@@ -20,19 +20,30 @@ namespace Breakout
    {
       // The rectangle elements of the brick including the coordinates, width, and height.
       private Rectangle mBrickRecatangle;
+      public Rectangle BrickRectangle
+      {
+         get {return mBrickRecatangle;}
+         set {mBrickRecatangle = value;}
+      }
 
       // The level of the brick.
       private int mBrickLevel;
+      public int BrickLevel
+      {
+         get {return mBrickLevel;}
+         set {mBrickLevel = value;}
+      }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: Ball
+      // Method Name: Brick
       //
       // Description:
       //  TODO: Add description.
       //
       // Arguments:
-      //  N/A
+      //  theBrickRectangle - TODO: Add description.
+      //  theBrickLevel - TODO: Add description.
       //
       // Return:
       //  N/A
@@ -52,7 +63,7 @@ namespace Breakout
       //  TODO: Add description.
       //
       // Arguments:
-      //  N/A
+      //  theFiniteStateMachine - TODO: Add description.
       //
       // Return:
       //  N/A
@@ -80,64 +91,5 @@ namespace Breakout
             }
          }
       }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: GetBrickRectangle
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  TODO: Add description.
-      //
-      //*********************************************************************************************************************************************
-      public Rectangle GetBrickRectangle()
-      {
-         return mBrickRecatangle;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: SetBrickLevel
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  theBrickLevel - TODO: Add description.
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public void SetBrickLevel(int theBrickLevel)
-      {
-         mBrickLevel = theBrickLevel;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: GetBrickLevel
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  TODO: Add description.
-      //
-      //*********************************************************************************************************************************************
-      public int GetBrickLevel()
-      {
-         return mBrickLevel;
-      }
-
-
    }
 }

@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Objects\Ball.cs" />
+    <Compile Include="Source\Objects\BallObjects\Ball.cs" />
     <Compile Include="Source\Breakout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -53,11 +53,12 @@
       <DependentUpon>Breakout.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\BreakoutConstants.cs" />
+    <Compile Include="Source\Objects\BallObjects\BallObject.cs" />
     <Compile Include="Source\Objects\Brick.cs" />
     <Compile Include="Source\FiniteStateMachine\FiniteStateMachine.cs" />
     <Compile Include="Source\FiniteStateMachine\States\PauseState.cs" />
     <Compile Include="Source\FiniteStateMachine\States\PlayState.cs" />
-    <Compile Include="Source\Objects\Miniball.cs" />
+    <Compile Include="Source\Objects\BallObjects\MiniBall.cs" />
     <Compile Include="Source\Objects\Paddle.cs" />
     <Compile Include="Source\Objects\PowerUpFactory\PowerUpFactory.cs" />
     <Compile Include="Source\Objects\PowerUpFactory\PowerUpFactoryConcrete.cs" />

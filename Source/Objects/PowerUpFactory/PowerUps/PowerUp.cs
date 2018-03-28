@@ -132,15 +132,15 @@ namespace Breakout
       //  TODO: Add description.
       //
       // Arguments:
-      //  theEventArguments - TODO: Add description.
+      //  theGraphics - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void Draw(PaintEventArgs theEventArguments)
+      public void Draw(Graphics theGraphics)
       {
-         theEventArguments.Graphics.DrawImage(mPowerUpImage, mPowerUpLocation);
+         theGraphics.DrawImage(mPowerUpImage, mPowerUpLocation);
       }
    }
 }

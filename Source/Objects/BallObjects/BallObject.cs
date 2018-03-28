@@ -1,6 +1,6 @@
 ﻿//***************************************************************************************************************************************************
 //
-// File Name: Ball.cs
+// File Name: BallObject.cs
 //
 // Description:
 //  TODO: Add description.
@@ -11,31 +11,47 @@
 //
 //***************************************************************************************************************************************************
 
-using System;
 using System.Drawing;
 
 namespace Breakout
 {
-   public class Ball
+   public abstract class BallObject
    {
       // The ball image depicting the location and size of the image.
-      private Rectangle mBallRectangle;
+      protected Rectangle mBallRectangle;
+      public Rectangle BallRectangle
+      {
+         get { return mBallRectangle; }
+         set { mBallRectangle = value; }
+      }
 
       // The X velocity of the ball.
-      float mBallVelocityX;
+      private float mBallVelocityX;
+      public float BallVelocityX
+      {
+         get { return mBallVelocityX; }
+         set { mBallVelocityX = value; }
+      }
 
       // The Y velocity of the ball.
-      float mBallVelocityY;
-
-      // Determines if the ball has been launched yet.
-      bool mBallLaunched;
+      private float mBallVelocityY;
+      public float BallVelocityY
+      {
+         get { return mBallVelocityY; }
+         set { mBallVelocityY = value; }
+      }
 
       // Determine how much damage the ball does to a brick.
-      int mDamage;
+      private int mDamage;
+      public int Damage
+      {
+         get { return mDamage; }
+         set { mDamage = value; }
+      }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: Ball
+      // Method Name: BallObject
       //
       // Description:
       //  TODO: Add description.
@@ -47,20 +63,11 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public Ball()
+      public BallObject()
       {
-         // Start the ball center of where the paddle starts, but directly above the paddle.
-         mBallRectangle = new Rectangle((BreakoutConstants.SCREEN_PLAY_AREA_WIDTH / BreakoutConstants.HALF) - (BreakoutConstants.BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF),
-                                        BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING - BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
-                                        BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
-                                        BreakoutConstants.BALL_WIDTH_AND_HEIGHT);
-
          // A new ball has no velocity as it is not launched yet.
          mBallVelocityX = BreakoutConstants.BALL_INITIAL_SPEED;
          mBallVelocityY = BreakoutConstants.BALL_INITIAL_SPEED;
-
-         // A new ball has not been launched yet.
-         mBallLaunched = false;
 
          // Set damage to the initial ball damage;
          mDamage = BreakoutConstants.BALL_INITIAL_DAMAGE;
@@ -80,20 +87,17 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void NewMatch()
+      public virtual void NewMatch()
       {
          // Reset the paddle to be in the centered horizontally.
          mBallRectangle.X = (BreakoutConstants.SCREEN_PLAY_AREA_WIDTH / BreakoutConstants.HALF) -
-                            (BreakoutConstants.BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF);
+                            (mBallRectangle.Width / BreakoutConstants.HALF);
          mBallRectangle.Y = BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING -
-                            BreakoutConstants.BALL_WIDTH_AND_HEIGHT;
+                            mBallRectangle.Height;
 
          // On the start of a new match the ball has no velocity since it has not been launched.
          mBallVelocityX = BreakoutConstants.BALL_INITIAL_SPEED;
          mBallVelocityY = BreakoutConstants.BALL_INITIAL_SPEED;
-
-         // On the start of a new match the ball has not been launched yet.
-         mBallLaunched = false;
       }
 
       //*********************************************************************************************************************************************
@@ -132,101 +136,6 @@ namespace Breakout
       public void SetBallCoordinateY(int theBallCoordinateY)
       {
          mBallRectangle.Y = theBallCoordinateY;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: SetBallVelocityX
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  theBallVelocityX- TODO: Add description.
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public void SetBallVelocityX(float theBallVelocityX)
-      {
-         mBallVelocityX = theBallVelocityX;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: SetBallVelocityY
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  theBallVelocityY - TODO: Add description.
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public void SetBallVelocityY(float theBallVelocityY)
-      {
-         mBallVelocityY = theBallVelocityY;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: GetBallRectangle
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  TODO: Add description.
-      //
-      //*********************************************************************************************************************************************
-      public Rectangle GetBallRectangle()
-      {
-         return mBallRectangle;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: SetBallLaunched
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  theBallLaunched - TODO: Add description.
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public void SetBallLaunched(bool theBallLaunched)
-      {
-         mBallLaunched = theBallLaunched;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: GetBallLaunched
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  TODO: Add description.
-      //
-      //*********************************************************************************************************************************************
-      public bool GetBallLaunched()
-      {
-         return mBallLaunched;
       }
 
       //*********************************************************************************************************************************************
@@ -289,25 +198,6 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: SetDamage
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  theDamage - TODO: Add description.
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public void SetDamage(int theDamage)
-      {
-         mDamage = theDamage;
-      }
-
-      //*********************************************************************************************************************************************
-      //
       // Method Name: CheckBallCollisionOnBorders
       //
       // Description:
@@ -316,7 +206,7 @@ namespace Breakout
       //  or new game in the case all lives are depleted.
       //
       // Arguments:
-      //  N/A
+      //  theFiniteStateMachine - TODO: Add description.
       //
       // Return:
       //  N/A
@@ -324,36 +214,73 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public void CheckBallCollisionOnBorders(FiniteStateMachine theFiniteStateMachine)
       {
-         // Check if the ball hits the top border and reverse the y velocity if so.
+         CheckBallCollisionOnTopBorder(theFiniteStateMachine);
+         CheckBallCollisionOnSideBorders(theFiniteStateMachine);
+         CheckBallCollisionOnBottomBorder(theFiniteStateMachine);
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: CheckBallCollisionOnTopBorder
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theFiniteStateMachine - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void CheckBallCollisionOnTopBorder(FiniteStateMachine theFiniteStateMachine)
+      {
+         // Reverse the ball Y velocity if the top border is hit by the ball.
          if (mBallRectangle.Y < 0)
          {
-            // Reverse the Y velocity.
             ReverseBallVelocityY();
          }
-         // Check if the ball hits the left or right border and reverse the y velocity if so.
-         else if (mBallRectangle.X < 0 ||
-                  mBallRectangle.X > (BreakoutConstants.SCREEN_PLAY_AREA_WIDTH - BreakoutConstants.BALL_WIDTH_AND_HEIGHT))
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: CheckBallCollisionOnSideBorders
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theFiniteStateMachine - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void CheckBallCollisionOnSideBorders(FiniteStateMachine theFiniteStateMachine)
+      {
+         // Reverse the ball x velocity if the left or right border is hit.
+         if (mBallRectangle.X < 0 ||
+                  mBallRectangle.X > (BreakoutConstants.SCREEN_PLAY_AREA_WIDTH - mBallRectangle.Width))
          {
-            // Reverse the X velocity.
             ReverseBallVelocityX();
          }
-         // Check if the ball hits the bottom border and decrement the number of lives the player has left.
-         // If lives goes below the threshold for game over, the game reverts back to the start screen.  
-         // Otherwise a new match begins.
-         else if (mBallRectangle.Y > BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT)
-         {
-            theFiniteStateMachine.SetNumberOfLives(theFiniteStateMachine.GetNumberOfLives() - 1);
-            if (theFiniteStateMachine.GetNumberOfLives() < 0)
-            {
-               theFiniteStateMachine.SetNumberOfLives(BreakoutConstants.INITIAL_LIVES_REMAINING);
-               theFiniteStateMachine.PopState();
-            }
-            else
-            {
-               NewMatch();
-            }
-         }
       }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: CheckBallCollisionOnBottomBorder
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theFiniteStateMachine - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      protected abstract void CheckBallCollisionOnBottomBorder(FiniteStateMachine theFiniteStateMachine);
 
       //*********************************************************************************************************************************************
       //
@@ -365,7 +292,7 @@ namespace Breakout
       //  towards the right.
       //
       // Arguments:
-      //  N/A
+      //  theFiniteStateMachine - TODO: Add description.
       //
       // Return:
       //  N/A
@@ -374,7 +301,7 @@ namespace Breakout
       public void CheckBallCollisionOnPaddle(FiniteStateMachine theFiniteStateMachine)
       {
          // Check if the ball hits the paddle.
-         if (mBallRectangle.IntersectsWith(theFiniteStateMachine.GetPaddle().GetPaddleRectangle()))
+         if (mBallRectangle.IntersectsWith(theFiniteStateMachine.Paddle.PaddleRectangle))
          {
             ReverseBallVelocityY();
          }
@@ -389,7 +316,7 @@ namespace Breakout
       //  the ball hit. The brick will lose a level and be destroyed when the level drops below the destruction level.
       //
       // Arguments:
-      //  N/A
+      //  theFiniteStateMachine - TODO: Add description.
       //
       // Return:
       //  N/A
@@ -398,21 +325,20 @@ namespace Breakout
       public void CheckBallCollisionOnBricks(FiniteStateMachine theFiniteStateMachine)
       {
          // Check if the ball hits a brick
-         for (var index = 0; index < theFiniteStateMachine.GetBrickList().Count; index++)
+         for (var index = 0; index < theFiniteStateMachine.Bricks.Count; index++)
          {
-            if (mBallRectangle.IntersectsWith(theFiniteStateMachine.GetBrickList()[index].GetBrickRectangle()))
+            if (mBallRectangle.IntersectsWith(theFiniteStateMachine.Bricks[index].BrickRectangle))
             {
                // Since the ball hit the brick, lower that bricks level.
-               theFiniteStateMachine.GetBrickList()[index].SetBrickLevel(theFiniteStateMachine.GetBrickList()[index].GetBrickLevel() -
-                                                                         mDamage);
+               theFiniteStateMachine.Bricks[index].BrickLevel = theFiniteStateMachine.Bricks[index].BrickLevel - mDamage;
 
                // Check which side of the brick the ball collided and update the balls velocity.
-               CheckRectangleEdgeCollision(theFiniteStateMachine.GetBrickList()[index]);
+               CheckRectangleEdgeCollision(theFiniteStateMachine.Bricks[index]);
 
                // Check if the brick level has hit the destroy level and remove the brick form the array list since it is destroyed.
-               if (theFiniteStateMachine.GetBrickList()[index].GetBrickLevel() <= BreakoutConstants.BRICK_DESTRUCTION_LEVEL)
+               if (theFiniteStateMachine.Bricks[index].BrickLevel <= BreakoutConstants.BRICK_DESTRUCTION_LEVEL)
                {
-                  theFiniteStateMachine.GetBrickList()[index].Destroyed(theFiniteStateMachine);
+                  theFiniteStateMachine.Bricks[index].Destroyed(theFiniteStateMachine);
                   // Remove the brick from the brick list since it is now destroyed.
                   theFiniteStateMachine.RemoveBrick(index--);
                }
@@ -441,16 +367,16 @@ namespace Breakout
       {
 
          // Determines if the ball hit the upper right cross section of the brick (true) or the bottom left section (false).
-         bool isAboveTopLeftAndBottomRight = IsOnUpperSideOfLine(theBrick.GetBrickRectangle().X + theBrick.GetBrickRectangle().Width,  // Bottom right brick corner
-                                                                 theBrick.GetBrickRectangle().Y + theBrick.GetBrickRectangle().Height, // Bottom right brick corner
-                                                                 theBrick.GetBrickRectangle().X,                                       // Top left brick corner.
-                                                                 theBrick.GetBrickRectangle().Y);                                      // Top left brick corner.
+         bool isAboveTopLeftAndBottomRight = IsOnUpperSideOfLine(theBrick.BrickRectangle.X + theBrick.BrickRectangle.Width,  // Bottom right brick corner
+                                                                 theBrick.BrickRectangle.Y + theBrick.BrickRectangle.Height, // Bottom right brick corner
+                                                                 theBrick.BrickRectangle.X,                                  // Top left brick corner.
+                                                                 theBrick.BrickRectangle.Y);                                 // Top left brick corner.
 
          // Determines if the ball hit the upper left cross section of the brick (true) or the bottom right section (false).
-         bool isAboveTopRightAndBottomLeft = IsOnUpperSideOfLine(theBrick.GetBrickRectangle().X + theBrick.GetBrickRectangle().Width,   // Top right brick corner.
-                                                                 theBrick.GetBrickRectangle().Y,                                        // Top right brick corner.
-                                                                 theBrick.GetBrickRectangle().X,                                        // Bottom left brick corner
-                                                                 theBrick.GetBrickRectangle().Y + theBrick.GetBrickRectangle().Height); // Bottom left brick corner
+         bool isAboveTopRightAndBottomLeft = IsOnUpperSideOfLine(theBrick.BrickRectangle.X + theBrick.BrickRectangle.Width,   // Top right brick corner.
+                                                                 theBrick.BrickRectangle.Y,                                   // Top right brick corner.
+                                                                 theBrick.BrickRectangle.X,                                   // Bottom left brick corner
+                                                                 theBrick.BrickRectangle.Y + theBrick.BrickRectangle.Height); // Bottom left brick corner
 
 
          // The ball hit the upper right cross section (so either the top or right edge).

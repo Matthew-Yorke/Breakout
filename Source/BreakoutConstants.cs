@@ -51,6 +51,9 @@ namespace Breakout
       // The speed (number of pixel movement) the paddle in the game can move at.
       public const int PADDLE_SPEED = 10;
 
+      // The width and height in pixels a mini ball in the game is.
+      public const int MINI_BALL_WIDTH_AND_HEIGHT = 10;
+
       // The width and height in pixels the ball in the game is.
       public const int BALL_WIDTH_AND_HEIGHT = 14;
 
@@ -76,7 +79,7 @@ namespace Breakout
       public const int BRICK_DESTRUCTION_LEVEL = 0;
 
       // The level when a new game starts.
-      public const int NEW_GAME_LEVEL = 1;
+      public const int NEW_GAME_LEVEL = 2;
 
       // String for the level folders when loading a level.
       public const string LEVELS_FOLDER = "../../Levels/Level";
@@ -121,7 +124,7 @@ namespace Breakout
       public const int RANDOM_NUMBER_INCLUSION = 1;
 
       // The percent chance a power up will drop upon a brick being destroyed.
-      public const int POWER_UP_DROP_PERCENT = 5;
+      public const int POWER_UP_DROP_PERCENT = 100;
 
       // Chance the Extra Life power up will drop when a power up drops.
       public const int EXTRA_LIFE_POWER_UP_PERCENT_CHANCE = 25;
@@ -134,6 +137,9 @@ namespace Breakout
 
       // The initial amount of lives the player has at the beginning of a new game.
       public const int INITIAL_LIVES_REMAINING = 3;
+
+      // The number of lives lost when the ball goes out of play.
+      public const int LIFE_LOST = 1;
 
       // The number of milliseconds for a clock tick to occur.
       public const int TIMER_INTERVAL = 16;

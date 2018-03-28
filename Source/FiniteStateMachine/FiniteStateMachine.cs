@@ -26,23 +26,70 @@ namespace Breakout
 
       // Tracks reference to the form this game is being drawn to.
       private Form mForm;
+      public Form Form
+      {
+         get {return mForm;}
+         set {mForm = value;}
+      }
 
       // The paddle object used in the game. Includes information about location, size, and movement direction.
       private Paddle mPaddle;
+      public Paddle Paddle
+      {
+         get {return mPaddle;}
+         set {mPaddle = value;}
+      }
 
       // The ball object used in the game. Includes information about location, size, velocity, if it has been launched, and damage.
       private Ball mBall;
+      public Ball Ball
+      {
+         get {return mBall;}
+         set {mBall = value;}
+      }
+
+      // List of active mini balls in the level.
+      private List<MiniBall> mMiniBalls;
+      public List<MiniBall> MiniBalls
+      {
+         get {return mMiniBalls;}
+         set {mMiniBalls = value;}
+      }
+
+      // List of active mini balls to remove.
+      private List<MiniBall> mMiniBallRemoveList;
+      public List<MiniBall> MiniBallRemoveList
+      {
+         get {return mMiniBallRemoveList;}
+         set {mMiniBallRemoveList = value;}
+      }
 
       // List of active bricks in the level.
       private List<Brick> mBricks;
+      public List<Brick> Bricks
+      {
+         get {return mBricks;}
+         set {mBricks = value;}
+      }
 
+      // The factory used to create power ups when a brick is destroyed.
       PowerUpFactory mPowerUpFactory;
 
       // List of power ups currently on the screen.
       private List<PowerUp> mPowerUps;
+      public List<PowerUp> PowerUps
+      {
+         get {return mPowerUps;}
+         set {mPowerUps = value;}
+      }
 
       // Tracks the number of lives the player has left.
       private int mNumberOfLives;
+      public int NumberOfLives
+      {
+         get {return mNumberOfLives;}
+         set {mNumberOfLives = value;}
+      }
 
       //*********************************************************************************************************************************************
       //
@@ -73,6 +120,12 @@ namespace Breakout
          // Create the ball for the game.
          mBall = new Ball();
 
+         // Create the new list of mini balls for the game.
+         mMiniBalls = new List<MiniBall>();
+
+         // Create new list of mini balls to be removed.
+         mMiniBallRemoveList = new List<MiniBall>();
+
          // Create the new list of bricks for the game.
          mBricks = new List<Brick>();
 
@@ -84,82 +137,6 @@ namespace Breakout
 
          // Initialize the number of lives the players will have left.
          mNumberOfLives = BreakoutConstants.INITIAL_LIVES_REMAINING;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: GetForm
-      //
-      // Description:
-      //  Returns the reference of the form being used for the finite state machine.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  Returns the form reference.
-      //
-      //*********************************************************************************************************************************************
-      public Form GetForm()
-      {
-         return mForm;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: GetPaddle
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  TODO: Add description.
-      //
-      //*********************************************************************************************************************************************
-      public Paddle GetPaddle()
-      {
-         return mPaddle;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: GetBall
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  TODO: Add description.
-      //
-      //*********************************************************************************************************************************************
-      public Ball GetBall()
-      {
-         return mBall;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: GetBrickList
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  TODO: Add description.
-      //
-      //*********************************************************************************************************************************************
-      public List<Brick> GetBrickList()
-      {
-         return mBricks;
       }
 
       //*********************************************************************************************************************************************
@@ -240,40 +217,22 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: GetNumberOfLives
+      // Method Name: ProcessMiniBallRemoveList
       //
       // Description:
       //  TODO: Add description.
       //
       // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  TODO: Add description.
-      //
-      //*********************************************************************************************************************************************
-      public int GetNumberOfLives()
-      {
-         return mNumberOfLives;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: GetNumberOfLives
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  theNumberOfLives = TODO: Add description.
+      //  theFiniteStateMachine - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void SetNumberOfLives(int theNumberOfLives)
+      public void ProcessMiniBallRemoveList()
       {
-         mNumberOfLives = theNumberOfLives;
+         mMiniBalls.RemoveAll(element => mMiniBallRemoveList.Contains(element));
+         mMiniBallRemoveList.Clear();
       }
 
       //*********************************************************************************************************************************************
@@ -379,15 +338,15 @@ namespace Breakout
       //  Call to draw the objects on the screen from the top state on the stack of states.
       //
       // Arguments:
-      //  theEventArguments - The events that occurred by the sender.
+      //  theGraphics - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void Draw(PaintEventArgs theEventArguments)
+      public void Draw(Graphics theGraphics)
       {
-         mCurrentState.Peek().Draw(theEventArguments);
+         mCurrentState.Peek().Draw(theGraphics);
       }
    }
 }

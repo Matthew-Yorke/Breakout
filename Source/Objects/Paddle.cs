@@ -19,16 +19,31 @@ namespace Breakout
    {
       // The paddle image depicting the location and size of the image.
       private Rectangle mPaddleRectangle;
+      public Rectangle PaddleRectangle
+      {
+         get {return mPaddleRectangle;}
+         set {mPaddleRectangle = value;}
+      }
 
       // Determines during an update if the player is pressing the key to move the paddle left.
       bool mMovePaddleLeft;
+      public bool MovePaddleLeft
+      {
+         get {return mMovePaddleLeft;}
+         set {mMovePaddleLeft = value;}
+      }
 
       // Determines during an update if the player is pressing the key to move the paddle right.
       bool mMovePaddleRight;
+      public bool MovePaddleRight
+      {
+         get {return mMovePaddleRight;}
+         set {mMovePaddleRight = value;}
+      }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: Ball
+      // Method Name: Paddle
       //
       // Description:
       //  TODO: Add description.
@@ -80,25 +95,6 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: GetPaddleRectangle
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  TODO: Add description.
-      //
-      //*********************************************************************************************************************************************
-      public Rectangle GetPaddleRectangle()
-      {
-         return mPaddleRectangle;
-      }
-
-      //*********************************************************************************************************************************************
-      //
       // Method Name: SetPaddleCoordinateX
       //
       // Description:
@@ -133,82 +129,6 @@ namespace Breakout
       public void SetPaddleCoordinateY(int thePaddleCoordinateY)
       {
          mPaddleRectangle.Y = thePaddleCoordinateY;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: SetLeftMovement
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  theMovePaddleLeft - TODO: Add description.
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public void SetLeftMovement(bool theMovePaddleLeft)
-      {
-         mMovePaddleLeft = theMovePaddleLeft;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: GetLeftMovement
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  TODO: Add description.
-      //
-      //*********************************************************************************************************************************************
-      public bool GetLeftMovement()
-      {
-         return mMovePaddleLeft;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: SetRightMovement
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  theMovePaddleRight - TODO: Add description.
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public void SetRightMovement(bool theMovePaddleRight)
-      {
-         mMovePaddleRight = theMovePaddleRight;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: GetRightMovement
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  TODO: Add description.
-      //
-      //*********************************************************************************************************************************************
-      public bool GetRightMovement()
-      {
-         return mMovePaddleRight;
       }
    }
 }

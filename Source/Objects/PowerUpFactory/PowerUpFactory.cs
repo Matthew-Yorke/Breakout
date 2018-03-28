@@ -17,6 +17,21 @@ namespace Breakout
 {
    public abstract class PowerUpFactory
    {
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: GetPowerUp
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  thePowerUp - TODO: Add description.
+      //  theRectangle - TODO: Add description.
+      //
+      // Return:
+      //  TODO: Add description.
+      //
+      //*********************************************************************************************************************************************
       public abstract PowerUp GetPowerUp(int thePowerUp, Rectangle theRectangle);
    }
 }

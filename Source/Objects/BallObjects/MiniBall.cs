@@ -1,6 +1,6 @@
 ﻿//***************************************************************************************************************************************************
 //
-// File Name: ExtraLifePowerUp.cs
+// File Name: MiniBall.cs
 //
 // Description:
 //  TODO: Add description.
@@ -12,34 +12,42 @@
 //***************************************************************************************************************************************************
 
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace Breakout
 {
-   public class ExtraLifePowerUp : PowerUp
+   public class MiniBall : BallObject
    {
       //*********************************************************************************************************************************************
       //
-      // Method Name: ExtraLifePowerUp
+      // Method Name: MiniBall
       //
       // Description:
       //  TODO: Add description.
       //
       // Arguments:
-      //  theCoordinateX - TODO: Add description.
-      //  theCoordinateY - TODO: Add description.
+      //  N/A
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public ExtraLifePowerUp(int theCoordinateX, int theCoordinateY) :
-      base(Image.FromFile("../../Images/ExtraLifePowerUp.png"), theCoordinateX, theCoordinateY)
+      public MiniBall(FiniteStateMachine theFiniteStateMachine)
       {
+         // Start the ball center of where the paddle is, but directly above the paddle.
+         mBallRectangle = new Rectangle(theFiniteStateMachine.Paddle.PaddleRectangle.X + (BreakoutConstants.PADDLE_WIDTH / BreakoutConstants.HALF) - (BreakoutConstants.MINI_BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF),
+                                        BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING - BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+                                        BreakoutConstants.MINI_BALL_WIDTH_AND_HEIGHT,
+                                        BreakoutConstants.MINI_BALL_WIDTH_AND_HEIGHT);
+
+         // A new ball has no velocity as it is not launched yet.
+         BallVelocityX = 1;
+         BallVelocityY = -1;
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: ExecutePowerUp
+      // Method Name: CheckBallCollisionOnBottomBorder
       //
       // Description:
       //  TODO: Add description.
@@ -51,9 +59,13 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public override void ExecutePowerUp(FiniteStateMachine theFiniteStateMachine)
+      protected override void CheckBallCollisionOnBottomBorder(FiniteStateMachine theFiniteStateMachine)
       {
-         theFiniteStateMachine.NumberOfLives +=  1;
+         // Check if the ball hits the bottom border and remove the mini ball from the list of active mini balls.
+         if (mBallRectangle.Y > BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT)
+         {
+            theFiniteStateMachine.MiniBallRemoveList.Add(this);
+         }
       }
    }
 }

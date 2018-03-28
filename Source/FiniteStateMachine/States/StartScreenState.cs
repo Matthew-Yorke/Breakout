@@ -144,13 +144,13 @@ namespace Breakout
       //  TODO: Add description.
       //
       // Arguments:
-      //  theEventArguments - TODO: Add description.
+      //  theGraphics - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public override void Draw(PaintEventArgs theEventArguments)
+      public override void Draw(Graphics theGraphics)
       {
          // Setup the color of the ball the indicates the selector .
          SolidBrush ballColor = new SolidBrush(Color.Blue);
@@ -164,20 +164,20 @@ namespace Breakout
          textFormat.LineAlignment = StringAlignment.Center;
 
          // Draw the ball, which indicates the selector.
-         theEventArguments.Graphics.FillEllipse(ballColor,
-                                                new Rectangle((mFiniteStateMachine.GetForm().Size.Width / BreakoutConstants.HALF) - 150,
-                                                              240 + ((int)mSelection * (int)((float)BreakoutConstants.START_SCREEN_TEXT_SIZE * 1.5F)),
-                                                              BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
-                                                              BreakoutConstants.BALL_WIDTH_AND_HEIGHT));
+         theGraphics.FillEllipse(ballColor,
+                                 new Rectangle((mFiniteStateMachine.Form.Size.Width / BreakoutConstants.HALF) - 150,
+                                               240 + ((int)mSelection * (int)((float)BreakoutConstants.START_SCREEN_TEXT_SIZE * 1.5F)),
+                                               BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+                                               BreakoutConstants.BALL_WIDTH_AND_HEIGHT));
 
 
          // Draw the right player score to be centered on the right half (third quarter horizontal, half vertical) of the screen.
-         theEventArguments.Graphics.DrawString("New Game\nExit",
-                                               textFont,
-                                               textColor,
-                                               mFiniteStateMachine.GetForm().Size.Width / BreakoutConstants.HALF,
-                                               mFiniteStateMachine.GetForm().Size.Height / BreakoutConstants.HALF,
-                                               textFormat);
+         theGraphics.DrawString("New Game\nExit",
+                                textFont,
+                                textColor,
+                                mFiniteStateMachine.Form.Size.Width / BreakoutConstants.HALF,
+                                mFiniteStateMachine.Form.Size.Height / BreakoutConstants.HALF,
+                                textFormat);
 
          // Clean up allocated memory.
          ballColor.Dispose();

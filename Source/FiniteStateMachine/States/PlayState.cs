@@ -46,14 +46,14 @@ namespace Breakout
          mFiniteStateMachine = theFiniteStateMachine;
 
          // Start the paddle and ball in position for a new match to start.
-         mFiniteStateMachine.GetPaddle().NewMatch();
-         mFiniteStateMachine.GetBall().NewMatch();
+         mFiniteStateMachine.Paddle.NewMatch();
+         mFiniteStateMachine.Ball.NewMatch();
 
          // Start the game at the level of a new game.
          mCurrentLevel = BreakoutConstants.NEW_GAME_LEVEL;
 
          // Remove any possible leftover bricks.
-         mFiniteStateMachine.GetBrickList().Clear();
+         mFiniteStateMachine.Bricks.Clear();
 
          // Load the starting level of the game.
          LoadLevel(mCurrentLevel);
@@ -198,8 +198,9 @@ namespace Breakout
       private void NewMatch()
       {
          // Start the paddle and ball in position for a new match to start.
-         mFiniteStateMachine.GetPaddle().NewMatch();
-         mFiniteStateMachine.GetBall().NewMatch();
+         mFiniteStateMachine.Paddle.NewMatch();
+         mFiniteStateMachine.Ball.NewMatch();
+         mFiniteStateMachine.MiniBalls.Clear();
          mFiniteStateMachine.GetPowerUpList().Clear();
       }
 
@@ -227,27 +228,27 @@ namespace Breakout
             // The Left Arrow (<-) key is used for the paddle left movement. Indicate the paddle is now being moved towards the left.
             case Keys.Left:
             {
-               mFiniteStateMachine.GetPaddle().SetLeftMovement(true);
+               mFiniteStateMachine.Paddle.MovePaddleLeft = true;
                break;
             }
             // The Right Arrow (->) key is used for the paddle right movement. Indicate the paddle is now being moved towards the right.
             case Keys.Right:
             {
-               mFiniteStateMachine.GetPaddle().SetRightMovement(true);
+               mFiniteStateMachine.Paddle.MovePaddleRight = true;
                break;
             }
             // The Space key is used to launch the ball at the beginning of a match. Indicate the ball is now being launched if it has not already been
             // launched.
             case Keys.Space:
             {
-               if (mFiniteStateMachine.GetBall().GetBallLaunched() == false)
+               if (mFiniteStateMachine.Ball.BallLaunched == false)
                {
                   // Note: Launch speed is negative to launch the ball towards the top of the screen.
-                  mFiniteStateMachine.GetBall().SetBallVelocityY(-BreakoutConstants.BALL_LAUNCH_SPEED);
+                  mFiniteStateMachine.Ball.BallVelocityY = -BreakoutConstants.BALL_LAUNCH_SPEED;
                   // Temp code start.
-                  mFiniteStateMachine.GetBall().SetBallVelocityX(BreakoutConstants.BALL_LAUNCH_SPEED);
+                  mFiniteStateMachine.Ball.BallVelocityX = BreakoutConstants.BALL_LAUNCH_SPEED;
                   // Temp code end.
-                  mFiniteStateMachine.GetBall().SetBallLaunched(true);
+                  mFiniteStateMachine.Ball.BallLaunched = true;
                }
                break;
             }
@@ -295,13 +296,13 @@ namespace Breakout
             // The Left Arrow (<-) is used for the paddle left movement. Indicate the paddle is no longer being moved towards the left.
             case Keys.Left:
             {
-               mFiniteStateMachine.GetPaddle().SetLeftMovement(false);
+               mFiniteStateMachine.Paddle.MovePaddleLeft = false;
                break;
             }
             // The Right Arrow (->) is used for the paddle right movement. Indicate the paddle is no longer being moved towards the right.
             case Keys.Right:
             {
-               mFiniteStateMachine.GetPaddle().SetRightMovement(false);
+               mFiniteStateMachine.Paddle.MovePaddleRight = false;
                break;
             }
             default:
@@ -328,7 +329,7 @@ namespace Breakout
       public override void Update()
       {
          // Check if the level is complete.
-         if (mFiniteStateMachine.GetBrickList().Count <= BreakoutConstants.BRICKS_LEFT_TO_COMPLETE_LEVEL)
+         if (mFiniteStateMachine.Bricks.Count <= BreakoutConstants.BRICKS_LEFT_TO_COMPLETE_LEVEL)
          {
             // Increment to the next level.
             mCurrentLevel++;
@@ -350,9 +351,11 @@ namespace Breakout
          {
             // Update the paddles on the window based on the keys pressed down or released.
             UpdatePaddle();
+            UpdateMiniBalls();
             UpdateBall();
             UpdatePowerUps();
             CheckBallCollision();
+            CheckMiniBallCollision();
             CheckPowerUpCollision();
          }
       }
@@ -375,58 +378,80 @@ namespace Breakout
       {
          // Check if the left button for the paddle is currently being pressed down.
          // Note: If both left AND right buttons are pressed the left button takes precedence.
-         if (mFiniteStateMachine.GetPaddle().GetLeftMovement() == true)
+         if (mFiniteStateMachine.Paddle.MovePaddleLeft == true)
          {
             // Set the paddle x-coordinate to draw further left by the paddle speed.
-            mFiniteStateMachine.GetPaddle().SetPaddleCoordinateX(mFiniteStateMachine.GetPaddle().GetPaddleRectangle().X -
-                                                                 BreakoutConstants.PADDLE_SPEED);
+            mFiniteStateMachine.Paddle.SetPaddleCoordinateX(mFiniteStateMachine.Paddle.PaddleRectangle.X -
+                                                            BreakoutConstants.PADDLE_SPEED);
 
             // If the ball has not been launched yet, keep the ball centered directly above the paddle.
-            if (mFiniteStateMachine.GetBall().GetBallLaunched() == false)
+            if (mFiniteStateMachine.Ball.BallLaunched == false)
             {
-               mFiniteStateMachine.GetBall().SetBallCoordinateX(mFiniteStateMachine.GetBall().GetBallRectangle().X - BreakoutConstants.PADDLE_SPEED);
+               mFiniteStateMachine.Ball.SetBallCoordinateX(mFiniteStateMachine.Ball.BallRectangle.X - BreakoutConstants.PADDLE_SPEED);
             }
 
             // Prevent the paddle from going out of bounds at the left edge of the window.
-            if (mFiniteStateMachine.GetPaddle().GetPaddleRectangle().X < BreakoutConstants.SCREEN_X_COORDINATE_LEFT)
+            if (mFiniteStateMachine.Paddle.PaddleRectangle.X < BreakoutConstants.SCREEN_X_COORDINATE_LEFT)
             {
-               mFiniteStateMachine.GetPaddle().SetPaddleCoordinateX(BreakoutConstants.SCREEN_X_COORDINATE_LEFT);
+               mFiniteStateMachine.Paddle.SetPaddleCoordinateX(BreakoutConstants.SCREEN_X_COORDINATE_LEFT);
 
                // If the ball has not been launched yet, keep the ball centered directly above the paddle.
-               if (mFiniteStateMachine.GetBall().GetBallLaunched() == false)
+               if (mFiniteStateMachine.Ball.BallLaunched == false)
                {
-                  mFiniteStateMachine.GetBall().SetBallCoordinateX(mFiniteStateMachine.GetPaddle().GetPaddleRectangle().X +
-                                                                  (mFiniteStateMachine.GetPaddle().GetPaddleRectangle().Width / BreakoutConstants.HALF) -
-                                                                  (mFiniteStateMachine.GetBall().GetBallRectangle().Width / BreakoutConstants.HALF));
+                  mFiniteStateMachine.Ball.SetBallCoordinateX(mFiniteStateMachine.Paddle.PaddleRectangle.X +
+                                                              (mFiniteStateMachine.Paddle.PaddleRectangle.Width / BreakoutConstants.HALF) -
+                                                              (mFiniteStateMachine.Ball.BallRectangle.Width / BreakoutConstants.HALF));
                }
             }
          }
          // Check if the right button for the paddle is currently being pressed down.
-         else if (mFiniteStateMachine.GetPaddle().GetRightMovement() == true)
+         else if (mFiniteStateMachine.Paddle.MovePaddleRight == true)
          {
             // Set the paddle x-coordinate to draw further right by the paddle speed.
-            mFiniteStateMachine.GetPaddle().SetPaddleCoordinateX(mFiniteStateMachine.GetPaddle().GetPaddleRectangle().X +
-                                                                 BreakoutConstants.PADDLE_SPEED);
+            mFiniteStateMachine.Paddle.SetPaddleCoordinateX(mFiniteStateMachine.Paddle.PaddleRectangle.X +
+                                                            BreakoutConstants.PADDLE_SPEED);
 
             // If the ball has not been launched yet, keep the ball centered directly above the paddle.
-            if (mFiniteStateMachine.GetBall().GetBallLaunched() == false)
+            if (mFiniteStateMachine.Ball.BallLaunched == false)
             {
-               mFiniteStateMachine.GetBall().SetBallCoordinateX(mFiniteStateMachine.GetBall().GetBallRectangle().X + BreakoutConstants.PADDLE_SPEED);
+               mFiniteStateMachine.Ball.SetBallCoordinateX(mFiniteStateMachine.Ball.BallRectangle.X + BreakoutConstants.PADDLE_SPEED);
             }
 
             // Prevent the paddle from going out of bounds at the right edge of the window.
-            if (mFiniteStateMachine.GetPaddle().GetPaddleRectangle().X > (mFiniteStateMachine.GetForm().Size.Width - BreakoutConstants.PADDLE_WIDTH))
+            if (mFiniteStateMachine.Paddle.PaddleRectangle.X > (mFiniteStateMachine.Form.Size.Width - BreakoutConstants.PADDLE_WIDTH))
             {
-               mFiniteStateMachine.GetPaddle().SetPaddleCoordinateX(mFiniteStateMachine.GetForm().Size.Width - BreakoutConstants.PADDLE_WIDTH);
+               mFiniteStateMachine.Paddle.SetPaddleCoordinateX(mFiniteStateMachine.Form.Size.Width - BreakoutConstants.PADDLE_WIDTH);
 
                // If the ball has not been launched yet, keep the ball centered directly above the paddle.
-               if (mFiniteStateMachine.GetBall().GetBallLaunched() == false)
+               if (mFiniteStateMachine.Ball.BallLaunched == false)
                {
-                  mFiniteStateMachine.GetBall().SetBallCoordinateX(mFiniteStateMachine.GetPaddle().GetPaddleRectangle().X +
-                                                                   (mFiniteStateMachine.GetPaddle().GetPaddleRectangle().Width / BreakoutConstants.HALF) -
-                                                                   (mFiniteStateMachine.GetBall().GetBallRectangle().Width / BreakoutConstants.HALF));
+                  mFiniteStateMachine.Ball.SetBallCoordinateX(mFiniteStateMachine.Paddle.PaddleRectangle.X +
+                                                              (mFiniteStateMachine.Paddle.PaddleRectangle.Width / BreakoutConstants.HALF) -
+                                                              (mFiniteStateMachine.Ball.BallRectangle.Width / BreakoutConstants.HALF));
                }
             }
+         }
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: UpdateMiniBalls
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void UpdateMiniBalls()
+      {
+         foreach (MiniBall currentMiniBall in mFiniteStateMachine.MiniBalls)
+         {
+            currentMiniBall.UpdateBall();
          }
       }
 
@@ -446,7 +471,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void UpdateBall()
       {
-         mFiniteStateMachine.GetBall().UpdateBall();
+         mFiniteStateMachine.Ball.UpdateBall();
       }
 
       //*********************************************************************************************************************************************
@@ -490,13 +515,45 @@ namespace Breakout
       private void CheckBallCollision()
       {
          // Check for any ball collisions on the game border.
-         mFiniteStateMachine.GetBall().CheckBallCollisionOnBorders(mFiniteStateMachine);
+         mFiniteStateMachine.Ball.CheckBallCollisionOnBorders(mFiniteStateMachine);
 
          // Check for any ball collisions on the paddle.
-         mFiniteStateMachine.GetBall().CheckBallCollisionOnPaddle(mFiniteStateMachine);
+         mFiniteStateMachine.Ball.CheckBallCollisionOnPaddle(mFiniteStateMachine);
 
          // Check for any ball collisions on the bricks.
-         mFiniteStateMachine.GetBall().CheckBallCollisionOnBricks(mFiniteStateMachine);
+         mFiniteStateMachine.Ball.CheckBallCollisionOnBricks(mFiniteStateMachine);
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: CheckMiniBallCollision
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void CheckMiniBallCollision()
+      {
+         foreach (MiniBall currentMiniBall in mFiniteStateMachine.MiniBalls)
+         {
+            // Check for any mini ball collisions on the game border.
+            currentMiniBall.CheckBallCollisionOnBorders(mFiniteStateMachine);
+
+            // Check for any mini ball collisions on the paddle.
+            currentMiniBall.CheckBallCollisionOnPaddle(mFiniteStateMachine);
+
+            // Check for any mini ball collisions on the bricks.
+            currentMiniBall.CheckBallCollisionOnBricks(mFiniteStateMachine);
+         }
+
+         // Remove any mini balls that went out of bounds.
+         mFiniteStateMachine.ProcessMiniBallRemoveList();
       }
 
       //*********************************************************************************************************************************************
@@ -522,7 +579,7 @@ namespace Breakout
          for (var index = 0; index < mFiniteStateMachine.GetPowerUpList().Count; index++)
          {
             // Check if the power up hits the paddle. Execute the power up ability and remove the power up from the list.
-            if (mFiniteStateMachine.GetPowerUpList()[index].GetHitBox().IntersectsWith(mFiniteStateMachine.GetPaddle().GetPaddleRectangle()))
+            if (mFiniteStateMachine.GetPowerUpList()[index].GetHitBox().IntersectsWith(mFiniteStateMachine.Paddle.PaddleRectangle))
             {
                mFiniteStateMachine.GetPowerUpList()[index].ExecutePowerUp(mFiniteStateMachine);
                mFiniteStateMachine.GetPowerUpList().RemoveAt(index--);
@@ -543,19 +600,20 @@ namespace Breakout
       //  TODO: Add description.
       //
       // Arguments:
-      //  theEventArguments - TODO: Add description.
+      //  theGraphics - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public override void Draw(PaintEventArgs theEventArguments)
+      public override void Draw(Graphics theGraphics)
       {
-         DrawPaddle(theEventArguments);
-         DrawBall(theEventArguments);
-         DrawBricks(theEventArguments);
-         DrawPowerUps(theEventArguments);
-         DrawHud(theEventArguments);
+         DrawPowerUps(theGraphics);
+         DrawPaddle(theGraphics);
+         DrawMiniBalls(theGraphics);
+         DrawBall(theGraphics);
+         DrawBricks(theGraphics);
+         DrawHud(theGraphics);
       }
    }
 }

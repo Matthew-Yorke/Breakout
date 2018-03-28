@@ -114,37 +114,38 @@ namespace Breakout
       //  TODO: Add description.
       //
       // Arguments:
-      //  theEventArguments - TODO: Add description.
+      //  theGraphics - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public override void Draw(PaintEventArgs theEventArguments)
+      public override void Draw(Graphics theGraphics)
       {
-         DrawPaddle(theEventArguments);
-         DrawBall(theEventArguments);
-         DrawBricks(theEventArguments);
-         DrawHud(theEventArguments);
-         DrawPowerUps(theEventArguments);
-         DrawPauseScreen(theEventArguments);
+         DrawPowerUps(theGraphics);
+         DrawPaddle(theGraphics);
+         DrawMiniBalls(theGraphics);
+         DrawBall(theGraphics);
+         DrawBricks(theGraphics);
+         DrawHud(theGraphics);
+         DrawPauseScreen(theGraphics);
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: Draw
+      // Method Name: DrawPauseScreen
       //
       // Description:
       //  TODO: Add description.
       //
       // Arguments:
-      //  theEventArguments - TODO: Add description.
+      //  theGraphics - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      private void DrawPauseScreen(PaintEventArgs theEventArguments)
+      private void DrawPauseScreen(Graphics theGraphics)
       {
          // Setup the text for the scores and timers.
          Font textFont = new System.Drawing.Font(BreakoutConstants.TEXT_FAMILY_NAME,
@@ -157,12 +158,12 @@ namespace Breakout
          };
 
          // Draw the right player score to be centered on the right half (third quarter horizontal, half vertical) of the screen.
-         theEventArguments.Graphics.DrawString(BreakoutConstants.PAUSE_STRING,
-                                               textFont,
-                                               textColor,
-                                               mFiniteStateMachine.GetForm().Size.Width / BreakoutConstants.HALF,
-                                               mFiniteStateMachine.GetForm().Size.Height / BreakoutConstants.HALF,
-                                               textFormat);
+         theGraphics.DrawString(BreakoutConstants.PAUSE_STRING,
+                                textFont,
+                                textColor,
+                                mFiniteStateMachine.Form.Size.Width / BreakoutConstants.HALF,
+                                mFiniteStateMachine.Form.Size.Height / BreakoutConstants.HALF,
+                                textFormat);
 
          // Clean up allocated memory.
          textFont.Dispose();

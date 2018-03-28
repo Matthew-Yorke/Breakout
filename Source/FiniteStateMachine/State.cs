@@ -76,13 +76,13 @@ namespace Breakout
       //  Draw objects in the current state. This is an abstract method that all concrete classes must implement.
       //
       // Arguments:
-      //  theEventArguments - The events that occurred by the sender.
+      //  theGraphics - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public abstract void Draw(PaintEventArgs theEventArguments);
+      public abstract void Draw(Graphics theGraphics);
 
       //*********************************************************************************************************************************************
       //
@@ -92,20 +92,20 @@ namespace Breakout
       //  TODOL Add description.
       //
       // Arguments:
-      //  theEventArguments - The events that occurred by the sender.
+      //  theGraphics - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      protected void DrawPaddle(PaintEventArgs theEventArguments)
+      protected void DrawPaddle(Graphics theGraphics)
       {
          // Create the colors used for the paddle.
          SolidBrush paddleColor = new SolidBrush(Color.Black);
 
          // Draw the paddle onto the window.
-         theEventArguments.Graphics.FillRectangle(paddleColor,
-                                                  mFiniteStateMachine.GetPaddle().GetPaddleRectangle());
+         theGraphics.FillRectangle(paddleColor,
+                                   mFiniteStateMachine.Paddle.PaddleRectangle);
 
          // Clean up allocated memory.
          paddleColor.Dispose();
@@ -119,20 +119,50 @@ namespace Breakout
       //  TODOL Add description.
       //
       // Arguments:
-      //  theEventArguments - The events that occurred by the sender.
+      //  theGraphics - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      protected void DrawBall(PaintEventArgs theEventArguments)
+      protected void DrawBall(Graphics theGraphics)
       {
          // Create the colors used for the paddle.
          SolidBrush ballColor = new SolidBrush(Color.Blue);
 
          // Draw the paddle and balls onto the window.
-         theEventArguments.Graphics.FillEllipse(ballColor,
-                                                mFiniteStateMachine.GetBall().GetBallRectangle());
+         theGraphics.FillEllipse(ballColor,
+                                 mFiniteStateMachine.Ball.BallRectangle);
+
+         // Clean up allocated memory.
+         ballColor.Dispose();
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: DrawMiniBalls
+      //
+      // Description:
+      //  TODOL Add description.
+      //
+      // Arguments:
+      //  theGraphics - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      protected void DrawMiniBalls(Graphics theGraphics)
+      {
+         // Create the colors used for the paddle.
+         SolidBrush ballColor = new SolidBrush(Color.DarkGray);
+
+         foreach (MiniBall currentMiniBall in mFiniteStateMachine.MiniBalls)
+         {
+            // Draw the paddle and balls onto the window.
+            theGraphics.FillEllipse(ballColor,
+                                    currentMiniBall.BallRectangle);
+         }
 
          // Clean up allocated memory.
          ballColor.Dispose();
@@ -146,13 +176,13 @@ namespace Breakout
       //  TODOL Add description.
       //
       // Arguments:
-      //  theEventArguments - The events that occurred by the sender.
+      //  theGraphics - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      protected void DrawBricks(PaintEventArgs theEventArguments)
+      protected void DrawBricks(Graphics theGraphics)
       {
          // Create the colors used for the bricks.
          SolidBrush levelOneBrickColor = new SolidBrush(Color.Green);
@@ -161,33 +191,33 @@ namespace Breakout
          Pen brickBorderPen = new Pen(Color.Black, 2);
 
          // Draw the array of bricks currently in the game.
-         foreach (Brick currentBrick in mFiniteStateMachine.GetBrickList())
+         foreach (Brick currentBrick in mFiniteStateMachine.Bricks)
          {
             // Determine the level of the brick.
-            switch (currentBrick.GetBrickLevel())
+            switch (currentBrick.BrickLevel)
             {
                case BreakoutConstants.LEVEL_ONE_BRICK_INTEGER:
                {
-                  theEventArguments.Graphics.FillRectangle(levelOneBrickColor,
-                                                           currentBrick.GetBrickRectangle());
-                  theEventArguments.Graphics.DrawRectangle(brickBorderPen,
-                                                           currentBrick.GetBrickRectangle());
+                  theGraphics.FillRectangle(levelOneBrickColor,
+                                            currentBrick.BrickRectangle);
+                  theGraphics.DrawRectangle(brickBorderPen,
+                                            currentBrick.BrickRectangle);
                   break;
                }
                case BreakoutConstants.LEVEL_TWO_BRICK_INTEGER:
                {
-                  theEventArguments.Graphics.FillRectangle(levelTwoBrickColor,
-                                                           currentBrick.GetBrickRectangle());
-                  theEventArguments.Graphics.DrawRectangle(brickBorderPen,
-                                                           currentBrick.GetBrickRectangle());
+                  theGraphics.FillRectangle(levelTwoBrickColor,
+                                            currentBrick.BrickRectangle);
+                  theGraphics.DrawRectangle(brickBorderPen,
+                                            currentBrick.BrickRectangle);
                   break;
                }
                case BreakoutConstants.LEVEL_THREE_BRICK_INTEGER:
                {
-                  theEventArguments.Graphics.FillRectangle(levelThreeBrickColor,
-                                                           currentBrick.GetBrickRectangle());
-                  theEventArguments.Graphics.DrawRectangle(brickBorderPen,
-                                                           currentBrick.GetBrickRectangle());
+                  theGraphics.FillRectangle(levelThreeBrickColor,
+                                            currentBrick.BrickRectangle);
+                  theGraphics.DrawRectangle(brickBorderPen,
+                                            currentBrick.BrickRectangle);
                   break;
                }
                default:
@@ -212,17 +242,17 @@ namespace Breakout
       //  TODO: Add description.
       //
       // Arguments:
-      //  theEventArguments - TODO: Add description.
+      //  theGraphics - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void DrawPowerUps(PaintEventArgs theEventArguments)
+      public void DrawPowerUps(Graphics theGraphics)
       {
          foreach (PowerUp currentPowerUp in mFiniteStateMachine.GetPowerUpList())
          {
-            currentPowerUp.Draw(theEventArguments);
+            currentPowerUp.Draw(theGraphics);
          }
       }
 
@@ -234,13 +264,13 @@ namespace Breakout
       //  TODOL Add description.
       //
       // Arguments:
-      //  theEventArguments - The events that occurred by the sender.
+      //  theGraphics - TODO: Add description.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      protected void DrawHud(PaintEventArgs theEventArguments)
+      protected void DrawHud(Graphics theGraphics)
       {
          // Create the colors used on the HUD.
          SolidBrush hudBackground = new SolidBrush(Color.YellowGreen);
@@ -256,26 +286,26 @@ namespace Breakout
          };
 
          // Draw the HUD Area
-         theEventArguments.Graphics.FillRectangle(hudBackground,
-                                                  new Rectangle(0,
-                                                                BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT,
-                                                                BreakoutConstants.SCREEN_HUD_AREA_WIDTH,
-                                                                BreakoutConstants.SCREEN_HUD_AREA_HEIGHT));
+         theGraphics.FillRectangle(hudBackground,
+                                   new Rectangle(0,
+                                                 BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT,
+                                                 BreakoutConstants.SCREEN_HUD_AREA_WIDTH,
+                                                 BreakoutConstants.SCREEN_HUD_AREA_HEIGHT));
 
          // Draw the number of lives the player has remaining
-         theEventArguments.Graphics.DrawString("Lives Remaining",
-                                               textFont,
-                                               textColor,
-                                               20,
-                                               475,
-                                               textFormat);
-         for (int count = 0; count < mFiniteStateMachine.GetNumberOfLives(); count++)
+         theGraphics.DrawString("Lives Remaining",
+                                textFont,
+                                textColor,
+                                20,
+                                475,
+                                textFormat);
+         for (int count = 0; count < mFiniteStateMachine.NumberOfLives; count++)
          {
-            theEventArguments.Graphics.FillEllipse(ballColor,
-                                                   new Rectangle(20 + ((10 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT) * count),
-                                                                 500,
-                                                                 BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
-                                                                 BreakoutConstants.BALL_WIDTH_AND_HEIGHT));
+            theGraphics.FillEllipse(ballColor,
+                                    new Rectangle(20 + ((10 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT) * count),
+                                                  500,
+                                                  BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+                                                  BreakoutConstants.BALL_WIDTH_AND_HEIGHT));
          }
 
          // Clean up allocated memory.
