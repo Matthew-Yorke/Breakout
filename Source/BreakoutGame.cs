@@ -115,10 +115,12 @@ namespace Breakout
          mCurrentState.Push(new StartScreenState(this));
 
          // Create the paddle for the game
-         mPaddle = new Paddle();
+         mPaddle = new Paddle(this);
 
          // Create the ball for the game.
-         mBall = new Ball();
+         mBall = new Ball(Image.FromFile("../../Images/Ball.png"),
+                          mPaddle.HitBox.X + (mPaddle.HitBox.X / BreakoutConstants.HALF) - BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+                          mPaddle.HitBox.Y - BreakoutConstants.BALL_WIDTH_AND_HEIGHT);
 
          // Create the new list of mini balls for the game.
          mMiniBalls = new List<MiniBall>();

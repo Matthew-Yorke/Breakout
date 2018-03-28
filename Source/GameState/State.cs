@@ -119,15 +119,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       protected void DrawBall(Graphics theGraphics)
       {
-         // Create the colors used for the paddle.
-         SolidBrush ballColor = new SolidBrush(Color.Blue);
-
-         // Draw the paddle and balls onto the window.
-         theGraphics.FillEllipse(ballColor,
-                                 mBreakoutGame.Ball.BallRectangle);
-
-         // Clean up allocated memory.
-         ballColor.Dispose();
+         mBreakoutGame.Ball.Draw(theGraphics);
       }
 
       //*********************************************************************************************************************************************
@@ -146,18 +138,10 @@ namespace Breakout
       //*********************************************************************************************************************************************
       protected void DrawMiniBalls(Graphics theGraphics)
       {
-         // Create the colors used for the paddle.
-         SolidBrush ballColor = new SolidBrush(Color.DarkGray);
-
          foreach (MiniBall currentMiniBall in mBreakoutGame.MiniBalls)
          {
-            // Draw the paddle and balls onto the window.
-            theGraphics.FillEllipse(ballColor,
-                                    currentMiniBall.BallRectangle);
+            currentMiniBall.Draw(theGraphics);
          }
-
-         // Clean up allocated memory.
-         ballColor.Dispose();
       }
 
       //*********************************************************************************************************************************************

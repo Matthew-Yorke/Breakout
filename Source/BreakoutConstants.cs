@@ -48,6 +48,9 @@ namespace Breakout
       // The speed (number of pixel movement) the paddle in the game can move at.
       public const int PADDLE_SPEED = 10;
 
+      // The width of the paddle in pixels.
+      public const int PADDLE_WIDTH = 200;
+
       // The width and height in pixels a mini ball in the game is.
       public const int MINI_BALL_WIDTH_AND_HEIGHT = 10;
 

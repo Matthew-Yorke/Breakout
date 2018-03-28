@@ -53,7 +53,10 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public override void ExecutePowerUp(BreakoutGame theBreakoutGame)
       {
-         theBreakoutGame.MiniBalls.Add(new MiniBall(theBreakoutGame));
+         theBreakoutGame.MiniBalls.Add(new MiniBall(Image.FromFile("../../Images/MiniBall.png"),
+                                                    theBreakoutGame.Paddle.HitBox.X + (theBreakoutGame.Paddle.HitBox.X / BreakoutConstants.HALF) -
+                                                       BreakoutConstants.MINI_BALL_WIDTH_AND_HEIGHT,
+                                                    theBreakoutGame.Paddle.HitBox.Y - BreakoutConstants.MINI_BALL_WIDTH_AND_HEIGHT));
       }
    }
 }

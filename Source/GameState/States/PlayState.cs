@@ -378,7 +378,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void UpdatePaddle()
       {
-         mBreakoutGame.Paddle.Update(mBreakoutGame.Ball);
+         mBreakoutGame.Paddle.Update();
       }
 
       //*********************************************************************************************************************************************
@@ -399,7 +399,7 @@ namespace Breakout
       {
          foreach (MiniBall currentMiniBall in mBreakoutGame.MiniBalls)
          {
-            currentMiniBall.UpdateBall();
+            currentMiniBall.Update();
          }
       }
 
@@ -419,7 +419,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void UpdateBall()
       {
-         mBreakoutGame.Ball.UpdateBall();
+         mBreakoutGame.Ball.Update();
       }
 
       //*********************************************************************************************************************************************
@@ -440,7 +440,7 @@ namespace Breakout
       {
          foreach (PowerUp currentPowerUp in mBreakoutGame.GetPowerUpList())
          {
-            currentPowerUp.Fall();
+            currentPowerUp.Update();
          }
       }
 
@@ -527,13 +527,13 @@ namespace Breakout
          for (var index = 0; index < mBreakoutGame.GetPowerUpList().Count; index++)
          {
             // Check if the power up hits the paddle. Execute the power up ability and remove the power up from the list.
-            if (mBreakoutGame.GetPowerUpList()[index].GetHitBox().IntersectsWith(mBreakoutGame.Paddle.HitBox))
+            if (mBreakoutGame.GetPowerUpList()[index].HitBox.IntersectsWith(mBreakoutGame.Paddle.HitBox))
             {
                mBreakoutGame.GetPowerUpList()[index].ExecutePowerUp(mBreakoutGame);
                mBreakoutGame.GetPowerUpList().RemoveAt(index--);
             }
             // Check if the power up hits the bottom border and remove it from the list of power ups if so.
-            else if (mBreakoutGame.GetPowerUpList()[index].GetLocation().Y > BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT)
+            else if (mBreakoutGame.GetPowerUpList()[index].HitBox.Y > BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT)
             {
                mBreakoutGame.GetPowerUpList().RemoveAt(index--);
             }

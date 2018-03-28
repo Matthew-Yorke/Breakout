@@ -17,19 +17,8 @@ using System.Drawing;
 
 namespace Breakout
 {
-   public class Paddle
+   public class Paddle : MasterObject
    {
-      // The image of the paddle to be drawn on the screen.
-      private Image mPaddleImage;
-
-      // The hit box of the paddle to allow collision detection.
-      private Rectangle mHitBox;
-      public Rectangle HitBox
-      {
-         get {return mHitBox; }
-         set { mHitBox = value;}
-      }
-
       // Determines during an update if the player is pressing the key to move the paddle left (true) or not (false).
       bool mMovePaddleLeft;
       public bool MovePaddleLeft
@@ -46,6 +35,8 @@ namespace Breakout
          set {mMovePaddleRight = value;}
       }
 
+      BreakoutGame mBreakoutGame;
+
       //*********************************************************************************************************************************************
       //
       // Method Name: Paddle
@@ -61,16 +52,12 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public Paddle()
+      public Paddle(BreakoutGame theBreakoutGame) :
+      base(Image.FromFile(BreakoutConstants.PADDLE_IMAGE_FILE),
+           (BreakoutConstants.SCREEN_PLAY_AREA_WIDTH / BreakoutConstants.HALF) - (BreakoutConstants.PADDLE_WIDTH / BreakoutConstants.HALF),
+           BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING)
       {
-         mPaddleImage = Image.FromFile(BreakoutConstants.PADDLE_IMAGE_FILE);
-
-         // Start the paddle at the center of the screen and with a padding from the bottom of the screen.
-         mHitBox = new Rectangle((BreakoutConstants.SCREEN_PLAY_AREA_WIDTH / BreakoutConstants.HALF) -
-                                    (mPaddleImage.Width / BreakoutConstants.HALF),
-                                 BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING,
-                                 mPaddleImage.Width,
-                                 mPaddleImage.Height);
+         mBreakoutGame = theBreakoutGame;
 
          // The paddle starts with no movement.
          mMovePaddleLeft = false;
@@ -117,7 +104,7 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void Update(Ball theBallObject)
+      public override void Update()
       {
          // Check if the left button for the paddle is currently being pressed down.
          // If true: draw the paddle further left by the paddle speed. The ball will follow the paddle if the ball has not been launched yet.
@@ -127,9 +114,9 @@ namespace Breakout
             mHitBox.X = mHitBox.X - BreakoutConstants.PADDLE_SPEED;
 
             // The ball follows the paddle's left movement if the ball has not been launched yet.
-            if (theBallObject.BallLaunched == false)
+            if (mBreakoutGame.Ball.BallLaunched == false)
             {
-               theBallObject.SetBallCoordinateX(theBallObject.BallRectangle.X - BreakoutConstants.PADDLE_SPEED);
+               mBreakoutGame.Ball.SetBallCoordinateX(mBreakoutGame.Ball.HitBox.X - BreakoutConstants.PADDLE_SPEED);
             }
 
             // Prevent the paddle and unlaunched ball from moving further left if the paddle reaches the left border by setting their positions
@@ -138,11 +125,11 @@ namespace Breakout
             {
                mHitBox.X = BreakoutConstants.SCREEN_X_COORDINATE_LEFT;
 
-               if (theBallObject.BallLaunched == false)
+               if (mBreakoutGame.Ball.BallLaunched == false)
                {
                   // The ball i placed center horizontally from the paddle.
-                  theBallObject.SetBallCoordinateX(mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) -
-                                                      (theBallObject.BallRectangle.Width / BreakoutConstants.HALF));
+                  mBreakoutGame.Ball.SetBallCoordinateX(mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) -
+                                                        (mBreakoutGame.Ball.HitBox.Width / BreakoutConstants.HALF));
                }
             }
          }
@@ -154,9 +141,9 @@ namespace Breakout
             mHitBox.X = mHitBox.X + BreakoutConstants.PADDLE_SPEED;
 
             // The ball follows the paddle's right movement if the ball has not been launched yet.
-            if (theBallObject.BallLaunched == false)
+            if (mBreakoutGame.Ball.BallLaunched == false)
             {
-               theBallObject.SetBallCoordinateX(theBallObject.BallRectangle.X + BreakoutConstants.PADDLE_SPEED);
+               mBreakoutGame.Ball.SetBallCoordinateX(mBreakoutGame.Ball.HitBox.X + BreakoutConstants.PADDLE_SPEED);
             }
 
             // Prevent the paddle and unlaunched ball from moving further right if the paddle reaches the right border by setting their positions
@@ -165,33 +152,14 @@ namespace Breakout
             {
                mHitBox.X = BreakoutConstants.SCREEN_PLAY_AREA_WIDTH - mHitBox.Width;
 
-               if (theBallObject.BallLaunched == false)
+               if (mBreakoutGame.Ball.BallLaunched == false)
                {
                   // The ball i placed center horizontally from the paddle.
-                  theBallObject.SetBallCoordinateX(mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) -
-                                                      (theBallObject.BallRectangle.Width / BreakoutConstants.HALF));
+                  mBreakoutGame.Ball.SetBallCoordinateX(mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) -
+                                                        (mBreakoutGame.Ball.HitBox.Width / BreakoutConstants.HALF));
                }
             }
          }
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: Update
-      //
-      // Description:
-      //  Draw the image of the paddle to the screen.
-      //
-      // Arguments:
-      //  theGraphics - The drawing surface.
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public void Draw(Graphics theGraphics)
-      {
-         theGraphics.DrawImage(mPaddleImage, mHitBox);
       }
    }
 }

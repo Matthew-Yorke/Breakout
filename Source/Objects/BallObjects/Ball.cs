@@ -39,14 +39,9 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public Ball()
+      public Ball(Image theImage, int theCoordinateX, int theCoordinateY) :
+      base (theImage, theCoordinateX, theCoordinateY)
       {
-         // Start the ball center of where the paddle starts, but directly above the paddle.
-         mBallRectangle = new Rectangle((BreakoutConstants.SCREEN_PLAY_AREA_WIDTH / BreakoutConstants.HALF) - (BreakoutConstants.BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF),
-                                        BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING - BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
-                                        BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
-                                        BreakoutConstants.BALL_WIDTH_AND_HEIGHT);
-
          // A new ball has not been launched yet.
          mBallLaunched = false;
       }
@@ -91,7 +86,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       protected override void CheckBallCollisionOnBottomBorder(BreakoutGame theBreakoutGame)
       {
-         if (mBallRectangle.Y > BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT)
+         if (mHitBox.Y > BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT)
          {
             theBreakoutGame.NumberOfLives = theBreakoutGame.NumberOfLives - BreakoutConstants.LIFE_LOST;
 

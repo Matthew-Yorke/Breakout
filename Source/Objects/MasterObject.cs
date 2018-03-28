@@ -21,11 +21,11 @@ namespace Breakout
       private Image mImage;
 
       // The hit box of the paddle to allow collision detection.
-      private Rectangle mHitBox;
+      protected Rectangle mHitBox;
       public Rectangle HitBox
       {
-         get { return mHitBox; }
-         set { mHitBox = value; }
+         get {return mHitBox;}
+         set {mHitBox = value;}
       }
 
       //*********************************************************************************************************************************************

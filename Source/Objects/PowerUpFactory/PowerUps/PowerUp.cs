@@ -16,12 +16,8 @@ using System.Windows.Forms;
 
 namespace Breakout
 {
-   public abstract class PowerUp
+   public abstract class PowerUp : MasterObject
    {
-      Image mPowerUpImage;
-      Point mPowerUpLocation;
-      Rectangle mHitBox;
-
       //*********************************************************************************************************************************************
       //
       // Method Name: PowerUp
@@ -38,16 +34,9 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public PowerUp(Image theImage, int theCoordinateX, int theCoordinateY)
+      public PowerUp(Image theImage, int theCoordinateX, int theCoordinateY) :
+      base (theImage, theCoordinateX, theCoordinateY)
       {
-         // Hold the image that was passed in.
-         mPowerUpImage = theImage;
-         // Create the power up location to be center to the coordinates passed in.
-         mPowerUpLocation = new Point(theCoordinateX - (theImage.Width / BreakoutConstants.HALF),
-                                      theCoordinateY - (theImage.Height / BreakoutConstants.HALF));
-         // Create a hit box for collision to be the same size and location of the power up.
-         mHitBox = new Rectangle(mPowerUpLocation,
-                                 mPowerUpImage.Size);
       }
 
       //*********************************************************************************************************************************************
@@ -80,67 +69,9 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void Fall()
+      public override void Update()
       {
-         mPowerUpLocation.Y += 1;
-         mHitBox.Y = mPowerUpLocation.Y;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: GetLocation
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public Point GetLocation()
-      {
-         return mPowerUpLocation;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: GetHitBox
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public Rectangle GetHitBox()
-      {
-         return mHitBox;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: Draw
-      //
-      // Description:
-      //  Draw the image of the power up to the screen.
-      //
-      // Arguments:
-      //  theGraphics - The drawing surface.
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public void Draw(Graphics theGraphics)
-      {
-         theGraphics.DrawImage(mPowerUpImage, mHitBox);
+         mHitBox.Y += 1;
       }
    }
 }
