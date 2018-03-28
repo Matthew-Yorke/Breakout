@@ -3,7 +3,8 @@
 // File Name: PowerUp.cs
 //
 // Description:
-//  TODO: Add description.
+//  The abstract power up class implements basic power up functionality of a power up. The execute method must be implemented by all concrete power
+//  up classes to handle what the power up does upon the player retrieving the power up.
 //
 // Change History:
 //  Author               Date           Description
@@ -23,12 +24,12 @@ namespace Breakout
       // Method Name: PowerUp
       //
       // Description:
-      //  TODO: Add description.
+      //  Constructor that creates the hit box and holds the image at the specified starting location on the screen.
       //
       // Arguments:
-      //  theImage - TODO: Add description.
-      //  theCoordinateX - TODO: Add description.
-      //  theCoordinateY - TODO: Add description.
+      //  theImage - The image to retain for the object.
+      //  theCoordianteX - The initial X-Coordinate the object is at.
+      //  theCoordinateY - The initial Y-Coordinate the object is at.
       //
       // Return:
       //  N/A
@@ -44,10 +45,10 @@ namespace Breakout
       // Method Name: ExecutePowerUp
       //
       // Description:
-      //  TODO: Add description.
+      //  Abstract method that all concrete classes must implement to handle what the power up does upon the player collecting the power up.
       //
       // Arguments:
-      //  N/A
+      //  theBreakoutGame - Reference to the breakout game.
       //
       // Return:
       //  N/A
@@ -57,10 +58,10 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: Fall
+      // Method Name: Update
       //
       // Description:
-      //  TODO: Add description.
+      //  Override that parent update method to have the power up continue to fall towards the bottom border.
       //
       // Arguments:
       //  N/A

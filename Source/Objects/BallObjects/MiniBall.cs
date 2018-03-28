@@ -3,7 +3,7 @@
 // File Name: MiniBall.cs
 //
 // Description:
-//  TODO: Add description.
+//  This class creates the mini ball and removing the mini ball from the game if it exits the bottom border.
 //
 // Change History:
 //  Author               Date           Description
@@ -23,10 +23,13 @@ namespace Breakout
       // Method Name: MiniBall
       //
       // Description:
-      //  TODO: Add description.
+      //  Constructor to create the mini ball object including retaining the image and setting the ball at the specified starting location. The
+      //  initial mini ball velocity is set here.
       //
       // Arguments:
-      //  N/A
+      //  theImage - The image to retain for the object.
+      //  theCoordianteX - The initial X-Coordinate the object is at.
+      //  theCoordinateY - The initial Y-Coordinate the object is at.
       //
       // Return:
       //  N/A
@@ -45,7 +48,7 @@ namespace Breakout
       // Method Name: CheckBallCollisionOnBottomBorder
       //
       // Description:
-      //  TODO: Add description.
+      //  Check if the ball has collided past the bottom border and remove this mini ball from the game if so.
       //
       // Arguments:
       //  theBreakoutGame - TODO: Add description.

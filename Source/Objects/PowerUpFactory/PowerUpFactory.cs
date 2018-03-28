@@ -3,7 +3,7 @@
 // File Name: PowerUpFactory.cs
 //
 // Description:
-//  TODO: Add description.
+//  The abstract power up factory class that details which methods the concrete class must implement.
 //
 // Change History:
 //  Author               Date           Description
@@ -22,16 +22,16 @@ namespace Breakout
       // Method Name: GetPowerUp
       //
       // Description:
-      //  TODO: Add description.
+      //  The abstract method that must be implemented by the concrete class for creating the power up.
       //
       // Arguments:
-      //  thePowerUp - TODO: Add description.
-      //  theRectangle - TODO: Add description.
+      //  theHitBox - The hit box of the brick that was destroyed.
+      //  thePowerUp - The random number to determine which power up to create.
       //
       // Return:
-      //  TODO: Add description.
+      //  Returns the new power up object or null if some failure has occurred. 
       //
       //*********************************************************************************************************************************************
-      public abstract PowerUp GetPowerUp(int thePowerUp, Rectangle theRectangle);
+      public abstract PowerUp GetPowerUp(Rectangle theHitBox, int thePowerUp);
    }
 }

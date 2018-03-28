@@ -3,7 +3,8 @@
 // File Name: BallObject.cs
 //
 // Description:
-//  TODO: Add description.
+//  The abstract ball object class that handles common ball functionality including ball collision detection against other object and, setting of the
+//  ball location, and updating the ball. Each ball type must implement their own functionality upon the bottom border collision.
 //
 // Change History:
 //  Author               Date           Description
@@ -46,10 +47,13 @@ namespace Breakout
       // Method Name: BallObject
       //
       // Description:
-      //  TODO: Add description.
+      //  Constructor to create the ball object including retaining the image and setting the ball at the specified starting location. The initial
+      //  ball damage is set here.
       //
       // Arguments:
-      //  N/A
+      //  theImage - The image to retain for the object.
+      //  theCoordianteX - The initial X-Coordinate the object is at.
+      //  theCoordinateY - The initial Y-Coordinate the object is at.
       //
       // Return:
       //  N/A
@@ -58,10 +62,6 @@ namespace Breakout
       public BallObject(Image theImage, int theCoordinateX, int theCoordinateY) :
       base (theImage, theCoordinateX, theCoordinateY)
       {
-         // A new ball has no velocity as it is not launched yet.
-         mBallVelocityX = BreakoutConstants.BALL_INITIAL_SPEED;
-         mBallVelocityY = BreakoutConstants.BALL_INITIAL_SPEED;
-
          // Set damage to the initial ball damage;
          mDamage = BreakoutConstants.BALL_INITIAL_DAMAGE;
       }
@@ -71,7 +71,7 @@ namespace Breakout
       // Method Name: NewMatch
       //
       // Description:
-      //  TODO: Add description.
+      //  Resets the ball position to be center of the paddle (directly above the paddle) and the velocity.
       //
       // Arguments:
       //  N/A
@@ -82,15 +82,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public virtual void NewMatch()
       {
-         // Reset the paddle to be in the centered horizontally.
-         mHitBox.X = (BreakoutConstants.SCREEN_PLAY_AREA_WIDTH / BreakoutConstants.HALF) -
-                     (mHitBox.Width / BreakoutConstants.HALF);
-         mHitBox.Y = BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT - BreakoutConstants.PADDLE_BOUNDARY_PADDING -
-                     mHitBox.Height;
-
-         // On the start of a new match the ball has no velocity since it has not been launched.
-         mBallVelocityX = BreakoutConstants.BALL_INITIAL_SPEED;
-         mBallVelocityY = BreakoutConstants.BALL_INITIAL_SPEED;
+         
       }
 
       //*********************************************************************************************************************************************
@@ -98,10 +90,10 @@ namespace Breakout
       // Method Name: SetBallCoordinateX
       //
       // Description:
-      //  TODO: Add description.
+      //  Set the X-Coordinate of the ball to the specified location.
       //
       // Arguments:
-      //  theBallCoordinateX - TODO: Add description.
+      //  theBallCoordinateX - The X-Coordinate location the ball will be set to.
       //
       // Return:
       //  N/A
@@ -117,10 +109,10 @@ namespace Breakout
       // Method Name: SetBallCoordinateY
       //
       // Description:
-      //  TODO: Add description.
+      //  Set the Y-Coordinate of the ball to the specified location.
       //
       // Arguments:
-      //  theBallCoordinateY - TODO: Add description.
+      //  theBallCoordinateY - The Y-Coordinate location the ball will be set to.
       //
       // Return:
       //  N/A
@@ -136,7 +128,7 @@ namespace Breakout
       // Method Name: UpdateBall
       //
       // Description:
-      //  TODO: Add description.
+      //  Update the ball X-Coordinate and Y-Coordinate based on the ball velocity.
       //
       // Arguments:
       //  N/A
@@ -156,7 +148,7 @@ namespace Breakout
       // Method Name: ReverseBallVelocityX
       //
       // Description:
-      //  TODO: Add description.
+      //  Reverse the X-Velocity to set the ball's motion in the opposite horizontal direction.
       //
       // Arguments:
       //  N/A
@@ -175,7 +167,7 @@ namespace Breakout
       // Method Name: ReverseBallVelocityY
       //
       // Description:
-      //  TODO: Add description.
+      //  Reverse the Y-Velocity to set the ball's motion in the opposite vertical direction.
       //
       // Arguments:
       //  N/A
@@ -194,12 +186,10 @@ namespace Breakout
       // Method Name: CheckBallCollisionOnBorders
       //
       // Description:
-      //  Determines if the ball has collided with the top, left, right or bottom edge. Ball collision with the top, left, or right edges will result
-      //  in the ball reversing its velocity. Collision with the bottom edge will result in a loss in lives for the player and start of a new match
-      //  or new game in the case all lives are depleted.
+      //  Call to determine any collision from the ball against other game objects or play area borders.
       //
       // Arguments:
-      //  theBreakoutGame - TODO: Add description.
+      //  theBreakoutGame - The game object that tracks various game elements.
       //
       // Return:
       //  N/A
@@ -207,8 +197,8 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public void CheckBallCollisionOnBorders(BreakoutGame theBreakoutGame)
       {
-         CheckBallCollisionOnTopBorder(theBreakoutGame);
-         CheckBallCollisionOnSideBorders(theBreakoutGame);
+         CheckBallCollisionOnTopBorder();
+         CheckBallCollisionOnSideBorders();
          CheckBallCollisionOnBottomBorder(theBreakoutGame);
       }
 
@@ -217,16 +207,16 @@ namespace Breakout
       // Method Name: CheckBallCollisionOnTopBorder
       //
       // Description:
-      //  TODO: Add description.
+      //  Check if the call collides with the top side of the border and reverse the Y velocity if so.
       //
       // Arguments:
-      //  theBreakoutGame - TODO: Add description.
+      //  N/A
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      private void CheckBallCollisionOnTopBorder(BreakoutGame theBreakoutGame)
+      private void CheckBallCollisionOnTopBorder()
       {
          // Reverse the ball Y velocity if the top border is hit by the ball.
          if (mHitBox.Y < 0)
@@ -240,16 +230,16 @@ namespace Breakout
       // Method Name: CheckBallCollisionOnSideBorders
       //
       // Description:
-      //  TODO: Add description.
+      //  Check if the call collides with the left or right side of the borders and reverse the X velocity if so.
       //
       // Arguments:
-      //  theBreakoutGame - TODO: Add description.
+      //  N/A
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      private void CheckBallCollisionOnSideBorders(BreakoutGame theBreakoutGame)
+      private void CheckBallCollisionOnSideBorders()
       {
          // Reverse the ball x velocity if the left or right border is hit.
          if (mHitBox.X < 0 ||
@@ -264,10 +254,10 @@ namespace Breakout
       // Method Name: CheckBallCollisionOnBottomBorder
       //
       // Description:
-      //  TODO: Add description.
+      //  Abstract class all ball objects must implement for when they reach collision with the bottom border.
       //
       // Arguments:
-      //  theBreakoutGame - TODO: Add description.
+      //  N/A
       //
       // Return:
       //  N/A
@@ -280,12 +270,11 @@ namespace Breakout
       // Method Name: CheckBallCollisionOnPaddle
       //
       // Description:
-      //  Determines if the ball has collided with the paddle. The check includes to determine which side of the paddle the ball hit. If the ball
-      //  hits the left side of the paddle the ball will move towards the left. If the ball hits the right side of the paddle the ball will move
-      //  towards the right.
+      //  Determines if the ball has collided with the paddle. If the center of the ball is within the width of the paddle then ball will reverse
+      //  in its Y velocity. Otherwise the ball hit the side or corner of the paddle and the X and Y velocity are reversed.
       //
       // Arguments:
-      //  theBreakoutGame - TODO: Add description.
+      //  theBreakoutGame - The game object that tracks various game elements.
       //
       // Return:
       //  N/A
@@ -296,7 +285,20 @@ namespace Breakout
          // Check if the ball hits the paddle.
          if (mHitBox.IntersectsWith(theBreakoutGame.Paddle.HitBox))
          {
-            ReverseBallVelocityY();
+            // Check if the center of the ball is between the width of the paddle. If so, then the ball hit the bottom or top side of the brick.
+            // The ball's Y velocity is reversed in this case.
+            if (mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) > theBreakoutGame.Paddle.HitBox.X &
+                mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) < (theBreakoutGame.Paddle.HitBox.X + theBreakoutGame.Paddle.HitBox.Width))
+            {
+               ReverseBallVelocityY();
+            }
+            // Otherwise the ball hit the side or corner of the paddle.
+            // The ball's X and Y velocity is reversed in this case.
+            else
+            {
+               ReverseBallVelocityX();
+               ReverseBallVelocityY();
+            }
          }
       }
 
@@ -309,7 +311,7 @@ namespace Breakout
       //  the ball hit. The brick will lose a level and be destroyed when the level drops below the destruction level.
       //
       // Arguments:
-      //  theBreakoutGame - TODO: Add description.
+      //  theBreakoutGame - The game object that tracks various game elements.
       //
       // Return:
       //  N/A
@@ -335,6 +337,13 @@ namespace Breakout
                   // Remove the brick from the brick list since it is now destroyed.
                   theBreakoutGame.RemoveBrick(index--);
                }
+               // Since the brick is not destroyed, update the brick image.
+               else
+               {
+                  theBreakoutGame.Bricks[index].UpdateBrickImage("../../Images/BrickLevel" +
+                                                                 theBreakoutGame.Bricks[index].BrickLevel.ToString() +
+                                                                 ".png");
+               }
 
                break;
             }
@@ -346,8 +355,9 @@ namespace Breakout
       // Method Name: CheckRectangleEdgeCollision
       //
       // Description:
-      //  Determines which edge the ball collided with against the brick. Collision with the left or right edge will reverse the balls x velocity
-      //  and collision with the top or bottom will reverse the y velocity.
+      //  Determines which edge the ball collided with against the brick. Collision with the top or bottom will reverse the balls y velocity,
+      //  collision with the left or right edge will reverse the balls x velocity, and a corner collision will reverse both the balls x and y
+      //  velocity.
       //
       // Arguments:
       //  theBrick - The brick the ball collided with.

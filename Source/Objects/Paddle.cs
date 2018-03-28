@@ -35,6 +35,7 @@ namespace Breakout
          set {mMovePaddleRight = value;}
       }
 
+      // Holds the game object. Used to access the ball object for updating before the ball is launched.
       BreakoutGame mBreakoutGame;
 
       //*********************************************************************************************************************************************
@@ -46,7 +47,7 @@ namespace Breakout
       //  The paddle starts with no horizontal movement.
       //
       // Arguments:
-      //  N/A
+      //  theBreakoutGame - Reference to the game object.
       //
       // Return:
       //  N/A
@@ -83,7 +84,7 @@ namespace Breakout
          // Reset the paddle to be in the centered horizontally.
          mHitBox.X = (BreakoutConstants.SCREEN_PLAY_AREA_WIDTH / BreakoutConstants.HALF) - (mHitBox.Width / BreakoutConstants.HALF);
 
-         // The paddle starts with no movement.
+         // The paddle starts with no movement on a new match.
          mMovePaddleLeft = false;
          mMovePaddleRight = false;
       }
@@ -98,7 +99,7 @@ namespace Breakout
       //  paddle movement.
       //
       // Arguments:
-      //  theBallObject - The ball object in the game.
+      //  N/A
       //
       // Return:
       //  N/A
@@ -111,7 +112,7 @@ namespace Breakout
          if (mMovePaddleLeft == true)
          {
             // Move the paddle left.
-            mHitBox.X = mHitBox.X - BreakoutConstants.PADDLE_SPEED;
+            mHitBox.X -= BreakoutConstants.PADDLE_SPEED;
 
             // The ball follows the paddle's left movement if the ball has not been launched yet.
             if (mBreakoutGame.Ball.BallLaunched == false)
@@ -138,7 +139,7 @@ namespace Breakout
          else if (mMovePaddleRight == true)
          {
             // Move the paddle right.
-            mHitBox.X = mHitBox.X + BreakoutConstants.PADDLE_SPEED;
+            mHitBox.X += BreakoutConstants.PADDLE_SPEED;
 
             // The ball follows the paddle's right movement if the ball has not been launched yet.
             if (mBreakoutGame.Ball.BallLaunched == false)

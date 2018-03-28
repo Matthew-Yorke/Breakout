@@ -34,11 +34,13 @@ namespace Breakout
       //
       // Description:
       //  Constructor that creates the brick object. The brick is placed at the specified location with the image being saved. The brick level is
-      //  set here as well.
+      //  set here.
       //
       // Arguments:
-      //  theBrickRectangle - TODO: Add description.
-      //  theBrickLevel - TODO: Add description.
+      //  theImage - The image to retain for the object.
+      //  theCoordianteX - The initial X-Coordinate the object is at.
+      //  theCoordinateY - The initial Y-Coordinate the object is at.
+      //  theBrickLevel - The level the brick is at upon creation.
       //
       // Return:
       //  N/A
@@ -76,9 +78,10 @@ namespace Breakout
          if (nextRandomNumber <= BreakoutConstants.POWER_UP_DROP_PERCENT)
          {
             // Create a random power up.
-            PowerUp newPowerUp = theBreakoutGame.GetPowerUpFactory().GetPowerUp(randomNumberGenerator.Next(BreakoutConstants.ZERO_PERCENT,
-                                                                                                           BreakoutConstants.ONE_HUNDRED_PERCENT + BreakoutConstants.RANDOM_NUMBER_INCLUSION),
-                                                                                                           HitBox);
+            PowerUp newPowerUp = theBreakoutGame.GetPowerUpFactory().GetPowerUp(HitBox,
+                                                                                randomNumberGenerator.Next(BreakoutConstants.ZERO_PERCENT,
+                                                                                                           BreakoutConstants.ONE_HUNDRED_PERCENT +
+                                                                                                              BreakoutConstants.RANDOM_NUMBER_INCLUSION));
 
             // Check to see if a new power up was made in the factory, and add it to the power up list if so.
             if (newPowerUp != null)
@@ -86,6 +89,25 @@ namespace Breakout
                theBreakoutGame.GetPowerUpList().Add(newPowerUp);
             }
          }
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: UpdateBrickImage
+      //
+      // Description:
+      //  Update the brick image with the based in image.
+      //
+      // Arguments:
+      //  theImage - The image the brick image will update to.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public void UpdateBrickImage(string theImage)
+      {
+         ObjectImage = Image.FromFile(theImage);
       }
 
       //*********************************************************************************************************************************************

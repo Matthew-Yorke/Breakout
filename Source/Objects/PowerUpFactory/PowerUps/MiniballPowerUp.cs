@@ -22,11 +22,11 @@ namespace Breakout
       // Method Name: MiniballPowerUp
       //
       // Description:
-      //  TODO: Add description.
+      //  Constructor that creates the mini ball power up at the specified starting location.
       //
       // Arguments:
-      //  theCoordinateX - TODO: Add description.
-      //  theCoordinateY - TODO: Add description.
+      //  theCoordianteX - The initial X-Coordinate the object is at.
+      //  theCoordinateY - The initial Y-Coordinate the object is at.
       //
       // Return:
       //  N/A
@@ -42,10 +42,10 @@ namespace Breakout
       // Method Name: ExecutePowerUp
       //
       // Description:
-      //  TODO: Add description.
+      //  Adds a new mini ball to the game centered to the paddle (directly above the paddle).
       //
       // Arguments:
-      //  theBreakoutGame - TODO: Add description.
+      //  theBreakoutGame - Reference to the breakout game.
       //
       // Return:
       //  N/A
