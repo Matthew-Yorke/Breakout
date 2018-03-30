@@ -1,6 +1,6 @@
 ﻿//***************************************************************************************************************************************************
 //
-// File Name: MiniballPowerUp.cs
+// File Name: MiniBallPowerUp.cs
 //
 // Description:
 //  TODO: Add description.
@@ -15,11 +15,11 @@ using System.Drawing;
 
 namespace Breakout
 {
-   public class MiniballPowerUp : PowerUp
+   public class MiniBallPowerUp : PowerUp
    {
       //*********************************************************************************************************************************************
       //
-      // Method Name: MiniballPowerUp
+      // Method Name: MiniBallPowerUp
       //
       // Description:
       //  Constructor that creates the mini ball power up at the specified starting location.
@@ -32,8 +32,8 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public MiniballPowerUp(int theCoordinateX, int theCoordinateY) :
-      base(Image.FromFile("../../Images/MiniballPowerUp.png"), theCoordinateX, theCoordinateY)
+      public MiniBallPowerUp(int theCoordinateX, int theCoordinateY) :
+      base(Image.FromFile("../../../Images/MiniballPowerUp.png"), theCoordinateX, theCoordinateY)
       {
       }
 
@@ -53,7 +53,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public override void ExecutePowerUp(BreakoutGame theBreakoutGame)
       {
-         theBreakoutGame.MiniBalls.Add(new MiniBall(Image.FromFile("../../Images/MiniBall.png"),
+         theBreakoutGame.MiniBalls.Add(new MiniBall(Image.FromFile("../../../Images/MiniBall.png"),
                                                     theBreakoutGame.Paddle.HitBox.X + (theBreakoutGame.Paddle.HitBox.X / BreakoutConstants.HALF) -
                                                        BreakoutConstants.MINI_BALL_WIDTH_AND_HEIGHT,
                                                     theBreakoutGame.Paddle.HitBox.Y - BreakoutConstants.MINI_BALL_WIDTH_AND_HEIGHT));

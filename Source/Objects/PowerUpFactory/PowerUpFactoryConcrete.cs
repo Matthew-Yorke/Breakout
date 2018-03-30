@@ -47,8 +47,14 @@ namespace Breakout
          else if (thePowerUp > chance &&
                   thePowerUp <= (chance += BreakoutConstants.MINI_BALL_POWER_UP_PERCENT_CHANCE))
          {
-            newPowerUp = new MiniballPowerUp(theHitBox.X + (theHitBox.Width / BreakoutConstants.HALF),
+            newPowerUp = new MiniBallPowerUp(theHitBox.X + (theHitBox.Width / BreakoutConstants.HALF),
                                              theHitBox.Y + (theHitBox.Width / BreakoutConstants.HALF));
+         }
+         else if (thePowerUp > chance &&
+                  thePowerUp <= (chance += BreakoutConstants.GUN_POWER_UP_PERCENT_CHANCE))
+         {
+            newPowerUp = new GunPowerUp(theHitBox.X + (theHitBox.Width / BreakoutConstants.HALF),
+                                        theHitBox.Y + (theHitBox.Width / BreakoutConstants.HALF));
          }
 
          return newPowerUp;

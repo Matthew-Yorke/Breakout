@@ -123,6 +123,7 @@ namespace Breakout
       public override void Draw(Graphics theGraphics)
       {
          DrawPowerUps(theGraphics);
+         DrawBullets(theGraphics);
          DrawPaddle(theGraphics);
          DrawMiniBalls(theGraphics);
          DrawBall(theGraphics);

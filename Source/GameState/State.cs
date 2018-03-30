@@ -146,6 +146,28 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
+      // Method Name: DrawBullets
+      //
+      // Description:
+      //  TODOL Add description.
+      //
+      // Arguments:
+      //  theGraphics - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      protected void DrawBullets(Graphics theGraphics)
+      {
+         foreach (Bullet currentBullet in mBreakoutGame.Bullets)
+         {
+            currentBullet.Draw(theGraphics);
+         }
+      }
+
+      //*********************************************************************************************************************************************
+      //
       // Method Name: DrawBricks
       //
       // Description:
@@ -207,7 +229,7 @@ namespace Breakout
       {
          // Create the colors used on the HUD.
          SolidBrush hudBackground = new SolidBrush(Color.YellowGreen);
-         SolidBrush ballColor = new SolidBrush(Color.Blue);
+         Image ballImage = Image.FromFile("../../../Images/Ball.png");
 
          // Setup the text HUD.
          Font textFont = new System.Drawing.Font(BreakoutConstants.TEXT_FAMILY_NAME,
@@ -238,20 +260,16 @@ namespace Breakout
             
             for (int count = 0; count < mBreakoutGame.NumberOfLives; count++)
             {
-               theGraphics.FillEllipse(ballColor,
-                                       new Rectangle(20 + ((10 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT) * count),
-                                                     500,
-                                                     BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
-                                                     BreakoutConstants.BALL_WIDTH_AND_HEIGHT));
+               theGraphics.DrawImage(ballImage,
+                                     new Point(20 + ((10 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT) * count),
+                                               500));
             }
          }
          else
          {
-               theGraphics.FillEllipse(ballColor,
-                                       new Rectangle(20 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
-                                                     500,
-                                                     BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
-                                                     BreakoutConstants.BALL_WIDTH_AND_HEIGHT));
+               theGraphics.DrawImage(ballImage,
+                                     new Point(20 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+                                               500));
 
             // Draw the number of lives the player has remaining
             theGraphics.DrawString("x" + mBreakoutGame.NumberOfLives.ToString(),
@@ -264,7 +282,6 @@ namespace Breakout
 
          // Clean up allocated memory.
          hudBackground.Dispose();
-         ballColor.Dispose();
          textFont.Dispose();
          textColor.Dispose();
          textFormat.Dispose();

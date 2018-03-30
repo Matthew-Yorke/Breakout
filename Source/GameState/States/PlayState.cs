@@ -110,7 +110,7 @@ namespace Breakout
                   // Level one brick to be placed at this location.
                   case BreakoutConstants.LEVEL_ONE_BRICK_STRING:
                   {
-                     AddBrick(Image.FromFile("../../Images/BrickLevel1.png"),
+                     AddBrick(Image.FromFile("../../../Images/BrickLevel1.png"),
                               parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
                               lineNumber * BreakoutConstants.BRICK_HEIGHT,
                               BreakoutConstants.LEVEL_ONE_BRICK_INTEGER);
@@ -119,7 +119,7 @@ namespace Breakout
                   // Level two brick to be placed at this location.
                   case BreakoutConstants.LEVEL_TWO_BRICK_STRING:
                   {
-                     AddBrick(Image.FromFile("../../Images/BrickLevel2.png"),
+                     AddBrick(Image.FromFile("../../../Images/BrickLevel2.png"),
                               parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
                               lineNumber * BreakoutConstants.BRICK_HEIGHT,
                               BreakoutConstants.LEVEL_TWO_BRICK_INTEGER);
@@ -128,7 +128,7 @@ namespace Breakout
                   // Level three brick to be placed at this location.
                   case BreakoutConstants.LEVEL_THREE_BRICK_STRING:
                   {
-                     AddBrick(Image.FromFile("../../Images/BrickLevel3.png"),
+                     AddBrick(Image.FromFile("../../../Images/BrickLevel3.png"),
                               parsedLineNumber * BreakoutConstants.BRICK_WIDTH,
                               lineNumber * BreakoutConstants.BRICK_HEIGHT,
                               BreakoutConstants.LEVEL_THREE_BRICK_INTEGER);
@@ -307,6 +307,20 @@ namespace Breakout
                mBreakoutGame.Paddle.MovePaddleRight = false;
                break;
             }
+            // The Z key is pressed. Shoot the paddle guns if the player has bullets left.
+            case Keys.Z:
+            {
+               if (mBreakoutGame.GunAmmunition > 0)
+               {
+                  mBreakoutGame.GunAmmunition--;
+                  mBreakoutGame.Bullets.Add(new Bullet(mBreakoutGame.Paddle.HitBox.X + BreakoutConstants.PADDLE_PADDING_TO_GUN,
+                                                       mBreakoutGame.Paddle.HitBox.Y));
+                  mBreakoutGame.Bullets.Add(new Bullet(mBreakoutGame.Paddle.HitBox.X + mBreakoutGame.Paddle.HitBox.Width -
+                                                          BreakoutConstants.PADDLE_PADDING_TO_GUN - BreakoutConstants.BULLET_WIDTH,
+                                                       mBreakoutGame.Paddle.HitBox.Y));
+               }
+               break;
+            }
             default:
             {
                break;
@@ -354,10 +368,12 @@ namespace Breakout
             // Update the paddles on the window based on the keys pressed down or released.
             UpdatePaddle();
             UpdateMiniBalls();
+            UpdateBullets();
             UpdateBall();
             UpdatePowerUps();
             CheckBallCollision();
             CheckMiniBallCollision();
+            CheckBulletCollision();
             CheckPowerUpCollision();
          }
       }
@@ -400,6 +416,28 @@ namespace Breakout
          foreach (MiniBall currentMiniBall in mBreakoutGame.MiniBalls)
          {
             currentMiniBall.Update();
+         }
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: UpdateBullets
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void UpdateBullets()
+      {
+         foreach (Bullet currentBullet in mBreakoutGame.Bullets)
+         {
+            currentBullet.Update();
          }
       }
 
@@ -506,6 +544,61 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
+      // Method Name: CheckBulletCollision
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void CheckBulletCollision()
+      {
+         for (var bulletIndex = 0; bulletIndex < mBreakoutGame.Bullets.Count; bulletIndex++)
+         {
+            // Check if the bullet hit the top boundary and remove the bullet from the game if so.
+            if (mBreakoutGame.Bullets[bulletIndex].HitBox.Y < 0)
+            {
+               mBreakoutGame.Bullets.RemoveAt(bulletIndex--);
+               continue;
+            }
+
+            // Check each brick for collision against the bullet and remove the bullet if there is a collision.
+            for (var brickIndex = 0; brickIndex < mBreakoutGame.Bricks.Count; brickIndex++)
+            {
+               if (mBreakoutGame.Bullets[bulletIndex].HitBox.IntersectsWith(mBreakoutGame.Bricks[brickIndex].HitBox))
+               {
+                  mBreakoutGame.Bricks[brickIndex].BrickLevel -= mBreakoutGame.Bullets[bulletIndex].Damage;
+
+                  mBreakoutGame.Bullets.RemoveAt(bulletIndex--);
+
+                  // Check if the brick level has hit the destroy level and remove the brick form the array list since it is destroyed.
+                  if (mBreakoutGame.Bricks[brickIndex].BrickLevel <= BreakoutConstants.BRICK_DESTRUCTION_LEVEL)
+                  {
+                     mBreakoutGame.Bricks[brickIndex].Destroyed(mBreakoutGame);
+                     // Remove the brick from the brick list since it is now destroyed.
+                     mBreakoutGame.Bricks.RemoveAt(brickIndex--);
+                  }
+                  // Since the brick is not destroyed, update the brick image.
+                  else
+                  {
+                     mBreakoutGame.Bricks[brickIndex].UpdateBrickImage("../../../Images/BrickLevel" +
+                                                                       mBreakoutGame.Bricks[brickIndex].BrickLevel.ToString() +
+                                                                       ".png");
+                  }
+
+                  break;
+               }
+            }
+         }
+      }
+
+      //*********************************************************************************************************************************************
+      //
       // Method Name: CheckPowerUpCollision
       //
       // Description:
@@ -557,6 +650,7 @@ namespace Breakout
       public override void Draw(Graphics theGraphics)
       {
          DrawPowerUps(theGraphics);
+         DrawBullets(theGraphics);
          DrawPaddle(theGraphics);
          DrawMiniBalls(theGraphics);
          DrawBall(theGraphics);

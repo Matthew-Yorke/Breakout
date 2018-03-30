@@ -40,10 +40,13 @@ namespace Breakout
       public const int ENUM_OFFSET = 1;
 
       // The file location of the paddle image.
-      public const string PADDLE_IMAGE_FILE = "../../Images/Paddle.png";
+      public const string PADDLE_IMAGE_FILE = "../../../Images/Paddle.png";
 
       // The padding in pixels between a end-zone and any paddle in the game.
       public const int PADDLE_BOUNDARY_PADDING = 20;
+
+      // Determine the amount of padding from the edge of the paddle to the gun placement
+      public const int PADDLE_PADDING_TO_GUN = 3;
 
       // The speed (number of pixel movement) the paddle in the game can move at.
       public const int PADDLE_SPEED = 10;
@@ -69,6 +72,9 @@ namespace Breakout
       // The initial damage ball does to a brick.
       public const int BALL_INITIAL_DAMAGE = 1;
 
+      // The width of a bullet.
+      public const int BULLET_WIDTH = 3;
+
       // The width of a single brick.
       public const int BRICK_WIDTH = 50;
 
@@ -82,7 +88,7 @@ namespace Breakout
       public const int NEW_GAME_LEVEL = 2;
 
       // String for the level folders when loading a level.
-      public const string LEVELS_FOLDER = "../../Levels/Level";
+      public const string LEVELS_FOLDER = "../../../Levels/Level";
 
       // String for the text file format when loading a level.
       public const string TEXT_FILE = ".txt";
@@ -124,13 +130,16 @@ namespace Breakout
       public const int RANDOM_NUMBER_INCLUSION = 1;
 
       // The percent chance a power up will drop upon a brick being destroyed.
-      public const int POWER_UP_DROP_PERCENT = 5;
+      public const int POWER_UP_DROP_PERCENT = 100;//5;
 
       // Chance the Extra Life power up will drop when a power up drops.
-      public const int EXTRA_LIFE_POWER_UP_PERCENT_CHANCE = 25;
+      public const int EXTRA_LIFE_POWER_UP_PERCENT_CHANCE = 0;//45;
 
       // Chance the Extra Life power up will drop when a power up drops.
-      public const int MINI_BALL_POWER_UP_PERCENT_CHANCE = 75;
+      public const int MINI_BALL_POWER_UP_PERCENT_CHANCE = 0;//35;
+
+      // Chance the Extra Life power up will drop when a power up drops.
+      public const int GUN_POWER_UP_PERCENT_CHANCE = 100;//20;
 
       // The final level of the game.
       public const int FINAL_LEVEL = 3;

@@ -91,6 +91,30 @@ namespace Breakout
          set {mNumberOfLives = value;}
       }
 
+      // Track the ammunition remaining for the gun power up.
+      int mGunAmmunition;
+      public int GunAmmunition
+      {
+         get {return mGunAmmunition;}
+         set {mGunAmmunition = value;}
+      }
+
+      // List of active bullets in the level.
+      private List<Bullet> mBullets;
+      public List<Bullet> Bullets
+      {
+         get {return mBullets;}
+         set {mBullets = value;}
+      }
+
+      // List of active mini balls to remove.
+      private List<Bullet> mBulletRemoveList;
+      public List<Bullet> BulletRemoveList
+      {
+         get {return mBulletRemoveList;}
+         set {mBulletRemoveList = value;}
+      }
+
       //*********************************************************************************************************************************************
       //
       // Method Name: BreakoutGame
@@ -118,7 +142,7 @@ namespace Breakout
          mPaddle = new Paddle(this);
 
          // Create the ball for the game.
-         mBall = new Ball(Image.FromFile("../../Images/Ball.png"),
+         mBall = new Ball(Image.FromFile("../../../Images/Ball.png"),
                           mPaddle.HitBox.X + (mPaddle.HitBox.X / BreakoutConstants.HALF) - BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
                           mPaddle.HitBox.Y - BreakoutConstants.BALL_WIDTH_AND_HEIGHT);
 
@@ -139,6 +163,12 @@ namespace Breakout
 
          // Initialize the number of lives the players will have left.
          mNumberOfLives = BreakoutConstants.INITIAL_LIVES_REMAINING;
+
+         // Set the amount of gun ammunition the player starts with.
+         mGunAmmunition = 0;
+
+         // Create a new list of bullets for the game.
+         mBullets = new List<Bullet>();
       }
 
       //*********************************************************************************************************************************************
@@ -200,25 +230,6 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: RemoveBrick
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  theBrick - TODO: Add description.
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public void RemoveBrick(int theIndex)
-      {
-         mBricks.RemoveAt(theIndex);
-      }
-
-      //*********************************************************************************************************************************************
-      //
       // Method Name: ProcessMiniBallRemoveList
       //
       // Description:
@@ -235,6 +246,26 @@ namespace Breakout
       {
          mMiniBalls.RemoveAll(element => mMiniBallRemoveList.Contains(element));
          mMiniBallRemoveList.Clear();
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: ProcessBulletRemoveList
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public void ProcessBulletRemoveList()
+      {
+         mBulletRemoveList.RemoveAll(element => mBulletRemoveList.Contains(element));
+         mBulletRemoveList.Clear();
       }
 
       //*********************************************************************************************************************************************

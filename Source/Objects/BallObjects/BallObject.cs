@@ -335,12 +335,12 @@ namespace Breakout
                {
                   theBreakoutGame.Bricks[index].Destroyed(theBreakoutGame);
                   // Remove the brick from the brick list since it is now destroyed.
-                  theBreakoutGame.RemoveBrick(index--);
+                  theBreakoutGame.Bricks.RemoveAt(index--);
                }
                // Since the brick is not destroyed, update the brick image.
                else
                {
-                  theBreakoutGame.Bricks[index].UpdateBrickImage("../../Images/BrickLevel" +
+                  theBreakoutGame.Bricks[index].UpdateBrickImage("../../../Images/BrickLevel" +
                                                                  theBreakoutGame.Bricks[index].BrickLevel.ToString() +
                                                                  ".png");
                }

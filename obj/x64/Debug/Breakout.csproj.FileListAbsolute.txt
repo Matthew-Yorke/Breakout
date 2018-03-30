@@ -1,0 +1,9 @@
+C:\Users\Yorke\source\repos\Breakout\Breakout\bin\x64\Debug\Breakout.exe.config
+C:\Users\Yorke\source\repos\Breakout\Breakout\bin\x64\Debug\Breakout.exe
+C:\Users\Yorke\source\repos\Breakout\Breakout\bin\x64\Debug\Breakout.pdb
+C:\Users\Yorke\source\repos\Breakout\Breakout\obj\x64\Debug\Breakout.BreakoutForm.resources
+C:\Users\Yorke\source\repos\Breakout\Breakout\obj\x64\Debug\Breakout.Properties.Resources.resources
+C:\Users\Yorke\source\repos\Breakout\Breakout\obj\x64\Debug\Breakout.csproj.GenerateResource.cache
+C:\Users\Yorke\source\repos\Breakout\Breakout\obj\x64\Debug\Breakout.csproj.CoreCompileInputs.cache
+C:\Users\Yorke\source\repos\Breakout\Breakout\obj\x64\Debug\Breakout.exe
+C:\Users\Yorke\source\repos\Breakout\Breakout\obj\x64\Debug\Breakout.pdb

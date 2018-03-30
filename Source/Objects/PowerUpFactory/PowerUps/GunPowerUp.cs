@@ -1,6 +1,6 @@
 ﻿//***************************************************************************************************************************************************
 //
-// File Name: ExtraLifePowerUp.cs
+// File Name: GunPowerUp.cs
 //
 // Description:
 //  TODO: Add description.
@@ -15,14 +15,14 @@ using System.Drawing;
 
 namespace Breakout
 {
-   public class ExtraLifePowerUp : PowerUp
+   class GunPowerUp : PowerUp
    {
       //*********************************************************************************************************************************************
       //
-      // Method Name: ExtraLifePowerUp
+      // Method Name: GunPowerUp
       //
       // Description:
-      //  Constructor that creates the extra life power up at the specified starting location.
+      //  Constructor that creates the gun power up at the specified starting location.
       //
       // Arguments:
       //  theCoordianteX - The initial X-Coordinate the object is at.
@@ -32,8 +32,8 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public ExtraLifePowerUp(int theCoordinateX, int theCoordinateY) :
-      base(Image.FromFile("../../../Images/ExtraLifePowerUp.png"), theCoordinateX, theCoordinateY)
+      public GunPowerUp(int theCoordinateX, int theCoordinateY) :
+      base(Image.FromFile("../../../Images/GunPowerUp.png"), theCoordinateX, theCoordinateY)
       {
       }
 
@@ -42,7 +42,7 @@ namespace Breakout
       // Method Name: ExecutePowerUp
       //
       // Description:
-      //  Adds an additional life to the players pool of remaining lives.
+      //  Adds a additional ammunition for the paddle attachment.
       //
       // Arguments:
       //  theBreakoutGame - Reference to the breakout game.
@@ -53,7 +53,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public override void ExecutePowerUp(BreakoutGame theBreakoutGame)
       {
-         theBreakoutGame.NumberOfLives +=  1;
+         theBreakoutGame.GunAmmunition += 1;
       }
    }
 }
