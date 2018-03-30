@@ -55,6 +55,12 @@ namespace Breakout
          // Remove any possible leftover bricks.
          mBreakoutGame.Bricks.Clear();
 
+         // Remove any possible leftover power ups.
+         mBreakoutGame.PowerUps.Clear();
+         mBreakoutGame.MiniBalls.Clear();
+         mBreakoutGame.MiniBallRemoveList.Clear();
+         mBreakoutGame.Bullets.Clear();
+
          // Load the starting level of the game.
          LoadLevel(mCurrentLevel);
       }
@@ -367,14 +373,10 @@ namespace Breakout
          {
             // Update the paddles on the window based on the keys pressed down or released.
             UpdatePaddle();
+            UpdateBall();
             UpdateMiniBalls();
             UpdateBullets();
-            UpdateBall();
             UpdatePowerUps();
-            CheckBallCollision();
-            CheckMiniBallCollision();
-            CheckBulletCollision();
-            CheckPowerUpCollision();
          }
       }
 
@@ -413,10 +415,18 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void UpdateMiniBalls()
       {
+         // Cycle through and update all mini balls.
          foreach (MiniBall currentMiniBall in mBreakoutGame.MiniBalls)
          {
-            currentMiniBall.Update();
+            for (int count = 0; count < currentMiniBall.Speed; count++)
+            { 
+               currentMiniBall.Update();
+               CheckMiniBallCollision(currentMiniBall);
+            }
          }
+
+         // Remove any mini balls that went out of bounds.
+         mBreakoutGame.ProcessMiniBallRemoveList();
       }
 
       //*********************************************************************************************************************************************
@@ -439,6 +449,8 @@ namespace Breakout
          {
             currentBullet.Update();
          }
+
+         CheckBulletCollision();
       }
 
       //*********************************************************************************************************************************************
@@ -457,7 +469,11 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void UpdateBall()
       {
-         mBreakoutGame.Ball.Update();
+         for (int count = 0; count < mBreakoutGame.Ball.Speed; count++)
+         { 
+            mBreakoutGame.Ball.Update();
+            CheckBallCollision();
+         }
       }
 
       //*********************************************************************************************************************************************
@@ -480,6 +496,8 @@ namespace Breakout
          {
             currentPowerUp.Update();
          }
+
+         CheckPowerUpCollision();
       }
 
       //*********************************************************************************************************************************************
@@ -524,22 +542,16 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      private void CheckMiniBallCollision()
+      private void CheckMiniBallCollision(MiniBall currentMiniBall)
       {
-         foreach (MiniBall currentMiniBall in mBreakoutGame.MiniBalls)
-         {
-            // Check for any mini ball collisions on the game border.
-            currentMiniBall.CheckBallCollisionOnBorders(mBreakoutGame);
+         // Check for any mini ball collisions on the game border.
+         currentMiniBall.CheckBallCollisionOnBorders(mBreakoutGame);
 
-            // Check for any mini ball collisions on the paddle.
-            currentMiniBall.CheckBallCollisionOnPaddle(mBreakoutGame);
+         // Check for any mini ball collisions on the paddle.
+         currentMiniBall.CheckBallCollisionOnPaddle(mBreakoutGame);
 
-            // Check for any mini ball collisions on the bricks.
-            currentMiniBall.CheckBallCollisionOnBricks(mBreakoutGame);
-         }
-
-         // Remove any mini balls that went out of bounds.
-         mBreakoutGame.ProcessMiniBallRemoveList();
+         // Check for any mini ball collisions on the bricks.
+         currentMiniBall.CheckBallCollisionOnBricks(mBreakoutGame);
       }
 
       //*********************************************************************************************************************************************

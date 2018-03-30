@@ -41,6 +41,8 @@ namespace Breakout
          // A new ball has no velocity as it is not launched yet.
          BallVelocityX = 1;
          BallVelocityY = -1;
+
+         Speed = 5;
       }
 
       //*********************************************************************************************************************************************

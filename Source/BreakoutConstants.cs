@@ -64,7 +64,7 @@ namespace Breakout
       public const float BALL_INITIAL_SPEED = 0.0F;
 
       // The speed of a ball when launched.
-      public const int BALL_LAUNCH_SPEED = 2;
+      public const int BALL_LAUNCH_SPEED = 1;
 
       // The speed increase when the ball hits a boundary, paddle, or brick.
       public const int BALL_SPEED_INCREASE = 0;
@@ -130,16 +130,16 @@ namespace Breakout
       public const int RANDOM_NUMBER_INCLUSION = 1;
 
       // The percent chance a power up will drop upon a brick being destroyed.
-      public const int POWER_UP_DROP_PERCENT = 100;//5;
+      public const int POWER_UP_DROP_PERCENT = 5;
 
       // Chance the Extra Life power up will drop when a power up drops.
-      public const int EXTRA_LIFE_POWER_UP_PERCENT_CHANCE = 0;//45;
+      public const int EXTRA_LIFE_POWER_UP_PERCENT_CHANCE = 45;
 
       // Chance the Extra Life power up will drop when a power up drops.
-      public const int MINI_BALL_POWER_UP_PERCENT_CHANCE = 0;//35;
+      public const int MINI_BALL_POWER_UP_PERCENT_CHANCE = 35;
 
       // Chance the Extra Life power up will drop when a power up drops.
-      public const int GUN_POWER_UP_PERCENT_CHANCE = 100;//20;
+      public const int GUN_POWER_UP_PERCENT_CHANCE = 20;
 
       // The final level of the game.
       public const int FINAL_LEVEL = 3;

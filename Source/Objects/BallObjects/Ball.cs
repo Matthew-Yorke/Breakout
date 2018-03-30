@@ -50,6 +50,8 @@ namespace Breakout
          BallVelocityX = BreakoutConstants.BALL_INITIAL_SPEED;
          BallVelocityY = BreakoutConstants.BALL_INITIAL_SPEED;
 
+         Speed = 2;
+
          // A new ball has not been launched yet.
          mBallLaunched = false;
       }
@@ -68,7 +70,7 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public override void NewMatch()
+      public void NewMatch()
       {
          // Reset the paddle to be in the centered horizontally.
          mHitBox.X = (BreakoutConstants.SCREEN_PLAY_AREA_WIDTH / BreakoutConstants.HALF) -

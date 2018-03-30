@@ -35,6 +35,14 @@ namespace Breakout
       }
 
       // Determine how much damage the ball does to a brick.
+      private int mSpeed;
+      public int Speed
+      {
+         get {return mSpeed;}
+         set {mSpeed = value;}
+      }
+
+      // Determine how much damage the ball does to a brick.
       private int mDamage;
       public int Damage
       {
@@ -64,25 +72,6 @@ namespace Breakout
       {
          // Set damage to the initial ball damage;
          mDamage = BreakoutConstants.BALL_INITIAL_DAMAGE;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: NewMatch
-      //
-      // Description:
-      //  Resets the ball position to be center of the paddle (directly above the paddle) and the velocity.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public virtual void NewMatch()
-      {
-         
       }
 
       //*********************************************************************************************************************************************
@@ -285,6 +274,9 @@ namespace Breakout
          // Check if the ball hits the paddle.
          if (mHitBox.IntersectsWith(theBreakoutGame.Paddle.HitBox))
          {
+            // Keep the ball above the paddle to avoid the ball getting stuck inside the paddle.
+            mHitBox.Y = theBreakoutGame.Paddle.HitBox.Y - mHitBox.Height;
+
             // Check if the center of the ball is between the width of the paddle. If so, then the ball hit the bottom or top side of the brick.
             // The ball's Y velocity is reversed in this case.
             if (mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) > theBreakoutGame.Paddle.HitBox.X &
@@ -370,14 +362,14 @@ namespace Breakout
       {
          // Check if the center of the ball is between the width of the brick. If so, then the ball hit the bottom or top side of the brick.
          // The ball's Y velocity is reversed in this case.
-         if (mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) > theBrick.HitBox.X &
+         if (mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) > theBrick.HitBox.X &&
              mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) < (theBrick.HitBox.X + theBrick.HitBox.Width))
          {
             ReverseBallVelocityY();
          }
          // Check if the center of the ball is between the height of the brick. If so, then the ball hit the left or right side of the brick.
          // The ball's X velocity is reversed in this case.
-         else if (mHitBox.Y + (mHitBox.Height / BreakoutConstants.HALF) > theBrick.HitBox.Y &
+         else if (mHitBox.Y + (mHitBox.Height / BreakoutConstants.HALF) > theBrick.HitBox.Y &&
                   mHitBox.Y + (mHitBox.Height / BreakoutConstants.HALF) < (theBrick.HitBox.Y + theBrick.HitBox.Height))
          {
             ReverseBallVelocityX();

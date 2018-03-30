@@ -107,14 +107,6 @@ namespace Breakout
          set {mBullets = value;}
       }
 
-      // List of active mini balls to remove.
-      private List<Bullet> mBulletRemoveList;
-      public List<Bullet> BulletRemoveList
-      {
-         get {return mBulletRemoveList;}
-         set {mBulletRemoveList = value;}
-      }
-
       //*********************************************************************************************************************************************
       //
       // Method Name: BreakoutGame
@@ -165,7 +157,7 @@ namespace Breakout
          mNumberOfLives = BreakoutConstants.INITIAL_LIVES_REMAINING;
 
          // Set the amount of gun ammunition the player starts with.
-         mGunAmmunition = 0;
+         mGunAmmunition = 5;
 
          // Create a new list of bullets for the game.
          mBullets = new List<Bullet>();
@@ -246,26 +238,6 @@ namespace Breakout
       {
          mMiniBalls.RemoveAll(element => mMiniBallRemoveList.Contains(element));
          mMiniBallRemoveList.Clear();
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: ProcessBulletRemoveList
-      //
-      // Description:
-      //  TODO: Add description.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public void ProcessBulletRemoveList()
-      {
-         mBulletRemoveList.RemoveAll(element => mBulletRemoveList.Contains(element));
-         mBulletRemoveList.Clear();
       }
 
       //*********************************************************************************************************************************************
