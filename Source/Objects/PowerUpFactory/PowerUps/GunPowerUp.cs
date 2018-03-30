@@ -42,7 +42,7 @@ namespace Breakout
       // Method Name: ExecutePowerUp
       //
       // Description:
-      //  Adds a additional ammunition for the paddle attachment.
+      //  Adds a additional ammunition for the paddle attachment, but does not exceed the maximum amount of ammunition.
       //
       // Arguments:
       //  theBreakoutGame - Reference to the breakout game.
@@ -53,7 +53,10 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public override void ExecutePowerUp(BreakoutGame theBreakoutGame)
       {
-         theBreakoutGame.GunAmmunition += 1;
+         if (theBreakoutGame.GunAmmunition < 35)
+         {
+            theBreakoutGame.GunAmmunition += 1;
+         }
       }
    }
 }

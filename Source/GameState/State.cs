@@ -227,64 +227,31 @@ namespace Breakout
       //*********************************************************************************************************************************************
       protected void DrawHud(Graphics theGraphics)
       {
-         // Create the colors used on the HUD.
-         SolidBrush hudBackground = new SolidBrush(Color.YellowGreen);
          Image ballImage = Image.FromFile("../../../Images/Ball.png");
-
-         // Setup the text HUD.
-         Font textFont = new System.Drawing.Font(BreakoutConstants.TEXT_FAMILY_NAME,
-                                                 BreakoutConstants.HUD_TEXT_SIZE);
-         SolidBrush textColor = new SolidBrush(Color.Black);
-         StringFormat textFormat = new StringFormat
-         {
-            LineAlignment = StringAlignment.Center
-         };
+         Image ammunitionImage = Image.FromFile("../../../Images/BulletWithCasing.png");
 
          // Draw the HUD Area
-         theGraphics.FillRectangle(hudBackground,
-                                   new Rectangle(0,
-                                                 BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT,
-                                                 BreakoutConstants.SCREEN_HUD_AREA_WIDTH,
-                                                 BreakoutConstants.SCREEN_HUD_AREA_HEIGHT));
+         theGraphics.DrawImage(Image.FromFile("../../../Images/HUD.png"),
+                               new Rectangle(0,
+                                             BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT,
+                                             BreakoutConstants.SCREEN_HUD_AREA_WIDTH,
+                                             BreakoutConstants.SCREEN_HUD_AREA_HEIGHT));
 
-         // Draw the number of lives the player has remaining
-         theGraphics.DrawString("Lives Remaining",
-                                textFont,
-                                textColor,
-                                20,
-                                475,
-                                textFormat);
+         // Draw the number of ball images equal to lives within the "Lives Remaining" box.
+        for (int count = 0; count < mBreakoutGame.NumberOfLives; count++)
+        {
+           theGraphics.DrawImage(ballImage,
+                                 new Point(18 + ((1 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT) * count),
+                                           BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT + 57));
+        }
 
-         if (mBreakoutGame.NumberOfLives < 5)
-         { 
-            
-            for (int count = 0; count < mBreakoutGame.NumberOfLives; count++)
-            {
-               theGraphics.DrawImage(ballImage,
-                                     new Point(20 + ((10 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT) * count),
-                                               500));
-            }
-         }
-         else
+         // Draw the number of bullet images equal to ammunition count within the "Ammunition" box.
+         for (int count = 0; count < mBreakoutGame.GunAmmunition; count++)
          {
-               theGraphics.DrawImage(ballImage,
-                                     new Point(20 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
-                                               500));
-
-            // Draw the number of lives the player has remaining
-            theGraphics.DrawString("x" + mBreakoutGame.NumberOfLives.ToString(),
-                                   textFont,
-                                   textColor,
-                                   40 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
-                                   501 + (BreakoutConstants.BALL_WIDTH_AND_HEIGHT / BreakoutConstants.HALF),
-                                   textFormat);
+            theGraphics.DrawImage(ammunitionImage,
+                                  new Point(151 + (3 * count),
+                                            BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT + 57));
          }
-
-         // Clean up allocated memory.
-         hudBackground.Dispose();
-         textFont.Dispose();
-         textColor.Dispose();
-         textFormat.Dispose();
       }
    }
 }

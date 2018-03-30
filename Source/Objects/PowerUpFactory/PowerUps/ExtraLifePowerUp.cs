@@ -42,7 +42,7 @@ namespace Breakout
       // Method Name: ExecutePowerUp
       //
       // Description:
-      //  Adds an additional life to the players pool of remaining lives.
+      //  Adds an additional life to the players pool of remaining lives, but does not exceed the maximum number of lives.
       //
       // Arguments:
       //  theBreakoutGame - Reference to the breakout game.
@@ -53,7 +53,10 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public override void ExecutePowerUp(BreakoutGame theBreakoutGame)
       {
-         theBreakoutGame.NumberOfLives +=  1;
+         if (theBreakoutGame.NumberOfLives < 7)
+         {
+            theBreakoutGame.NumberOfLives +=  1;
+         }
       }
    }
 }
