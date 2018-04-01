@@ -109,6 +109,18 @@ namespace Breakout
       // The level a brick must be to be destroyed.
       public const int BRICK_DESTRUCTION_LEVEL = 0;
 
+      // The file location of the bullet image.
+      public const string BULLET_IMAGE_LOCATION = "../../../Images/Bullet.png";
+
+      // The velocity of the bullet when fired in the x direction.
+      public const float BULLET_VELOCITY_X = 0.0F;
+
+      // The damage a bullet does to a brick.
+      public const int BULLET_DAMAGE = 1;
+
+      // The velocity of the bullet when fired in the x direction.
+      public const float BULLET_VELOCITY_Y = -5.0F;
+
       // The level when a new game starts.
       public const int NEW_GAME_LEVEL = 2;
 

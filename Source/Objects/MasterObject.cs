@@ -101,7 +101,7 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void Draw(Graphics theGraphics)
+      public virtual void Draw(Graphics theGraphics)
       {
          theGraphics.DrawImage(mObjectImage,
                                mHitBox);

@@ -448,6 +448,8 @@ namespace Breakout
             {
                currentBullet.Update();
             }
+
+            currentBullet.UpdateParticles();
          }
 
          CheckBulletCollision();

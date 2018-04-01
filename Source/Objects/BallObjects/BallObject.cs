@@ -26,6 +26,7 @@ namespace Breakout
          set {mDamage = value;}
       }
 
+      // Inner hit box used to help determine which side of a brick the ball collided against.
       private RectangleF mInnerHitDetection;
       public RectangleF InnerHitDetection
       {
@@ -33,6 +34,7 @@ namespace Breakout
          set {mInnerHitDetection = value;}
       }
 
+      // The padding from the normal hit box that the inner hit box starts at.
       private float mInnerHitPadding;
 
       //*********************************************************************************************************************************************
@@ -47,6 +49,9 @@ namespace Breakout
       //  theImage - The image to retain for the object.
       //  theCoordianteX - The initial X-Coordinate the object is at.
       //  theCoordinateY - The initial Y-Coordinate the object is at.
+      //  theVector - The starting vector of the ball on creation (before it is launched).
+      //  theInnerHitPadding - The padding from the normal hit box the inner hit box is located at.
+      //  theInnnerHitWidthAndHeight - The width and height of the inner hit box.
       //
       // Return:
       //  N/A
@@ -115,7 +120,7 @@ namespace Breakout
       // Method Name: UpdateBall
       //
       // Description:
-      //  Update the ball X-Coordinate and Y-Coordinate based on the ball velocity.
+      //  Update the ball X-Coordinate and Y-Coordinate based on the ball velocity vector.
       //
       // Arguments:
       //  N/A

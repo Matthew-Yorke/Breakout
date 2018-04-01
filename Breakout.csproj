@@ -80,9 +80,10 @@
     <Compile Include="Source\GameState\States\PauseState.cs" />
     <Compile Include="Source\GameState\States\PlayState.cs" />
     <Compile Include="Source\Objects\BallObjects\MiniBall.cs" />
-    <Compile Include="Source\Objects\GunBullet.cs" />
+    <Compile Include="Source\Objects\Bullet.cs" />
     <Compile Include="Source\Objects\MasterObject.cs" />
     <Compile Include="Source\Objects\Paddle.cs" />
+    <Compile Include="Source\Objects\Particle.cs" />
     <Compile Include="Source\Objects\PowerUpFactory\PowerUpFactory.cs" />
     <Compile Include="Source\Objects\PowerUpFactory\PowerUpFactoryConcrete.cs" />
     <Compile Include="Source\Objects\PowerUpFactory\PowerUps\GunPowerUp.cs" />
