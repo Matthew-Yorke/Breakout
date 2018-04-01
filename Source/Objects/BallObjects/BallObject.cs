@@ -239,6 +239,7 @@ namespace Breakout
          {
             // Keep the ball above the paddle to avoid the ball getting stuck inside the paddle.
             mHitBox.Y = theBreakoutGame.Paddle.HitBox.Y - mHitBox.Height;
+            mInnerHitDetection.Y = mHitBox.Y + mInnerHitPadding;
 
             // The Y (vertical) component is always reversed on a paddle hit.
             Vector.ReverseComponentY();
@@ -324,7 +325,7 @@ namespace Breakout
          }
          // Check if the center of the ball is between the height of the brick. If so, then the ball hit the left or right side of the brick.
          // The ball's X velocity is reversed in this case.
-         else if ((mInnerHitDetection.Y + mInnerHitDetection.Height)  > theBrick.HitBox.Y &&
+         else if ((mInnerHitDetection.Y + mInnerHitDetection.Height) > theBrick.HitBox.Y &&
                   mInnerHitDetection.Y < (theBrick.HitBox.Y + theBrick.HitBox.Height))
          {
             Vector.ReverseComponentX();
