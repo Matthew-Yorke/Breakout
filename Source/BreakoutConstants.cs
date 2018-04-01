@@ -60,11 +60,16 @@ namespace Breakout
       // The percentage (represented between 0.0-1.0) of the amount of vector force to transfer to the ball on collision.
       public const float PADDLE_VECTOR_TRANSFER_PERCENTAGE = 0.1F;
 
-      // The width and height in pixels a mini ball in the game is.
-      public const float MINI_BALL_WIDTH_AND_HEIGHT = 10.0F;
-
       // The width and height in pixels the ball in the game is.
       public const float BALL_WIDTH_AND_HEIGHT = 14.0F;
+
+      // The padding used to where to start the inner hit detection rectangle within the ball hit detection to use as improved detection against
+      // which side of a rectangle the ball collided on.
+      public const float BALL_INNER_DETECTION_PADDING = 3;
+
+      // The width and height used for the inner hit detection rectangle within the ball hit detection to use as improved detection against which
+      // side of a rectangle the ball collided on.
+      public const float BALL_INNER_DETECTION_WIDTH_AND_HEIGHT = 9;
 
       // The initial horizontal speed of a ball when a new match begins (after the ball is launched by the player).
       public const float BALL_INITIAL_SPEED_X = 0.0F;
@@ -72,11 +77,22 @@ namespace Breakout
       // The initial vertical speed of a ball when a new match begins (after the ball is launched by the player).
       public const float BALL_INITIAL_SPEED_Y = -2.0F;
 
+      // The width and height in pixels a mini ball in the game is.
+      public const float MINI_BALL_WIDTH_AND_HEIGHT = 10.0F;
+
       // The initial horizontal speed of a mini ball when created.
       public const float MINI_BALL_INITIAL_SPEED_X = 0.0F;
 
       // The initial vertical speed of a mini ball when created.
       public const float MINI_BALL_INITIAL_SPEED_Y = -2.0F;
+
+      // The padding used to where to start the inner hit detection rectangle within the mini ball hit detection to use as improved detection against
+      // which side of a rectangle the ball collided on.
+      public const float MINI_BALL_INNER_DETECTION_PADDING = 3;
+
+      // The width and height used for the inner hit detection rectangle within the mini ball hit detection to use as improved detection against
+      // which side of a rectangle the ball collided on.
+      public const float MINI_BALL_INNER_DETECTION_WIDTH_AND_HEIGHT = 5;
 
       // The initial damage ball does to a brick.
       public const int BALL_INITIAL_DAMAGE = 1;

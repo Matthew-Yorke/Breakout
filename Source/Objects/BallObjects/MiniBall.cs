@@ -40,7 +40,9 @@ namespace Breakout
             theCoordinateX,
             theCoordinateY,
             new Vector2D(BreakoutConstants.MINI_BALL_INITIAL_SPEED_X,
-                         BreakoutConstants.MINI_BALL_INITIAL_SPEED_Y))
+                         BreakoutConstants.MINI_BALL_INITIAL_SPEED_Y),
+            BreakoutConstants.MINI_BALL_INNER_DETECTION_PADDING,
+            BreakoutConstants.MINI_BALL_INNER_DETECTION_WIDTH_AND_HEIGHT)
       {
       }
 

@@ -26,6 +26,15 @@ namespace Breakout
          set {mDamage = value;}
       }
 
+      private RectangleF mInnerHitDetection;
+      public RectangleF InnerHitDetection
+      {
+         get {return mInnerHitDetection;}
+         set {mInnerHitDetection = value;}
+      }
+
+      private float mInnerHitPadding;
+
       //*********************************************************************************************************************************************
       //
       // Method Name: BallObject
@@ -43,12 +52,20 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public BallObject(Image theImage, float theCoordinateX, float theCoordinateY, Vector2D theVector) :
+      public BallObject(Image theImage, float theCoordinateX, float theCoordinateY, Vector2D theVector, float theInnerHitPadding,
+                        float theInnnerHitWidthAndHeight) :
       base (theImage,
             theCoordinateX,
             theCoordinateY,
             theVector)
       {
+         mInnerHitDetection = new RectangleF(theCoordinateX + theInnerHitPadding,
+                                             theCoordinateY + theInnerHitPadding,
+                                             theInnnerHitWidthAndHeight,
+                                             theInnnerHitWidthAndHeight);
+
+         mInnerHitPadding = theInnerHitPadding;
+
          // Set damage to the initial ball damage;
          mDamage = BreakoutConstants.BALL_INITIAL_DAMAGE;
       }
@@ -70,6 +87,7 @@ namespace Breakout
       public void SetBallCoordinateX(float theBallCoordinateX)
       {
          mHitBox.X = theBallCoordinateX;
+         mInnerHitDetection.X = theBallCoordinateX + mInnerHitPadding;
       }
 
       //*********************************************************************************************************************************************
@@ -89,6 +107,7 @@ namespace Breakout
       public void SetBallCoordinateY(float theBallCoordinateY)
       {
          mHitBox.Y = theBallCoordinateY;
+         mInnerHitDetection.Y = theBallCoordinateY + mInnerHitPadding;
       }
 
       //*********************************************************************************************************************************************
@@ -109,6 +128,9 @@ namespace Breakout
       {
          mHitBox.X += Vector.GetNormalizedComponentX();
          mHitBox.Y += Vector.GetNormalizedComponentY();
+
+         mInnerHitDetection.X += Vector.GetNormalizedComponentX();
+         mInnerHitDetection.Y += Vector.GetNormalizedComponentY();
       }
 
       //*********************************************************************************************************************************************
@@ -295,15 +317,15 @@ namespace Breakout
       {
          // Check if the center of the ball is between the width of the brick. If so, then the ball hit the bottom or top side of the brick.
          // The ball's Y velocity is reversed in this case.
-         if (mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) > theBrick.HitBox.X &&
-             mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) < (theBrick.HitBox.X + theBrick.HitBox.Width))
+         if ((mInnerHitDetection.X + mInnerHitDetection.Width) > theBrick.HitBox.X &&
+             mInnerHitDetection.X < (theBrick.HitBox.X + theBrick.HitBox.Width))
          {
             Vector.ReverseComponentY();
          }
          // Check if the center of the ball is between the height of the brick. If so, then the ball hit the left or right side of the brick.
          // The ball's X velocity is reversed in this case.
-         else if (mHitBox.Y + (mHitBox.Height / BreakoutConstants.HALF) > theBrick.HitBox.Y &&
-                  mHitBox.Y + (mHitBox.Height / BreakoutConstants.HALF) < (theBrick.HitBox.Y + theBrick.HitBox.Height))
+         else if ((mInnerHitDetection.Y + mInnerHitDetection.Height)  > theBrick.HitBox.Y &&
+                  mInnerHitDetection.Y < (theBrick.HitBox.Y + theBrick.HitBox.Height))
          {
             Vector.ReverseComponentX();
          }

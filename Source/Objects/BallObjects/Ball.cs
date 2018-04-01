@@ -48,7 +48,9 @@ namespace Breakout
             theCoordinateX,
             theCoordinateY,
             new Vector2D(BreakoutConstants.BALL_INITIAL_SPEED_X,
-                         BreakoutConstants.BALL_INITIAL_SPEED_Y))
+                         BreakoutConstants.BALL_INITIAL_SPEED_Y),
+            BreakoutConstants.BALL_INNER_DETECTION_PADDING,
+            BreakoutConstants.BALL_INNER_DETECTION_WIDTH_AND_HEIGHT)
       {
          // A new ball has not been launched yet.
          mBallLaunched = false;
