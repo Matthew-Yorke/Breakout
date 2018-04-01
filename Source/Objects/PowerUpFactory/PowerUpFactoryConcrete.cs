@@ -32,7 +32,7 @@ namespace Breakout
       //  Returns the new power up object or null if some failure has occurred. 
       //
       //*********************************************************************************************************************************************
-      public override PowerUp GetPowerUp(Rectangle theHitBox, int thePowerUp)
+      public override PowerUp GetPowerUp(RectangleF theHitBox, int thePowerUp)
       {
          PowerUp newPowerUp = null;
 

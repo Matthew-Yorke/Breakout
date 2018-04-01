@@ -93,6 +93,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\GameState\States\StartScreenState.cs" />
     <Compile Include="Source\GameState\State.cs" />
+    <Compile Include="Source\Vector2D.cs" />
     <EmbeddedResource Include="Source\BreakoutForm.resx">
       <DependentUpon>BreakoutForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -18,30 +18,6 @@ namespace Breakout
 {
    public abstract class BallObject : MasterObject
    {
-      // The X velocity of the ball.
-      private float mBallVelocityX;
-      public float BallVelocityX
-      {
-         get {return mBallVelocityX;}
-         set {mBallVelocityX = value;}
-      }
-
-      // The Y velocity of the ball.
-      private float mBallVelocityY;
-      public float BallVelocityY
-      {
-         get {return mBallVelocityY;}
-         set {mBallVelocityY = value;}
-      }
-
-      // Determine how much damage the ball does to a brick.
-      private int mSpeed;
-      public int Speed
-      {
-         get {return mSpeed;}
-         set {mSpeed = value;}
-      }
-
       // Determine how much damage the ball does to a brick.
       private int mDamage;
       public int Damage
@@ -67,8 +43,11 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public BallObject(Image theImage, int theCoordinateX, int theCoordinateY) :
-      base (theImage, theCoordinateX, theCoordinateY)
+      public BallObject(Image theImage, float theCoordinateX, float theCoordinateY, Vector2D theVector) :
+      base (theImage,
+            theCoordinateX,
+            theCoordinateY,
+            theVector)
       {
          // Set damage to the initial ball damage;
          mDamage = BreakoutConstants.BALL_INITIAL_DAMAGE;
@@ -88,7 +67,7 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void SetBallCoordinateX(int theBallCoordinateX)
+      public void SetBallCoordinateX(float theBallCoordinateX)
       {
          mHitBox.X = theBallCoordinateX;
       }
@@ -107,7 +86,7 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public void SetBallCoordinateY(int theBallCoordinateY)
+      public void SetBallCoordinateY(float theBallCoordinateY)
       {
          mHitBox.Y = theBallCoordinateY;
       }
@@ -128,46 +107,8 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public override void Update()
       {
-         mHitBox.X += (int)mBallVelocityX;
-         mHitBox.Y += (int)mBallVelocityY;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: ReverseBallVelocityX
-      //
-      // Description:
-      //  Reverse the X-Velocity to set the ball's motion in the opposite horizontal direction.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      private void ReverseBallVelocityX()
-      {
-         mBallVelocityX = -mBallVelocityX;
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: ReverseBallVelocityY
-      //
-      // Description:
-      //  Reverse the Y-Velocity to set the ball's motion in the opposite vertical direction.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      private void ReverseBallVelocityY()
-      {
-         mBallVelocityY = -mBallVelocityY;
+         mHitBox.X += Vector.GetNormalizedComponentX();
+         mHitBox.Y += Vector.GetNormalizedComponentY();
       }
 
       //*********************************************************************************************************************************************
@@ -210,7 +151,7 @@ namespace Breakout
          // Reverse the ball Y velocity if the top border is hit by the ball.
          if (mHitBox.Y < 0)
          {
-            ReverseBallVelocityY();
+            Vector.ReverseComponentY();
          }
       }
 
@@ -234,7 +175,7 @@ namespace Breakout
          if (mHitBox.X < 0 ||
              mHitBox.X > (BreakoutConstants.SCREEN_PLAY_AREA_WIDTH - mHitBox.Width))
          {
-            ReverseBallVelocityX();
+            Vector.ReverseComponentX();
          }
       }
 
@@ -277,20 +218,12 @@ namespace Breakout
             // Keep the ball above the paddle to avoid the ball getting stuck inside the paddle.
             mHitBox.Y = theBreakoutGame.Paddle.HitBox.Y - mHitBox.Height;
 
-            // Check if the center of the ball is between the width of the paddle. If so, then the ball hit the bottom or top side of the brick.
-            // The ball's Y velocity is reversed in this case.
-            if (mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) > theBreakoutGame.Paddle.HitBox.X &
-                mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) < (theBreakoutGame.Paddle.HitBox.X + theBreakoutGame.Paddle.HitBox.Width))
-            {
-               ReverseBallVelocityY();
-            }
-            // Otherwise the ball hit the side or corner of the paddle.
-            // The ball's X and Y velocity is reversed in this case.
-            else
-            {
-               ReverseBallVelocityX();
-               ReverseBallVelocityY();
-            }
+            // The Y (vertical) component is always reversed on a paddle hit.
+            Vector.ReverseComponentY();
+
+            // Transfer a percentage of the paddles velocity to the ball. This helps the player to change to angle of the ball with the paddle.
+            Vector.SetComponentX(Vector.ComponentX +
+                                 (theBreakoutGame.Paddle.Vector.ComponentX * BreakoutConstants.PADDLE_VECTOR_TRANSFER_PERCENTAGE));
          }
       }
 
@@ -365,21 +298,21 @@ namespace Breakout
          if (mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) > theBrick.HitBox.X &&
              mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF) < (theBrick.HitBox.X + theBrick.HitBox.Width))
          {
-            ReverseBallVelocityY();
+            Vector.ReverseComponentY();
          }
          // Check if the center of the ball is between the height of the brick. If so, then the ball hit the left or right side of the brick.
          // The ball's X velocity is reversed in this case.
          else if (mHitBox.Y + (mHitBox.Height / BreakoutConstants.HALF) > theBrick.HitBox.Y &&
                   mHitBox.Y + (mHitBox.Height / BreakoutConstants.HALF) < (theBrick.HitBox.Y + theBrick.HitBox.Height))
          {
-            ReverseBallVelocityX();
+            Vector.ReverseComponentX();
          }
          // Otherwise the ball hit the corner of the brick.
          // The ball's x and y velocity are reversed in this case.
          else
          {
-            ReverseBallVelocityX();
-            ReverseBallVelocityY();
+            Vector.ReverseComponentX();
+            Vector.ReverseComponentY();
          }
       }
    }

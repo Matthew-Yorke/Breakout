@@ -11,10 +11,9 @@
 //
 //************************************************************************************************************************************************
 
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Breakout
@@ -246,16 +245,14 @@ namespace Breakout
                break;
             }
             // The Space key is used to launch the ball at the beginning of a match. Indicate the ball is now being launched if it has not already been
-            // launched.
+            // launched. Also set the horizontal vector component based on the paddle vector component at the time of launching.
             case Keys.Space:
             {
                if (mBreakoutGame.Ball.BallLaunched == false)
                {
-                  // Note: Launch speed is negative to launch the ball towards the top of the screen.
-                  mBreakoutGame.Ball.BallVelocityY = -BreakoutConstants.BALL_LAUNCH_SPEED;
-                  // Temp code start.
-                  mBreakoutGame.Ball.BallVelocityX = BreakoutConstants.BALL_LAUNCH_SPEED;
-                  // Temp code end.
+                  mBreakoutGame.Ball.Vector.SetComponentX(mBreakoutGame.Ball.Vector.ComponentX +
+                                                             (mBreakoutGame.Paddle.Vector.ComponentX *
+                                                              BreakoutConstants.PADDLE_VECTOR_TRANSFER_PERCENTAGE));
                   mBreakoutGame.Ball.BallLaunched = true;
                }
                break;
@@ -418,7 +415,7 @@ namespace Breakout
          // Cycle through and update all mini balls.
          foreach (MiniBall currentMiniBall in mBreakoutGame.MiniBalls)
          {
-            for (int count = 0; count < currentMiniBall.Speed; count++)
+            for (int count = 0; count < Math.Ceiling(currentMiniBall.Vector.Length); count++)
             { 
                currentMiniBall.Update();
                CheckMiniBallCollision(currentMiniBall);
@@ -447,7 +444,10 @@ namespace Breakout
       {
          foreach (Bullet currentBullet in mBreakoutGame.Bullets)
          {
-            currentBullet.Update();
+            for (int count = 0; count < Math.Ceiling(currentBullet.Vector.Length); count++)
+            {
+               currentBullet.Update();
+            }
          }
 
          CheckBulletCollision();
@@ -469,10 +469,13 @@ namespace Breakout
       //*********************************************************************************************************************************************
       private void UpdateBall()
       {
-         for (int count = 0; count < mBreakoutGame.Ball.Speed; count++)
-         { 
-            mBreakoutGame.Ball.Update();
-            CheckBallCollision();
+         if (mBreakoutGame.Ball.BallLaunched == true)
+         {
+            for (int count = 0; count < Math.Ceiling(mBreakoutGame.Ball.Vector.Length); count++)
+            { 
+               mBreakoutGame.Ball.Update();
+               CheckBallCollision();
+            }
          }
       }
 
@@ -494,7 +497,10 @@ namespace Breakout
       {
          foreach (PowerUp currentPowerUp in mBreakoutGame.GetPowerUpList())
          {
-            currentPowerUp.Update();
+            for (int count = 0; count < Math.Ceiling(mBreakoutGame.Ball.Vector.Length); count++)
+            {
+               currentPowerUp.Update();
+            }
          }
 
          CheckPowerUpCollision();

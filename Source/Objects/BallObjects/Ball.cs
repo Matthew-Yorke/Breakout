@@ -32,7 +32,7 @@ namespace Breakout
       //
       // Description:
       //  Constructor to create the ball object including retaining the image and setting the ball at the specified starting location. The initial
-      //  ball velocity is set here.
+      //  ball vector velocity is set here.
       //
       // Arguments:
       //  theImage - The image to retain for the object.
@@ -43,15 +43,13 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public Ball(Image theImage, int theCoordinateX, int theCoordinateY) :
-      base (theImage, theCoordinateX, theCoordinateY)
+      public Ball(Image theImage, float theCoordinateX, float theCoordinateY) :
+      base (theImage,
+            theCoordinateX,
+            theCoordinateY,
+            new Vector2D(BreakoutConstants.BALL_INITIAL_SPEED_X,
+                         BreakoutConstants.BALL_INITIAL_SPEED_Y))
       {
-         // A new ball has no velocity as it is not launched yet.
-         BallVelocityX = BreakoutConstants.BALL_INITIAL_SPEED;
-         BallVelocityY = BreakoutConstants.BALL_INITIAL_SPEED;
-
-         Speed = 2;
-
          // A new ball has not been launched yet.
          mBallLaunched = false;
       }
@@ -79,8 +77,8 @@ namespace Breakout
                      mHitBox.Height;
 
          // On the start of a new match the ball has no velocity since it has not been launched.
-         BallVelocityX = BreakoutConstants.BALL_INITIAL_SPEED;
-         BallVelocityY = BreakoutConstants.BALL_INITIAL_SPEED;
+         Vector.SetComponentX(BreakoutConstants.BALL_INITIAL_SPEED_X);
+         Vector.SetComponentY(BreakoutConstants.BALL_INITIAL_SPEED_Y);
 
          // On the start of a new match the ball has not been launched yet.
          mBallLaunched = false;

@@ -32,7 +32,7 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public MiniBallPowerUp(int theCoordinateX, int theCoordinateY) :
+      public MiniBallPowerUp(float theCoordinateX, float theCoordinateY) :
       base(Image.FromFile("../../../Images/MiniballPowerUp.png"), theCoordinateX, theCoordinateY)
       {
       }

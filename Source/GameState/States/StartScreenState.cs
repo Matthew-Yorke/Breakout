@@ -165,10 +165,10 @@ namespace Breakout
 
          // Draw the ball, which indicates the selector.
          theGraphics.FillEllipse(ballColor,
-                                 new Rectangle((mBreakoutGame.Form.Size.Width / BreakoutConstants.HALF) - 150,
-                                               240 + ((int)mSelection * (int)((float)BreakoutConstants.START_SCREEN_TEXT_SIZE * 1.5F)),
-                                               BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
-                                               BreakoutConstants.BALL_WIDTH_AND_HEIGHT));
+                                 new RectangleF((mBreakoutGame.Form.Size.Width / BreakoutConstants.HALF) - 150,
+                                                240 + ((int)mSelection * (int)((float)BreakoutConstants.START_SCREEN_TEXT_SIZE * 1.5F)),
+                                                BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
+                                                BreakoutConstants.BALL_WIDTH_AND_HEIGHT));
 
 
          // Draw the right player score to be centered on the right half (third quarter horizontal, half vertical) of the screen.

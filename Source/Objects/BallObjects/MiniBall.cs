@@ -24,7 +24,7 @@ namespace Breakout
       //
       // Description:
       //  Constructor to create the mini ball object including retaining the image and setting the ball at the specified starting location. The
-      //  initial mini ball velocity is set here.
+      //  initial mini ball vector velocity is set here.
       //
       // Arguments:
       //  theImage - The image to retain for the object.
@@ -35,14 +35,13 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public MiniBall(Image theImage, int theCoordinateX, int theCoordinateY) :
-      base (theImage, theCoordinateX, theCoordinateY)
+      public MiniBall(Image theImage, float theCoordinateX, float theCoordinateY) :
+      base (theImage,
+            theCoordinateX,
+            theCoordinateY,
+            new Vector2D(BreakoutConstants.MINI_BALL_INITIAL_SPEED_X,
+                         BreakoutConstants.MINI_BALL_INITIAL_SPEED_Y))
       {
-         // A new ball has no velocity as it is not launched yet.
-         BallVelocityX = 1;
-         BallVelocityY = -1;
-
-         Speed = 5;
       }
 
       //*********************************************************************************************************************************************

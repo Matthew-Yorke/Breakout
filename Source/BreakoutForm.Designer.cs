@@ -38,6 +38,7 @@
          this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
          this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
          this.Name = "BreakoutForm";
+         this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
          this.Text = "Breakout";
          this.Load += new System.EventHandler(this.BreakoutFormLoad);
          this.ResumeLayout(false);

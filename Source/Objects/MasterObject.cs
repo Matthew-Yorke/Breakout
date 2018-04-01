@@ -13,6 +13,7 @@
 //
 //***************************************************************************************************************************************************
 
+using System;
 using System.Drawing;
 
 namespace Breakout
@@ -28,11 +29,18 @@ namespace Breakout
       }
 
       // The hit box of the paddle to allow collision detection.
-      protected Rectangle mHitBox;
-      public Rectangle HitBox
+      protected RectangleF mHitBox;
+      public RectangleF HitBox
       {
          get {return mHitBox;}
          set {mHitBox = value;}
+      }
+
+      private Vector2D mVector;
+      public Vector2D Vector
+      {
+         get { return mVector; }
+         set { mVector = value; }
       }
 
       //*********************************************************************************************************************************************
@@ -51,14 +59,16 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public MasterObject(Image theImage, int theCoordianteX, int theCoordinateY)
+      public MasterObject(Image theImage, float theCoordianteX, float theCoordinateY, Vector2D theVector)
       {
          mObjectImage = theImage;
 
-         mHitBox = new Rectangle(theCoordianteX,
-                                 theCoordinateY,
-                                 mObjectImage.Width,
-                                 mObjectImage.Height);
+         mHitBox = new RectangleF(theCoordianteX,
+                                  theCoordinateY,
+                                  mObjectImage.Width,
+                                  mObjectImage.Height);
+
+         mVector = theVector;
       }
 
       //*********************************************************************************************************************************************

@@ -7,4 +7,3 @@ C:\Users\Yorke\source\repos\Breakout\Breakout\obj\x64\Debug\Breakout.csproj.Gene
 C:\Users\Yorke\source\repos\Breakout\Breakout\obj\x64\Debug\Breakout.csproj.CoreCompileInputs.cache
 C:\Users\Yorke\source\repos\Breakout\Breakout\obj\x64\Debug\Breakout.exe
 C:\Users\Yorke\source\repos\Breakout\Breakout\obj\x64\Debug\Breakout.pdb
-C:\Users\Yorke\source\repos\Breakout\Breakout\obj\x64\Debug\Breakout.csprojResolveAssemblyReference.cache

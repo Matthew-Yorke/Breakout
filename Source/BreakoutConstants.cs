@@ -48,26 +48,35 @@ namespace Breakout
       // Determine the amount of padding from the edge of the paddle to the gun placement
       public const int PADDLE_PADDING_TO_GUN = 3;
 
-      // The speed (number of pixel movement) the paddle in the game can move at.
-      public const int PADDLE_SPEED = 10;
+      // The speed the paddle increases by while moving in the same direction.
+      public const int PADDLE_SPEED_INCREASE = 2;
+
+      // The maximum speed the paddle can move.
+      public const int PADDLE_MAX_SPEED = 10;
 
       // The width of the paddle in pixels.
       public const int PADDLE_WIDTH = 200;
 
+      // The percentage (represented between 0.0-1.0) of the amount of vector force to transfer to the ball on collision.
+      public const float PADDLE_VECTOR_TRANSFER_PERCENTAGE = 0.1F;
+
       // The width and height in pixels a mini ball in the game is.
-      public const int MINI_BALL_WIDTH_AND_HEIGHT = 10;
+      public const float MINI_BALL_WIDTH_AND_HEIGHT = 10.0F;
 
       // The width and height in pixels the ball in the game is.
-      public const int BALL_WIDTH_AND_HEIGHT = 14;
+      public const float BALL_WIDTH_AND_HEIGHT = 14.0F;
 
-      // The initial speed of a ball when a match begins.
-      public const float BALL_INITIAL_SPEED = 0.0F;
+      // The initial horizontal speed of a ball when a new match begins (after the ball is launched by the player).
+      public const float BALL_INITIAL_SPEED_X = 0.0F;
 
-      // The speed of a ball when launched.
-      public const int BALL_LAUNCH_SPEED = 1;
+      // The initial vertical speed of a ball when a new match begins (after the ball is launched by the player).
+      public const float BALL_INITIAL_SPEED_Y = -2.0F;
 
-      // The speed increase when the ball hits a boundary, paddle, or brick.
-      public const int BALL_SPEED_INCREASE = 0;
+      // The initial horizontal speed of a mini ball when created.
+      public const float MINI_BALL_INITIAL_SPEED_X = 0.0F;
+
+      // The initial vertical speed of a mini ball when created.
+      public const float MINI_BALL_INITIAL_SPEED_Y = -2.0F;
 
       // The initial damage ball does to a brick.
       public const int BALL_INITIAL_DAMAGE = 1;

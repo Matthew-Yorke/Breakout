@@ -232,24 +232,24 @@ namespace Breakout
 
          // Draw the HUD Area
          theGraphics.DrawImage(Image.FromFile("../../../Images/HUD.png"),
-                               new Rectangle(0,
-                                             BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT,
-                                             BreakoutConstants.SCREEN_HUD_AREA_WIDTH,
-                                             BreakoutConstants.SCREEN_HUD_AREA_HEIGHT));
+                               new RectangleF(0,
+                                              BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT,
+                                              BreakoutConstants.SCREEN_HUD_AREA_WIDTH,
+                                              BreakoutConstants.SCREEN_HUD_AREA_HEIGHT));
 
          // Draw the number of ball images equal to lives within the "Lives Remaining" box.
         for (int count = 0; count < mBreakoutGame.NumberOfLives; count++)
         {
            theGraphics.DrawImage(ballImage,
-                                 new Point(18 + ((1 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT) * count),
-                                           BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT + 57));
+                                 new PointF(18 + ((1 + BreakoutConstants.BALL_WIDTH_AND_HEIGHT) * count),
+                                            BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT + 57));
         }
 
          // Draw the number of bullet images equal to ammunition count within the "Ammunition" box.
          for (int count = 0; count < mBreakoutGame.GunAmmunition; count++)
          {
             theGraphics.DrawImage(ammunitionImage,
-                                  new Point(151 + (3 * count),
+                                  new PointF(151 + (3 * count),
                                             BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT + 57));
          }
       }

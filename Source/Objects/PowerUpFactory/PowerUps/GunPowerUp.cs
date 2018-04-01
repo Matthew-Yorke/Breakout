@@ -32,7 +32,7 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public GunPowerUp(int theCoordinateX, int theCoordinateY) :
+      public GunPowerUp(float theCoordinateX, float theCoordinateY) :
       base(Image.FromFile("../../../Images/GunPowerUp.png"), theCoordinateX, theCoordinateY)
       {
       }

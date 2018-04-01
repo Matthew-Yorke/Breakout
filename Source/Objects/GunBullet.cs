@@ -26,10 +26,11 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public Bullet(int theCoordinateX, int theCoordinateY) :
+      public Bullet(float theCoordinateX, float theCoordinateY) :
       base(Image.FromFile("../../../Images/Bullet.png"),
            theCoordinateX,
-           theCoordinateY)
+           theCoordinateY,
+           new Vector2D(0.0F, -5.0F))
       {
          mDamage = 1;
       }
@@ -50,7 +51,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public override void Update()
       {
-         mHitBox.Y -= 5;
+         mHitBox.Y -= Vector.GetNormalizedComponentY();
       }
    }
 }

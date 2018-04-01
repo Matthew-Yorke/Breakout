@@ -32,6 +32,6 @@ namespace Breakout
       //  Returns the new power up object or null if some failure has occurred. 
       //
       //*********************************************************************************************************************************************
-      public abstract PowerUp GetPowerUp(Rectangle theHitBox, int thePowerUp);
+      public abstract PowerUp GetPowerUp(RectangleF theHitBox, int thePowerUp);
    }
 }

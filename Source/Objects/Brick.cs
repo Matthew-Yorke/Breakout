@@ -46,8 +46,11 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public Brick(Image theImage, int theCoordinateX, int theCoordinateY, int theBrickLevel) :
-      base(theImage, theCoordinateX, theCoordinateY)
+      public Brick(Image theImage, float theCoordinateX, float theCoordinateY, int theBrickLevel) :
+      base(theImage,
+           theCoordinateX,
+           theCoordinateY,
+           new Vector2D(0.0F, 0.0F))
       {
          mBrickLevel = theBrickLevel;
       }

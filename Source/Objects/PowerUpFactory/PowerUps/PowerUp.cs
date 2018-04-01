@@ -35,8 +35,11 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public PowerUp(Image theImage, int theCoordinateX, int theCoordinateY) :
-      base (theImage, theCoordinateX, theCoordinateY)
+      public PowerUp(Image theImage, float theCoordinateX, float theCoordinateY) :
+      base (theImage,
+            theCoordinateX,
+            theCoordinateY,
+            new Vector2D(0.0F, 2.0F))
       {
       }
 
@@ -72,7 +75,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public override void Update()
       {
-         mHitBox.Y += 1;
+         mHitBox.Y += Vector.GetNormalizedComponentY();
       }
    }
 }
