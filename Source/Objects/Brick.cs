@@ -28,6 +28,8 @@ namespace Breakout
          set {mBrickLevel = value;}
       }
 
+      private PowerUp mPowerUp;
+
       //*********************************************************************************************************************************************
       //
       // Method Name: Brick
@@ -46,13 +48,53 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public Brick(Image theImage, float theCoordinateX, float theCoordinateY, int theBrickLevel) :
+      public Brick(Image theImage, float theCoordinateX, float theCoordinateY, int theBrickLevel, BreakoutGame theBreakoutGame) :
       base(theImage,
            theCoordinateX,
            theCoordinateY,
            new Vector2D(0.0F, 0.0F))
       {
          mBrickLevel = theBrickLevel;
+
+         // Start the power up as null in case a power up is not hidden in this brick.
+         mPowerUp = null;
+         
+         // Determine if this brick has a hidden power up and store the power up if so.
+         DetermineHiddenPowerUp(theBreakoutGame);
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: DetermineHiddenPowerUp
+      //
+      // Description:
+      //  This method determines if a power up is to be hidden where the brick is until the bricks destruction. If a power up is to be created the
+      //  brick generates a random power up.
+      //
+      // Arguments:
+      //  theBreakoutGame - The game object that tracks various game elements.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public void DetermineHiddenPowerUp(BreakoutGame theBreakoutGame)
+      {
+         // Use random number generator to potentially create a new power up.
+         Random randomNumberGenerator = new Random();
+
+         // Give a specified chance a power up will drop.
+         int nextRandomNumber = theBreakoutGame.RandomNumberGenerator.Next(BreakoutConstants.ZERO_PERCENT,
+                                                                           BreakoutConstants.ONE_HUNDRED_PERCENT +
+                                                                              BreakoutConstants.RANDOM_NUMBER_INCLUSION);
+         if (nextRandomNumber <= BreakoutConstants.POWER_UP_DROP_PERCENT)
+         {
+            // Create a random power up.
+            mPowerUp = theBreakoutGame.GetPowerUpFactory().GetPowerUp(HitBox,
+                                                                      randomNumberGenerator.Next(BreakoutConstants.ZERO_PERCENT,
+                                                                                                 BreakoutConstants.ONE_HUNDRED_PERCENT +
+                                                                                                 BreakoutConstants.RANDOM_NUMBER_INCLUSION));
+         }
       }
 
       //*********************************************************************************************************************************************
@@ -60,8 +102,7 @@ namespace Breakout
       // Method Name: Destroyed
       //
       // Description:
-      //  When called on destruction of the brick, this method determines if a power up is to be created where the brick was located. If a power up
-      //  is to be created the brick generates a random power up.
+      //  When called on destruction of the brick, this method adds the hidden power up to the game power up list if the hidden power up exists.
       //
       // Arguments:
       //  theBreakoutGame - The game object that tracks various game elements.
@@ -72,25 +113,29 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public void Destroyed(BreakoutGame theBreakoutGame)
       {
-         // Use random number generator to potentially create a new power up.
-         Random randomNumberGenerator = new Random();
-
-         // Give a specified chance a power up will drop.
-         int nextRandomNumber = randomNumberGenerator.Next(BreakoutConstants.ZERO_PERCENT,
-                                                           BreakoutConstants.ONE_HUNDRED_PERCENT + BreakoutConstants.RANDOM_NUMBER_INCLUSION);
-         if (nextRandomNumber <= BreakoutConstants.POWER_UP_DROP_PERCENT)
+         // Check to see if a power up was hidden in this brick, and add it to the power up list if so.
+         if (mPowerUp != null)
          {
-            // Create a random power up.
-            PowerUp newPowerUp = theBreakoutGame.GetPowerUpFactory().GetPowerUp(HitBox,
-                                                                                randomNumberGenerator.Next(BreakoutConstants.ZERO_PERCENT,
-                                                                                                           BreakoutConstants.ONE_HUNDRED_PERCENT +
-                                                                                                              BreakoutConstants.RANDOM_NUMBER_INCLUSION));
+            theBreakoutGame.GetPowerUpList().Add(mPowerUp);
+         }
 
-            // Check to see if a new power up was made in the factory, and add it to the power up list if so.
-            if (newPowerUp != null)
-            {
-               theBreakoutGame.GetPowerUpList().Add(newPowerUp);
-            }
+         for (int count = 0; count < 30; count++)
+         {
+            // Determine a random location within the bricks.
+            int theRandomXPosition = theBreakoutGame.RandomNumberGenerator.Next((int)HitBox.X,
+                                                                                (int)(HitBox.X + HitBox.Width));
+            int theRandomYPosition = theBreakoutGame.RandomNumberGenerator.Next((int)HitBox.Y,
+                                                                                (int)(HitBox.Y + HitBox.Height));
+            
+            // Add a new particle for the brick explosion at the new random location that travels at a random velocity in any direction.
+            theBreakoutGame.Particles.Add(new Particle(theRandomXPosition,
+                                                       theRandomYPosition,
+                                                       BreakoutConstants.BRICK_EXPLOSION_WIDTH_AND_LENGTH,
+                                                       BreakoutConstants.BRICK_EXPLOSION_MINIMUM_ANGLE,
+                                                       BreakoutConstants.BRICK_EXPLOSION_MAXIMUM_ANGLE,
+                                                       BreakoutConstants.BRICK_EXPLOSION_TIME_MILLISECONDS,
+                                                       Color.FromArgb(255, 34, 177, 76),
+                                                       theBreakoutGame));
          }
       }
 

@@ -84,6 +84,7 @@ namespace Breakout
                // Check if the new game option was selected and push a new play state onto the stack if so.
                if(mSelection == Selection.NEW_GAME)
                {
+                  mBreakoutGame.NewGame();
                   mBreakoutGame.PushState(new PlayState(mBreakoutGame));
                }
                // Check if the exit option was selected and exit the application if so.
@@ -159,9 +160,11 @@ namespace Breakout
          Font textFont = new System.Drawing.Font(BreakoutConstants.TEXT_FAMILY_NAME,
                                                  BreakoutConstants.START_SCREEN_TEXT_SIZE);
          SolidBrush textColor = new SolidBrush(Color.Black);
-         StringFormat textFormat = new StringFormat();
-         textFormat.Alignment = StringAlignment.Center;
-         textFormat.LineAlignment = StringAlignment.Center;
+         StringFormat textFormat = new StringFormat()
+         {
+            Alignment = StringAlignment.Center,
+            LineAlignment = StringAlignment.Center
+         };
 
          // Draw the ball, which indicates the selector.
          theGraphics.FillEllipse(ballColor,

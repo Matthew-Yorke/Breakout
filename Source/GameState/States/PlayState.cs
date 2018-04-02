@@ -23,8 +23,6 @@ namespace Breakout
       // The current level the player is on.
       int mCurrentLevel;
 
-      
-
       //*********************************************************************************************************************************************
       //
       // Method Name: PlayState
@@ -182,7 +180,8 @@ namespace Breakout
          Brick newBrick = new Brick(theImage,
                                     theCoordinateX,
                                     theCoordinateY,
-                                    theBrickLevel);
+                                    theBrickLevel,
+                                    mBreakoutGame);
 
          // Add the new brick to the list of bricks in the level.
          mBreakoutGame.AddBrick(newBrick);
@@ -374,6 +373,7 @@ namespace Breakout
             UpdateMiniBalls();
             UpdateBullets();
             UpdatePowerUps();
+            UpdateParticles();
          }
       }
 
@@ -449,7 +449,14 @@ namespace Breakout
                currentBullet.Update();
             }
 
-            currentBullet.UpdateParticles();
+            mBreakoutGame.Particles.Add(new Particle(currentBullet.HitBox.X + (currentBullet.HitBox.Width / BreakoutConstants.HALF),
+                                                     currentBullet.HitBox.Y + currentBullet.HitBox.Height,
+                                                     BreakoutConstants.BULLET_SMOKE_TRAIL_WIDTH_AND_LENGTH,
+                                                     BreakoutConstants.BULLET_SMOKE_TRAIL_MINIMUM_ANGLE,
+                                                     BreakoutConstants.BULLET_SMOKE_TRAIL_MAXIMUM_ANGLE,
+                                                     BreakoutConstants.BULLET_SMOKE_TRAIL_TIME_MILLISECONDS,
+                                                     Color.FromArgb(255, 140, 140, 140),
+                                                     mBreakoutGame));
          }
 
          CheckBulletCollision();
@@ -506,6 +513,31 @@ namespace Breakout
          }
 
          CheckPowerUpCollision();
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: UpdateParticles
+      //
+      // Description:
+      //  Cycle through the particles list and update the particles position based on its velocity.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void UpdateParticles()
+      {
+         for (int count = 0; count < mBreakoutGame.Particles.Count; count++)
+         {
+            if (mBreakoutGame.Particles[count].Update() == true)
+            {
+               mBreakoutGame.Particles.RemoveAt(count--);
+            }
+         }
       }
 
       //*********************************************************************************************************************************************
@@ -670,11 +702,12 @@ namespace Breakout
       public override void Draw(Graphics theGraphics)
       {
          DrawPowerUps(theGraphics);
+         DrawBricks(theGraphics);
          DrawBullets(theGraphics);
+         DrawParticles(theGraphics);
          DrawPaddle(theGraphics);
          DrawMiniBalls(theGraphics);
          DrawBall(theGraphics);
-         DrawBricks(theGraphics);
          DrawHud(theGraphics);
       }
    }

@@ -109,6 +109,18 @@ namespace Breakout
       // The level a brick must be to be destroyed.
       public const int BRICK_DESTRUCTION_LEVEL = 0;
 
+      // The width and length of the brick explosion particle.
+      public const int BRICK_EXPLOSION_WIDTH_AND_LENGTH = 4;
+
+      // The minimum angle the explosion particle will go when a brick is destroyed.
+      public const int BRICK_EXPLOSION_MINIMUM_ANGLE = 0;
+
+      // The maximum angle the explosion particle will go when a brick is destroyed.
+      public const int BRICK_EXPLOSION_MAXIMUM_ANGLE = 360;
+
+      // The number of milliseconds for the explosion particles to exist when a brick explodes.
+      public const int BRICK_EXPLOSION_TIME_MILLISECONDS = 1000;
+
       // The file location of the bullet image.
       public const string BULLET_IMAGE_LOCATION = "../../../Images/Bullet.png";
 
@@ -120,6 +132,18 @@ namespace Breakout
 
       // The velocity of the bullet when fired in the x direction.
       public const float BULLET_VELOCITY_Y = -5.0F;
+
+      // The width and length of the bullet smoke particle.
+      public const int BULLET_SMOKE_TRAIL_WIDTH_AND_LENGTH = 4;
+
+      // The minimum angle the explosion particle will go when a brick is destroyed.
+      public const int BULLET_SMOKE_TRAIL_MINIMUM_ANGLE = 135;
+
+      // The maximum angle the explosion particle will go when a brick is destroyed.
+      public const int BULLET_SMOKE_TRAIL_MAXIMUM_ANGLE = 225;
+
+      // The number of milliseconds for the explosion particles to exist when a brick explodes.
+      public const int BULLET_SMOKE_TRAIL_TIME_MILLISECONDS = 400;
 
       // The level when a new game starts.
       public const int NEW_GAME_LEVEL = 2;

@@ -26,8 +26,6 @@ namespace Breakout
          set{mDamage = value;}
       }
 
-      private List<Particle> mParticles;
-
       //*********************************************************************************************************************************************
       //
       // Method Name: Bullet
@@ -51,8 +49,6 @@ namespace Breakout
                         BreakoutConstants.BULLET_VELOCITY_Y))
       {
          mDamage = BreakoutConstants.BULLET_DAMAGE;
-
-         mParticles = new List<Particle>();
       }
 
       //*********************************************************************************************************************************************
@@ -90,40 +86,7 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public void UpdateParticles()
       {
-         mParticles.Add(new Particle(mHitBox.X + (mHitBox.Width / BreakoutConstants.HALF),
-                                     mHitBox.Y + mHitBox.Height));
-
-         for (int count = 0; count<mParticles.Count; count++)
-         {
-            if (mParticles[count].Update() == true)
-            {
-               mParticles.RemoveAt(count--);
-            }
-         }
-      }
-
-      //*********************************************************************************************************************************************
-      //
-      // Method Name: Draw
-      //
-      // Description:
-      //  Update the bullet to head towards the top of the screen.
-      //
-      // Arguments:
-      //  N/A
-      //
-      // Return:
-      //  N/A
-      //
-      //*********************************************************************************************************************************************
-      public override void Draw(Graphics theGraphics)
-      {
-         base.Draw(theGraphics);
-
-         foreach (Particle currentParticle in mParticles)
-         {
-            currentParticle.Draw(theGraphics);
-         }
+         
       }
    }
 }

@@ -21,8 +21,11 @@ namespace Breakout
       private TimeSpan mLiveTime;
       private DateTime? mBirthTime;
       private PointF mLocation;
-      private PointF mVelocity;
+      private Vector2D mVelocity;
+      private Color mColor;
       private int mParticleSize;
+      private int mFadeStride;
+      private int mCurrentAlpha;
 
       //*********************************************************************************************************************************************
       //
@@ -39,24 +42,35 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public Particle(float theCoordinateX, float theCoordinateY)
+      public Particle(float theCoordinateX, float theCoordinateY, int theWidthAndLength, int theMinimumAngle, int theMaximumAngle,
+                      int theMilliseconds, Color theColor, BreakoutGame theBreakoutGame)
       {
+         // Set the particle starting location based on the passed in parameters.
          mLocation = new PointF(theCoordinateX,
                                 theCoordinateY);
 
+         // Set the how long the particle will live before being destroyed.
          mLiveTime = new TimeSpan(0,
                                   0,
                                   0,
                                   0,
-                                  200);
+                                  theMilliseconds);
 
-         Random random = new Random();
-         float randomAngle = (float)(random.NextDouble() * Math.PI);
+         // Create a velocity vector within the cone (between min and max angle).
+         int angleDegrees = theBreakoutGame.RandomNumberGenerator.Next(theMinimumAngle, theMaximumAngle);
+         mVelocity = new Vector2D((float)Math.Cos(angleDegrees),
+                                  (float)Math.Sin(angleDegrees));
 
-         mVelocity = new PointF((float)Math.Cos(randomAngle),
-                                (float)Math.Sin(randomAngle));
+         // TODO: Add particle size as parameter.
+         mParticleSize = theWidthAndLength;
 
-         mParticleSize = 4;
+         // Hold the color information
+         mColor = theColor;
+         mCurrentAlpha = mColor.A;
+
+         // The fade step is set by determining how many times an update will be called before the particle is destroyed and then dividing that
+         // number by the starting alpha (transparency) to get the amount of fade to add per update.
+         mFadeStride = mColor.A / (theMilliseconds / BreakoutConstants.TIMER_INTERVAL);
       }
 
       //*********************************************************************************************************************************************
@@ -75,14 +89,17 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public bool Update()
       {
+         // If this is the first update then set the time this particle started.
          if (mBirthTime == null)
          {
             mBirthTime = DateTime.Now;
          }
 
-         mLocation.X += mVelocity.X;
-         mLocation.Y += mVelocity.Y;
+         // Change the particle location by its velocity vector.
+         mLocation.X += mVelocity.ComponentX;
+         mLocation.Y += mVelocity.ComponentY;
 
+         // Return if the time has exceeded the particles life time (true) or not (false).
          return DateTime.Now - mBirthTime > mLiveTime;
       }
 
@@ -102,14 +119,24 @@ namespace Breakout
       //*********************************************************************************************************************************************
       public void Draw(Graphics theGraphics)
       {
-         SolidBrush particleColor = new SolidBrush(Color.DarkGray);
+         // Update the particle fade amount.
+         mCurrentAlpha -= mFadeStride;
+         if (mCurrentAlpha < 0)
+         {
+            mCurrentAlpha = 0;
+         }
 
+         // Create a new brush using the new particle fade amount the particle color.
+         SolidBrush particleColor = new SolidBrush(Color.FromArgb(mCurrentAlpha, mColor.R, mColor.G, mColor.B));
+
+         // Draw the particle at the location (center of the particle) using the faded particle brush.
          theGraphics.FillRectangle(particleColor,
                                    mLocation.X - (mParticleSize / BreakoutConstants.HALF),
                                    mLocation.Y - (mParticleSize / BreakoutConstants.HALF),
                                    mParticleSize,
                                    mParticleSize);
 
+         // Clean up used memory.
          particleColor.Dispose();
       }
    }

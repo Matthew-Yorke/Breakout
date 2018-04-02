@@ -13,6 +13,7 @@
 //
 //***************************************************************************************************************************************************
 
+using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Drawing;
@@ -107,6 +108,20 @@ namespace Breakout
          set {mBullets = value;}
       }
 
+      private Random mRandomNumberGenerator;
+      public Random RandomNumberGenerator
+      {
+         get {return mRandomNumberGenerator;}
+         set {mRandomNumberGenerator = value;}
+      }
+
+      private List<Particle> mParticles;
+      public List<Particle> Particles
+      {
+         get {return mParticles;}
+         set {mParticles = value;}
+      }
+
       //*********************************************************************************************************************************************
       //
       // Method Name: BreakoutGame
@@ -125,6 +140,10 @@ namespace Breakout
       {
          // Hold the form reference for the game.
          mForm = theForm;
+
+         // Initialize the random number generator used in the game.
+         mRandomNumberGenerator= new Random();
+
          // Initialize the state stack.
          mCurrentState = new Stack<State>();
          // The push on the initial play state.
@@ -138,6 +157,12 @@ namespace Breakout
                           mPaddle.HitBox.X + (mPaddle.HitBox.X / BreakoutConstants.HALF) - BreakoutConstants.BALL_WIDTH_AND_HEIGHT,
                           mPaddle.HitBox.Y - BreakoutConstants.BALL_WIDTH_AND_HEIGHT);
 
+         // Create a new power up factory class.
+         mPowerUpFactory = new PowerUpFactoryConcrete();
+
+         // Create a new list of power ups for the game.
+         mPowerUps = new List<PowerUp>();
+
          // Create the new list of mini balls for the game.
          mMiniBalls = new List<MiniBall>();
 
@@ -147,20 +172,41 @@ namespace Breakout
          // Create the new list of bricks for the game.
          mBricks = new List<Brick>();
 
-         // Create a new power up factory class.
-         mPowerUpFactory = new PowerUpFactoryConcrete();
-
-         // Create a new list of power ups for the game.
-         mPowerUps = new List<PowerUp>();
-
-         // Initialize the number of lives the players will have left.
-         mNumberOfLives = BreakoutConstants.INITIAL_LIVES_REMAINING;
-
-         // Set the amount of gun ammunition the player starts with.
-         mGunAmmunition = 5;
-
          // Create a new list of bullets for the game.
          mBullets = new List<Bullet>();
+
+         // Create a new list of particles for the game.
+         mParticles = new List<Particle>();
+
+         // Start a new game
+         NewGame();
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: NewGame
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  TODO: Add description.
+      //
+      //*********************************************************************************************************************************************
+      public void NewGame()
+      {
+         // Clear all list.
+         mMiniBalls.Clear();
+         mMiniBallRemoveList.Clear();
+         mBricks.Clear();
+         mPowerUps.Clear();
+         mBullets.Clear();
+
+         mNumberOfLives = BreakoutConstants.INITIAL_LIVES_REMAINING;
+         mGunAmmunition = 5;
       }
 
       //*********************************************************************************************************************************************

@@ -213,6 +213,28 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
+      // Method Name: DrawParticles
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  theGraphics - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      public void DrawParticles(Graphics theGraphics)
+      {
+         foreach (Particle currentParticle in mBreakoutGame.Particles)
+         {
+            currentParticle.Draw(theGraphics);
+         }
+      }
+
+      //*********************************************************************************************************************************************
+      //
       // Method Name: DrawHud
       //
       // Description:
