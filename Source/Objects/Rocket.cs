@@ -1,6 +1,6 @@
 ﻿//***************************************************************************************************************************************************
 //
-// File Name: Bullet.cs
+// File Name: Rocket.cs
 //
 // Description:
 //  This class handles the functionality of a bullet in the game. This class will create the bullet at the set location and upon an update will move
@@ -17,18 +17,18 @@ using System.Collections.Generic;
 
 namespace Breakout
 {
-   public class Bullet : MasterObject
+   public class Rocket : MasterObject
    {
       private int mDamage;
       public int Damage
       {
-         get{return mDamage;}
-         set{mDamage = value;}
+         get { return mDamage; }
+         set { mDamage = value; }
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: Bullet
+      // Method Name: Rocket
       //
       // Description:
       //  TODO: Add description.
@@ -41,8 +41,8 @@ namespace Breakout
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public Bullet(float theCoordinateX, float theCoordinateY) :
-      base(Image.FromFile(BreakoutConstants.BULLET_IMAGE_LOCATION),
+      public Rocket(float theCoordinateX, float theCoordinateY) :
+      base(Image.FromFile("../../../Images/Rocket.png"),
            theCoordinateX,
            theCoordinateY,
            new Vector2D(BreakoutConstants.BULLET_VELOCITY_X,

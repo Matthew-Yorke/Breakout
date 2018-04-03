@@ -262,6 +262,12 @@ namespace Breakout
                mBreakoutGame.PushState(new PauseState(mBreakoutGame));
                break;
             }
+            case Keys.X:
+            {
+               mBreakoutGame.WeaponSelection = (Weapons)(((int)mBreakoutGame.WeaponSelection + BreakoutConstants.ENUM_OFFSET) %
+                                                         BreakoutConstants.NUMBER_OF_WEAPONS);
+               break;
+            }
             // The Escape key is pressed and ends the application.
             case Keys.Escape:
             {
@@ -312,14 +318,32 @@ namespace Breakout
             // The Z key is pressed. Shoot the paddle guns if the player has bullets left.
             case Keys.Z:
             {
-               if (mBreakoutGame.GunAmmunition > 0)
+               switch (mBreakoutGame.WeaponSelection)
                {
-                  mBreakoutGame.GunAmmunition--;
-                  mBreakoutGame.Bullets.Add(new Bullet(mBreakoutGame.Paddle.HitBox.X + BreakoutConstants.PADDLE_PADDING_TO_GUN,
-                                                       mBreakoutGame.Paddle.HitBox.Y));
-                  mBreakoutGame.Bullets.Add(new Bullet(mBreakoutGame.Paddle.HitBox.X + mBreakoutGame.Paddle.HitBox.Width -
-                                                          BreakoutConstants.PADDLE_PADDING_TO_GUN - BreakoutConstants.BULLET_WIDTH,
-                                                       mBreakoutGame.Paddle.HitBox.Y));
+                  case Weapons.BULLETS:
+                  {
+                     if (mBreakoutGame.GunAmmunition > 0)
+                     {
+                        mBreakoutGame.GunAmmunition--;
+                        mBreakoutGame.Bullets.Add(new Bullet(mBreakoutGame.Paddle.HitBox.X + BreakoutConstants.PADDLE_PADDING_TO_GUN,
+                                                             mBreakoutGame.Paddle.HitBox.Y));
+                        mBreakoutGame.Bullets.Add(new Bullet(mBreakoutGame.Paddle.HitBox.X + mBreakoutGame.Paddle.HitBox.Width -
+                                                             BreakoutConstants.PADDLE_PADDING_TO_GUN - BreakoutConstants.BULLET_WIDTH,
+                                                             mBreakoutGame.Paddle.HitBox.Y));
+                     }
+                     break;
+                  }
+                  case Weapons.ROCKETS:
+                  {
+                     if (mBreakoutGame.RocketAmmunition > 0)
+                     {
+                        mBreakoutGame.RocketAmmunition--;
+                        mBreakoutGame.Rockets.Add(new Rocket(mBreakoutGame.Paddle.HitBox.X +
+                                                                (mBreakoutGame.Paddle.HitBox.Width / BreakoutConstants.HALF),
+                                                             mBreakoutGame.Paddle.HitBox.Y));
+                     }
+                     break;
+                  }
                }
                break;
             }
@@ -372,6 +396,7 @@ namespace Breakout
             UpdateBall();
             UpdateMiniBalls();
             UpdateBullets();
+            UpdateRockets();
             UpdatePowerUps();
             UpdateParticles();
          }
@@ -460,6 +485,42 @@ namespace Breakout
          }
 
          CheckBulletCollision();
+      }
+
+      //*********************************************************************************************************************************************
+      //
+      // Method Name: UpdateRockets
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void UpdateRockets()
+      {
+         foreach (Rocket currentRocket in mBreakoutGame.Rockets)
+         {
+            for (int count = 0; count < Math.Ceiling(currentRocket.Vector.Length); count++)
+            {
+               currentRocket.Update();
+            }
+
+            mBreakoutGame.Particles.Add(new Particle(currentRocket.HitBox.X + (currentRocket.HitBox.Width / BreakoutConstants.HALF),
+                                                     currentRocket.HitBox.Y + currentRocket.HitBox.Height,
+                                                     BreakoutConstants.ROCKET_SMOKE_TRAIL_WIDTH_AND_LENGTH,
+                                                     BreakoutConstants.ROCKET_SMOKE_TRAIL_MINIMUM_ANGLE,
+                                                     BreakoutConstants.ROCKET_SMOKE_TRAIL_MAXIMUM_ANGLE,
+                                                     BreakoutConstants.ROCKET_SMOKE_TRAIL_TIME_MILLISECONDS,
+                                                     Color.FromArgb(255, 242, 72, 72),
+                                                     mBreakoutGame));
+         }
+
+         CheckRocketCollision();
       }
 
       //*********************************************************************************************************************************************
@@ -651,6 +712,113 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
+      // Method Name: CheckRocketCollision
+      //
+      // Description:
+      //  TODO: Add description.
+      //
+      // Arguments:
+      //  N/A
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      private void CheckRocketCollision()
+      {
+         bool CollisionOccurred = false;
+         RectangleF explosionArea = new Rectangle();
+
+         for (var rocketIndex = 0; rocketIndex < mBreakoutGame.Rockets.Count; rocketIndex++)
+         {
+            // Check if the rocket hit the top boundary. Set the explosion area and alert that a collision occurred.
+            if (mBreakoutGame.Rockets[rocketIndex].HitBox.Y < 0)
+            {
+               explosionArea.X = mBreakoutGame.Rockets[rocketIndex].HitBox.X +
+                                 (mBreakoutGame.Rockets[rocketIndex].HitBox.Width / BreakoutConstants.HALF) -
+                                 (BreakoutConstants.ROCKET_EXPLOSION_AREA_LENGTH_AND_WIDTH / BreakoutConstants.HALF);
+               explosionArea.Y = mBreakoutGame.Rockets[rocketIndex].HitBox.Y +
+                                 (mBreakoutGame.Rockets[rocketIndex].HitBox.Height / BreakoutConstants.HALF) -
+                                 (BreakoutConstants.ROCKET_EXPLOSION_AREA_LENGTH_AND_WIDTH / BreakoutConstants.HALF);
+               explosionArea.Width = BreakoutConstants.ROCKET_EXPLOSION_AREA_LENGTH_AND_WIDTH;
+               explosionArea.Height = BreakoutConstants.ROCKET_EXPLOSION_AREA_LENGTH_AND_WIDTH;
+               CollisionOccurred = true;
+            }
+
+            // If a collision hasn't occurred yet, check each brick for collision against the rocket. Set the explosion area and alert that a
+            // collision occurred.
+            if (CollisionOccurred == false)
+            {
+               for (var brickIndex = 0; brickIndex < mBreakoutGame.Bricks.Count; brickIndex++)
+               {
+                  if (mBreakoutGame.Rockets[rocketIndex].HitBox.IntersectsWith(mBreakoutGame.Bricks[brickIndex].HitBox))
+                  {
+                     explosionArea.X = mBreakoutGame.Rockets[rocketIndex].HitBox.X +
+                                    (mBreakoutGame.Rockets[rocketIndex].HitBox.Width / BreakoutConstants.HALF) -
+                                    (BreakoutConstants.ROCKET_EXPLOSION_AREA_LENGTH_AND_WIDTH / BreakoutConstants.HALF);
+                     explosionArea.Y = mBreakoutGame.Rockets[rocketIndex].HitBox.Y +
+                                       (mBreakoutGame.Rockets[rocketIndex].HitBox.Height / BreakoutConstants.HALF) -
+                                       (BreakoutConstants.ROCKET_EXPLOSION_AREA_LENGTH_AND_WIDTH / BreakoutConstants.HALF);
+                     explosionArea.Width = BreakoutConstants.ROCKET_EXPLOSION_AREA_LENGTH_AND_WIDTH;
+                     explosionArea.Height = BreakoutConstants.ROCKET_EXPLOSION_AREA_LENGTH_AND_WIDTH;
+                     CollisionOccurred = true;
+                     break;
+                  }
+               }
+            }
+
+            if (CollisionOccurred == true)
+            {
+               for (int count = 0; count < BreakoutConstants.ROCKET_EXPLOSION_PARTICLE_COUNT; count++)
+               {
+                  // Determine a random location within the explosion area.
+                  int theRandomXPosition = mBreakoutGame.RandomNumberGenerator.Next((int)explosionArea.X,
+                                                                                    (int)(explosionArea.X + explosionArea.Width));
+                  int theRandomYPosition = mBreakoutGame.RandomNumberGenerator.Next((int)explosionArea.Y,
+                                                                                    (int)(explosionArea.Y + explosionArea.Height));
+
+                  // Add a new particle for the brick explosion at the new random location that travels at a random velocity in any direction.
+                  mBreakoutGame.Particles.Add(new Particle(theRandomXPosition,
+                                                            theRandomYPosition,
+                                                            BreakoutConstants.ROCKET_EXPLOSION_PARTICLE_WIDTH_AND_LENGTH,
+                                                            BreakoutConstants.ROCKET_EXPLOSION_MINIMUM_ANGLE,
+                                                            BreakoutConstants.ROCKET_EXPLOSION_MAXIMUM_ANGLE,
+                                                            BreakoutConstants.ROCKET_EXPLOSION_PARTICLE_TIME_MILLISECONDS,
+                                                            Color.FromArgb(255, 140, 140, 140),
+                                                            mBreakoutGame));
+               }
+
+               for (var brickIndex = 0; brickIndex < mBreakoutGame.Bricks.Count; brickIndex++)
+               {
+                  if (explosionArea.IntersectsWith(mBreakoutGame.Bricks[brickIndex].HitBox))
+                  {
+                     mBreakoutGame.Bricks[brickIndex].BrickLevel -= mBreakoutGame.Rockets[rocketIndex].Damage;
+
+                     // Check if the brick level has hit the destroy level and remove the brick form the array list since it is destroyed.
+                     if (mBreakoutGame.Bricks[brickIndex].BrickLevel <= BreakoutConstants.BRICK_DESTRUCTION_LEVEL)
+                     {
+                        mBreakoutGame.Bricks[brickIndex].Destroyed(mBreakoutGame);
+                        // Remove the brick from the brick list since it is now destroyed.
+                        mBreakoutGame.Bricks.RemoveAt(brickIndex--);
+                     }
+                     // Since the brick is not destroyed, update the brick image.
+                     else
+                     {
+                        mBreakoutGame.Bricks[brickIndex].UpdateBrickImage("../../../Images/BrickLevel" +
+                                                                          mBreakoutGame.Bricks[brickIndex].BrickLevel.ToString() +
+                                                                          ".png");
+                     }
+                  }
+               }
+
+               mBreakoutGame.Rockets.RemoveAt(rocketIndex--);
+               CollisionOccurred = false;
+            }
+         }
+      }
+
+      //*********************************************************************************************************************************************
+      //
       // Method Name: CheckPowerUpCollision
       //
       // Description:
@@ -704,6 +872,7 @@ namespace Breakout
          DrawPowerUps(theGraphics);
          DrawBricks(theGraphics);
          DrawBullets(theGraphics);
+         DrawRockets(theGraphics);
          DrawParticles(theGraphics);
          DrawPaddle(theGraphics);
          DrawMiniBalls(theGraphics);

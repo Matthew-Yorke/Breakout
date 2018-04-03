@@ -97,9 +97,6 @@ namespace Breakout
       // The initial damage ball does to a brick.
       public const int BALL_INITIAL_DAMAGE = 1;
 
-      // The width of a bullet.
-      public const int BULLET_WIDTH = 3;
-
       // The width of a single brick.
       public const int BRICK_WIDTH = 50;
 
@@ -121,8 +118,14 @@ namespace Breakout
       // The number of milliseconds for the explosion particles to exist when a brick explodes.
       public const int BRICK_EXPLOSION_TIME_MILLISECONDS = 1000;
 
+      // The number of weapons in the game the user can cycle through.
+      public const int NUMBER_OF_WEAPONS = 2;
+
       // The file location of the bullet image.
       public const string BULLET_IMAGE_LOCATION = "../../../Images/Bullet.png";
+
+      // The width of a bullet.
+      public const int BULLET_WIDTH = 3;
 
       // The velocity of the bullet when fired in the x direction.
       public const float BULLET_VELOCITY_X = 0.0F;
@@ -143,7 +146,37 @@ namespace Breakout
       public const int BULLET_SMOKE_TRAIL_MAXIMUM_ANGLE = 225;
 
       // The number of milliseconds for the explosion particles to exist when a brick explodes.
-      public const int BULLET_SMOKE_TRAIL_TIME_MILLISECONDS = 400;
+      public const int BULLET_SMOKE_TRAIL_TIME_MILLISECONDS = 300;
+
+      // The width and length of the rocket smoke particle.
+      public const int ROCKET_SMOKE_TRAIL_WIDTH_AND_LENGTH = 4;
+
+      // The minimum angle the smoke trail particle will go for a moving rocket.
+      public const int ROCKET_SMOKE_TRAIL_MINIMUM_ANGLE = 135;
+
+      // The maximum angle the smoke trail particle will go for a moving rocket.
+      public const int ROCKET_SMOKE_TRAIL_MAXIMUM_ANGLE = 225;
+
+      // The number of milliseconds for the smoke trail particles to exist for a moving rocket.
+      public const int ROCKET_SMOKE_TRAIL_TIME_MILLISECONDS = 300;
+
+      // The length an width of the explosion area of a rocket.
+      public const int ROCKET_EXPLOSION_AREA_LENGTH_AND_WIDTH = 120;
+
+      // The amount of explosion particles to add when a rocket explodes.
+      public const int ROCKET_EXPLOSION_PARTICLE_COUNT = 250;
+
+      // The width and length of the rocket explosion particle.
+      public const int ROCKET_EXPLOSION_PARTICLE_WIDTH_AND_LENGTH = 10;
+
+      // The minimum angle the rocket explosion particle will go.
+      public const int ROCKET_EXPLOSION_MINIMUM_ANGLE = 0;
+
+      // The maximum angle the rocket explosion particle will go.
+      public const int ROCKET_EXPLOSION_MAXIMUM_ANGLE = 360;
+
+      // The number of milliseconds for the rocket explosion particles to exist when a brick explodes.
+      public const int ROCKET_EXPLOSION_PARTICLE_TIME_MILLISECONDS = 1500;
 
       // The level when a new game starts.
       public const int NEW_GAME_LEVEL = 2;
@@ -197,10 +230,13 @@ namespace Breakout
       public const int EXTRA_LIFE_POWER_UP_PERCENT_CHANCE = 45;
 
       // Chance the Extra Life power up will drop when a power up drops.
-      public const int MINI_BALL_POWER_UP_PERCENT_CHANCE = 35;
+      public const int MINI_BALL_POWER_UP_PERCENT_CHANCE = 30;
 
       // Chance the Extra Life power up will drop when a power up drops.
       public const int GUN_POWER_UP_PERCENT_CHANCE = 20;
+
+      // Chance the Extra Life power up will drop when a power up drops.
+      public const int ROCKET_POWER_UP_PERCENT_CHANCE = 5;
 
       // The final level of the game.
       public const int FINAL_LEVEL = 3;

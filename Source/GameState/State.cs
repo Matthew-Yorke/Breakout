@@ -168,6 +168,28 @@ namespace Breakout
 
       //*********************************************************************************************************************************************
       //
+      // Method Name: DrawRockets
+      //
+      // Description:
+      //  TODOL Add description.
+      //
+      // Arguments:
+      //  theGraphics - TODO: Add description.
+      //
+      // Return:
+      //  N/A
+      //
+      //*********************************************************************************************************************************************
+      protected void DrawRockets(Graphics theGraphics)
+      {
+         foreach (Rocket currentRocket in mBreakoutGame.Rockets)
+         {
+            currentRocket.Draw(theGraphics);
+         }
+      }
+
+      //*********************************************************************************************************************************************
+      //
       // Method Name: DrawBricks
       //
       // Description:
@@ -251,6 +273,7 @@ namespace Breakout
       {
          Image ballImage = Image.FromFile("../../../Images/Ball.png");
          Image ammunitionImage = Image.FromFile("../../../Images/BulletWithCasing.png");
+         Image rocketImage = Image.FromFile("../../../Images/RocketCount.png");
 
          // Draw the HUD Area
          theGraphics.DrawImage(Image.FromFile("../../../Images/HUD.png"),
@@ -267,13 +290,33 @@ namespace Breakout
                                             BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT + 57));
         }
 
-         // Draw the number of bullet images equal to ammunition count within the "Ammunition" box.
-         for (int count = 0; count < mBreakoutGame.GunAmmunition; count++)
+         switch (mBreakoutGame.WeaponSelection)
          {
-            theGraphics.DrawImage(ammunitionImage,
-                                  new PointF(151 + (3 * count),
-                                            BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT + 57));
+            case Weapons.BULLETS:
+            {
+               // Draw the number of bullet images equal to ammunition count within the "Ammunition" box.
+               for (int count = 0; count < mBreakoutGame.GunAmmunition; count++)
+               {
+                  theGraphics.DrawImage(ammunitionImage,
+                                        new PointF(151 + (3 * count),
+                                                   BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT + 57));
+               }
+
+               break;
+            }
+            case Weapons.ROCKETS:
+            {
+               // Draw the number of bullet images equal to ammunition count within the "Ammunition" box.
+               for (int count = 0; count < mBreakoutGame.RocketAmmunition; count++)
+               {
+                  theGraphics.DrawImage(rocketImage,
+                                        new PointF(151 + (8 * count),
+                                                   BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT + 57));
+               }
+
+               break;
+            }
          }
-      }
+         }
    }
 }

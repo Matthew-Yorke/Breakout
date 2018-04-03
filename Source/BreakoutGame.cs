@@ -20,6 +20,8 @@ using System.Drawing;
 
 namespace Breakout
 {
+   public enum Weapons { BULLETS, ROCKETS }
+
    public class BreakoutGame
    {
       // Tracks the current state the game is in.
@@ -93,7 +95,7 @@ namespace Breakout
       }
 
       // Track the ammunition remaining for the gun power up.
-      int mGunAmmunition;
+      private int mGunAmmunition;
       public int GunAmmunition
       {
          get {return mGunAmmunition;}
@@ -108,6 +110,22 @@ namespace Breakout
          set {mBullets = value;}
       }
 
+      // Track the ammunition remaining for the gun power up.
+      private int mRocketAmmunition;
+      public int RocketAmmunition
+      {
+         get {return mRocketAmmunition;}
+         set {mRocketAmmunition = value;}
+      }
+
+      // List of active bullets in the level.
+      private List<Rocket> mRockets;
+      public List<Rocket> Rockets
+      {
+         get {return mRockets;}
+         set {mRockets = value;}
+      }
+
       private Random mRandomNumberGenerator;
       public Random RandomNumberGenerator
       {
@@ -120,6 +138,13 @@ namespace Breakout
       {
          get {return mParticles;}
          set {mParticles = value;}
+      }
+
+      private Weapons mWeaponSelection;
+      public Weapons WeaponSelection
+      {
+         get {return mWeaponSelection;}
+         set {mWeaponSelection = value;}
       }
 
       //*********************************************************************************************************************************************
@@ -175,6 +200,9 @@ namespace Breakout
          // Create a new list of bullets for the game.
          mBullets = new List<Bullet>();
 
+         // Create a new list of rockets for the game.
+         mRockets = new List<Rocket>();
+
          // Create a new list of particles for the game.
          mParticles = new List<Particle>();
 
@@ -207,6 +235,10 @@ namespace Breakout
 
          mNumberOfLives = BreakoutConstants.INITIAL_LIVES_REMAINING;
          mGunAmmunition = 5;
+         mRocketAmmunition = 5;
+
+         // Start the game as the bullets as the selected weapon.
+         mWeaponSelection = Weapons.BULLETS;
       }
 
       //*********************************************************************************************************************************************

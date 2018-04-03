@@ -1,10 +1,9 @@
 ﻿//***************************************************************************************************************************************************
 //
-// File Name: Bullet.cs
+// File Name: RocketPowerUp.cs
 //
 // Description:
-//  This class handles the functionality of a bullet in the game. This class will create the bullet at the set location and upon an update will move
-//  the bullet forward based on the bullet velocity.
+//  TODO: Add description.
 //
 // Change History:
 //  Author               Date           Description
@@ -13,61 +12,51 @@
 //***************************************************************************************************************************************************
 
 using System.Drawing;
-using System.Collections.Generic;
 
 namespace Breakout
 {
-   public class Bullet : MasterObject
+   class RocketPowerUp : PowerUp
    {
-      private int mDamage;
-      public int Damage
-      {
-         get{return mDamage;}
-         set{mDamage = value;}
-      }
-
       //*********************************************************************************************************************************************
       //
-      // Method Name: Bullet
+      // Method Name: RocketPowerUp
       //
       // Description:
-      //  TODO: Add description.
+      //  Constructor that creates the rocket power up at the specified starting location.
       //
       // Arguments:
-      //  theCoordinateX - The X-Coordinate to start the bullet at.
-      //  theCoordinateY - The Y-Coordinate to start the bullet at.
+      //  theCoordianteX - The initial X-Coordinate the object is at.
+      //  theCoordinateY - The initial Y-Coordinate the object is at.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public Bullet(float theCoordinateX, float theCoordinateY) :
-      base(Image.FromFile(BreakoutConstants.BULLET_IMAGE_LOCATION),
-           theCoordinateX,
-           theCoordinateY,
-           new Vector2D(BreakoutConstants.BULLET_VELOCITY_X,
-                        BreakoutConstants.BULLET_VELOCITY_Y))
+      public RocketPowerUp(float theCoordinateX, float theCoordinateY) :
+      base(Image.FromFile("../../../Images/RocketPowerUp.png"), theCoordinateX, theCoordinateY)
       {
-         mDamage = BreakoutConstants.BULLET_DAMAGE;
       }
 
       //*********************************************************************************************************************************************
       //
-      // Method Name: Update
+      // Method Name: ExecutePowerUp
       //
       // Description:
-      //  Update the bullet to head towards the top of the screen.
+      //  Adds a additional ammunition for the paddle attachment, but does not exceed the maximum amount of ammunition.
       //
       // Arguments:
-      //  N/A
+      //  theBreakoutGame - Reference to the breakout game.
       //
       // Return:
       //  N/A
       //
       //*********************************************************************************************************************************************
-      public override void Update()
+      public override void ExecutePowerUp(BreakoutGame theBreakoutGame)
       {
-         mHitBox.Y += Vector.GetNormalizedComponentY();
+         if (theBreakoutGame.RocketAmmunition < 5)
+         {
+            theBreakoutGame.RocketAmmunition += 1;
+         }
       }
    }
 }

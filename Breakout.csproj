@@ -90,6 +90,8 @@
     <Compile Include="Source\Objects\PowerUpFactory\PowerUps\PowerUp.cs" />
     <Compile Include="Source\Objects\PowerUpFactory\PowerUps\ExtraLifePowerUp.cs" />
     <Compile Include="Source\Objects\PowerUpFactory\PowerUps\MiniBallPowerUp.cs" />
+    <Compile Include="Source\Objects\PowerUpFactory\PowerUps\RocketPowerUp.cs" />
+    <Compile Include="Source\Objects\Rocket.cs" />
     <Compile Include="Source\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\GameState\States\StartScreenState.cs" />

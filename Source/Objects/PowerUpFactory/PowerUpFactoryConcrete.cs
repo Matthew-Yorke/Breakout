@@ -56,6 +56,12 @@ namespace Breakout
             newPowerUp = new GunPowerUp(theHitBox.X + (theHitBox.Width / BreakoutConstants.HALF),
                                         theHitBox.Y + (theHitBox.Width / BreakoutConstants.HALF));
          }
+         else if (thePowerUp > chance &&
+                  thePowerUp <= (chance += BreakoutConstants.ROCKET_POWER_UP_PERCENT_CHANCE))
+         {
+            newPowerUp = new RocketPowerUp(theHitBox.X + (theHitBox.Width / BreakoutConstants.HALF),
+                                           theHitBox.Y + (theHitBox.Width / BreakoutConstants.HALF));
+         }
 
          return newPowerUp;
       }

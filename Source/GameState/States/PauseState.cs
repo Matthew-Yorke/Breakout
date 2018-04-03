@@ -124,6 +124,7 @@ namespace Breakout
       {
          DrawPowerUps(theGraphics);
          DrawBullets(theGraphics);
+         DrawRockets(theGraphics);
          DrawParticles(theGraphics);
          DrawPaddle(theGraphics);
          DrawMiniBalls(theGraphics);
