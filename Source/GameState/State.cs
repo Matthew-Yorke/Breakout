@@ -299,7 +299,7 @@ namespace Breakout
                {
                   theGraphics.DrawImage(ammunitionImage,
                                         new PointF(151 + (3 * count),
-                                                   BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT + 57));
+                                                   BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT + 49));
                }
 
                break;
@@ -311,7 +311,7 @@ namespace Breakout
                {
                   theGraphics.DrawImage(rocketImage,
                                         new PointF(151 + (8 * count),
-                                                   BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT + 57));
+                                                   BreakoutConstants.SCREEN_PLAY_AREA_HEIGHT + 49));
                }
 
                break;
